@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Environment / secrets (Req 19, 29 — never commit secrets)
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Test / coverage
+coverage/
+.vitest/
+
+# Uploaded media (stored on local filesystem; do not commit user uploads)
+server/media/*
+!server/media/.gitkeep
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+*.swp

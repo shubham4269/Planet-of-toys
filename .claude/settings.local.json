@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(npm test --prefix c:\\\\planet-of-toys\\\\client -- --run 2>$null)",
+      "PowerShell(npx --prefix c:\\\\planet-of-toys\\\\client vitest run src/pages/LandingPage.test.jsx --root c:\\\\planet-of-toys\\\\client --reporter=dot 2>$null)",
+      "Bash(curl -s -m 20 -o /dev/null -w 'HTTP %{http_code} | connect %{time_connect}s | total %{time_total}s\\\\n' -X POST https://apiv2.shiprocket.in/v1/external/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"connectivitytest@example.com\",\"password\":\"definitelywrong123\"}')",
+      "Bash(curl -s -m 20 -X POST https://apiv2.shiprocket.in/v1/external/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"connectivitytest@example.com\",\"password\":\"definitelywrong123\"}')",
+      "Bash(node scripts/test-shiprocket.mjs)",
+      "Bash(curl -s -m 5 -o /dev/null -w \"GET /api/health -> %{http_code}\\\\n\" http://localhost:4000/api/health)",
+      "Bash(curl -s -m 5 -o /dev/null -w \"GET /api/products -> %{http_code}\\\\n\" http://localhost:4000/api/products)",
+      "Bash(node scripts/test-dummy-order.mjs)",
+      "Bash(node scripts/_setup.mjs)",
+      "Bash(node scripts/_validate.mjs)",
+      "Bash(node scripts/_proof.mjs)",
+      "Bash(node scripts/_cleanup.mjs)",
+      "Bash(npx vitest *)",
+      "Bash(sed -n '193,200p' server/src/services/whatsapp.service.js)",
+      "Bash(sed -n '352,358p' server/src/routers/webhook.router.js)"
+    ]
+  }
+}

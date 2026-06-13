@@ -1,0 +1,267 @@
+/**
+ * Planet of Toys — admin System Settings styling.
+ *
+ * Consumes the dark admin tokens defined in styles/tokens.css under
+ * :root[data-theme="admin"] (set by AdminLayout). The customer brand palette is
+ * intentionally not used on the admin surface (design.md "Admin Panel Theme");
+ * only the semantic success/error tokens are reused for status indicators.
+ *
+ * Requirements: 15.2 (professional dark admin theme), 30.2–30.6, 30.9, 30.15.
+ */
+
+.admin-settings {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.admin-settings__head {
+  margin-bottom: var(--space-5);
+}
+
+.admin-settings__title {
+  color: var(--admin-text);
+  font-size: 24px;
+  margin-bottom: var(--space-2);
+}
+
+.admin-settings__subtitle {
+  color: var(--admin-text-muted);
+  font-size: 14px;
+}
+
+.admin-settings__muted {
+  color: var(--admin-text-muted);
+  font-size: 14px;
+}
+
+.admin-settings__sections {
+  display: grid;
+  gap: var(--space-5);
+}
+
+/* ---- Tabbed layout ---- */
+.admin-settings__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+  border-bottom: 1px solid var(--admin-elevated);
+  padding-bottom: var(--space-1);
+}
+
+.admin-settings__tab {
+  appearance: none;
+  border: 1px solid transparent;
+  background: var(--admin-accent-yellow);
+  color: var(--admin-accent-yellow-text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  padding: var(--space-2) var(--space-4);
+  min-height: 40px;
+  border-radius: var(--radius-button);
+  cursor: pointer;
+  transition: var(--transition-hover);
+}
+
+.admin-settings__tab:hover {
+  background: var(--admin-accent-yellow-hover);
+  color: var(--admin-accent-yellow-text);
+}
+
+.admin-settings__tab--active {
+  background: var(--admin-accent);
+  color: #ffffff;
+}
+
+.admin-settings__tab--active:hover {
+  background: var(--admin-accent-hover);
+  color: #ffffff;
+}
+
+.admin-settings__tab:focus-visible {
+  outline: 2px solid var(--admin-accent);
+  outline-offset: 2px;
+}
+
+/* ---- Webhook URL block ---- */
+.admin-settings__webhook {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-elevated);
+  border-radius: var(--radius-input);
+}
+
+.admin-settings__webhook code {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  background: var(--admin-elevated);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.admin-settings__webhook-row {
+  display: flex;
+  gap: var(--space-2);
+  align-items: stretch;
+}
+
+.admin-settings__webhook-url {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-family: var(--font-mono, monospace);
+  font-size: 13px;
+}
+
+.admin-settings__webhook-copy {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.admin-settings__section {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-elevated);
+  border-radius: var(--radius-card);
+  padding: var(--space-5);
+}
+
+.admin-settings__section-head {
+  margin-bottom: var(--space-4);
+}
+
+.admin-settings__section-title {
+  color: var(--admin-text);
+  font-size: 18px;
+  margin-bottom: var(--space-1);
+}
+
+.admin-settings__section-desc {
+  color: var(--admin-text-muted);
+  font-size: 13px;
+}
+
+.admin-settings__form {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.admin-settings__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.admin-settings__label {
+  color: var(--admin-text);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.admin-settings__current {
+  color: var(--admin-text-muted);
+  font-size: 12px;
+  font-family: var(--font-body);
+}
+
+.admin-settings__input {
+  min-height: 48px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--admin-elevated);
+  border-radius: var(--radius-input);
+  background: var(--admin-bg);
+  color: var(--admin-text);
+  font-family: var(--font-body);
+  font-size: 15px;
+}
+
+.admin-settings__input:focus {
+  outline: none;
+  border-color: var(--admin-text-muted);
+}
+
+.admin-settings__input--invalid {
+  border-color: var(--color-error);
+}
+
+.admin-settings__hint {
+  color: var(--admin-text-muted);
+  font-size: 12px;
+}
+
+.admin-settings__field-error {
+  color: var(--color-error);
+  font-size: 12px;
+}
+
+.admin-settings__error {
+  color: var(--color-error);
+  font-size: 14px;
+}
+
+.admin-settings__notice {
+  color: var(--color-success);
+  font-size: 14px;
+}
+
+.admin-settings__verify {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.admin-settings__verify--ok {
+  color: var(--color-success);
+}
+
+.admin-settings__verify--fail {
+  color: var(--color-error);
+}
+
+.admin-settings__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.admin-settings__primary,
+.admin-settings__ghost {
+  min-height: 44px;
+  padding: 0 var(--space-5);
+  border-radius: var(--radius-button);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--transition-hover);
+}
+
+.admin-settings__primary {
+  border: none;
+  background: var(--admin-accent);
+  color: #ffffff;
+}
+
+.admin-settings__primary:hover:not(:disabled) {
+  background: var(--admin-accent-hover);
+  color: #ffffff;
+}
+
+.admin-settings__ghost {
+  border: 1px solid var(--admin-elevated);
+  background: transparent;
+  color: var(--admin-text-muted);
+}
+
+.admin-settings__ghost:hover:not(:disabled) {
+  color: var(--admin-text);
+  border-color: var(--admin-text-muted);
+}
+
+.admin-settings__primary:disabled,
+.admin-settings__ghost:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

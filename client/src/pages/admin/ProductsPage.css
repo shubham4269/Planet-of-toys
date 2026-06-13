@@ -1,0 +1,389 @@
+/**
+ * Planet of Toys — admin product management styling.
+ *
+ * Consumes the dark admin tokens defined in styles/tokens.css under
+ * :root[data-theme="admin"] (set by AdminLayout). The customer brand palette is
+ * intentionally not used on the admin surface (design.md "Admin Panel Theme").
+ *
+ * Requirements: 16.1, 16.3, 16.4, 16.5 (product management UI); 15.2 (dark theme).
+ */
+
+.admin-products {
+  max-width: 1080px;
+  margin: 0 auto;
+  color: var(--admin-text);
+}
+
+.admin-products__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.admin-products__title {
+  color: var(--admin-text);
+  font-size: 24px;
+  margin-bottom: var(--space-1);
+}
+
+.admin-products__subtitle {
+  color: var(--admin-text-muted);
+  font-size: 14px;
+}
+
+.admin-products__primary {
+  min-height: 44px;
+  padding: 0 var(--space-5);
+  border: none;
+  border-radius: var(--radius-button);
+  background: var(--admin-elevated);
+  color: var(--admin-text);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--transition-hover);
+  white-space: nowrap;
+}
+
+.admin-products__primary:hover:not(:disabled) {
+  background: var(--admin-text-muted);
+  color: var(--admin-bg);
+}
+
+.admin-products__primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.admin-products__error {
+  color: var(--color-error);
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-input);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  font-size: 14px;
+}
+
+.admin-products__notice {
+  color: var(--color-success);
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid var(--color-success);
+  border-radius: var(--radius-input);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  font-size: 14px;
+}
+
+.admin-products__muted {
+  color: var(--admin-text-muted);
+  font-size: 14px;
+}
+
+/* ---- Catalog table ---- */
+.admin-products__table-wrap {
+  overflow-x: auto;
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-elevated);
+  border-radius: var(--radius-card);
+}
+
+.admin-products__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.admin-products__table th,
+.admin-products__table td {
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--admin-elevated);
+  vertical-align: middle;
+}
+
+.admin-products__table th {
+  color: var(--admin-text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+}
+
+.admin-products__table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-products__name {
+  display: block;
+  color: var(--admin-text);
+  font-weight: 600;
+}
+
+.admin-products__slug-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.admin-products__slug {
+  color: var(--admin-text-muted);
+  font-size: 12px;
+}
+
+.admin-products__copy {
+  border: 1px solid var(--admin-elevated);
+  border-radius: var(--radius-button);
+  background: transparent;
+  color: var(--admin-text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px var(--space-2);
+  cursor: pointer;
+  transition: var(--transition-hover);
+  white-space: nowrap;
+}
+
+.admin-products__copy:hover {
+  color: var(--admin-text);
+  border-color: var(--admin-text-muted);
+}
+
+.admin-products__actions-col {
+  white-space: nowrap;
+}
+
+.admin-products__badge {
+  border: 1px solid var(--admin-elevated);
+  border-radius: 999px;
+  padding: var(--space-1) var(--space-3);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--admin-elevated);
+  color: var(--admin-text);
+  transition: var(--transition-hover);
+}
+
+.admin-products__badge--in {
+  border-color: var(--color-success);
+  color: var(--color-success);
+  background: rgba(34, 197, 94, 0.12);
+}
+
+.admin-products__badge--out {
+  border-color: var(--admin-text-muted);
+  color: var(--admin-text-muted);
+  background: transparent;
+}
+
+.admin-products__link {
+  background: none;
+  border: none;
+  color: var(--admin-text);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: var(--space-1) var(--space-2);
+  text-decoration: underline;
+}
+
+.admin-products__link--danger {
+  color: var(--color-error);
+}
+
+/* ---- Editor ---- */
+.admin-products__editor {
+  margin-top: var(--space-5);
+}
+
+.admin-products__card {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-elevated);
+  border-radius: var(--radius-card);
+  padding: var(--space-5);
+}
+
+.admin-products__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.admin-products__card-title {
+  color: var(--admin-text);
+  font-size: 18px;
+}
+
+.admin-products__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.admin-products__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.admin-products__label {
+  color: var(--admin-text-muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.admin-products__input,
+.admin-products__textarea {
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--admin-elevated);
+  border-radius: var(--radius-input);
+  background: var(--admin-bg);
+  color: var(--admin-text);
+  font-family: var(--font-body);
+  font-size: 15px;
+  width: 100%;
+}
+
+.admin-products__textarea {
+  resize: vertical;
+  min-height: auto;
+}
+
+.admin-products__input:focus,
+.admin-products__textarea:focus {
+  outline: none;
+  border-color: var(--admin-text-muted);
+}
+
+.admin-products__check {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--admin-text);
+  font-size: 14px;
+  margin-bottom: var(--space-4);
+}
+
+.admin-products__fieldset {
+  border: 1px solid var(--admin-elevated);
+  border-radius: var(--radius-input);
+  padding: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.admin-products__legend {
+  color: var(--admin-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0 var(--space-2);
+}
+
+.admin-products__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr auto;
+  gap: var(--space-2);
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.admin-products__ghost {
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  border: 1px solid var(--admin-elevated);
+  border-radius: var(--radius-button);
+  background: transparent;
+  color: var(--admin-text);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 14px;
+  cursor: pointer;
+  transition: var(--transition-hover);
+}
+
+.admin-products__ghost:hover {
+  background: var(--admin-elevated);
+}
+
+.admin-products__thumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.admin-products__thumb {
+  position: relative;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-input);
+  overflow: hidden;
+  border: 1px solid var(--admin-elevated);
+}
+
+.admin-products__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.admin-products__thumb-remove {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.8);
+  color: var(--admin-text);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.admin-products__video-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.admin-products__card-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+@media (max-width: 640px) {
+  .admin-products__grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-products__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Color variant rows ---- */
+.admin-products__variant {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  margin-bottom: var(--space-3);
+  border: 1px solid var(--admin-elevated);
+  border-radius: 12px;
+  background: var(--admin-surface);
+}

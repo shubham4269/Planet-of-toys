@@ -1,0 +1,367 @@
+/**
+ * Admin Layout — Black & White sidebar theme.
+ *
+ * Clean, professional admin panel with persistent sidebar on desktop
+ * and hamburger-triggered side panel on mobile.
+ */
+
+/* ---- Shell ---- */
+.admin-shell {
+  min-height: 100vh;
+  background: var(--admin-bg);
+  color: var(--admin-text);
+  font-family: var(--font-body);
+  display: flex;
+}
+
+.admin-shell--no-sidebar {
+  display: block;
+}
+
+/* ---- Mobile top bar ---- */
+.admin-topbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--admin-elevated);
+  background: var(--admin-bg);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.admin-topbar__hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  width: 36px;
+  height: 36px;
+  padding: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.admin-topbar__hamburger span {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--admin-text);
+  border-radius: 1px;
+}
+
+.admin-topbar__title {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--admin-accent);
+}
+
+.admin-topbar__tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--admin-text-muted);
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-elevated);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* ---- Mobile overlay ---- */
+.admin-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+  background: rgba(0, 0, 0, 0.4);
+  animation: adminOverlayFade 200ms ease;
+}
+
+@keyframes adminOverlayFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ---- Sidebar ---- */
+.admin-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 900;
+  width: 260px;
+  background: var(--admin-surface);
+  border-right: 1px solid var(--admin-elevated);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 250ms ease;
+  /* The sidebar itself does not scroll: the header (logo) and footer stay
+     pinned while only the nav list scrolls. */
+  overflow: hidden;
+}
+
+.admin-sidebar--open {
+  transform: translateX(0);
+}
+
+.admin-sidebar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  border-bottom: 1px solid var(--admin-elevated);
+  /* Pinned: never scrolls with the nav list. */
+  flex: 0 0 auto;
+  background: var(--admin-surface);
+}
+
+.admin-sidebar__brand {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-2);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--admin-accent);
+  text-decoration: none;
+}
+
+.admin-sidebar__brand-tag {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--admin-accent);
+  background: var(--admin-accent-yellow);
+  border: 1px solid var(--admin-accent-yellow);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.admin-sidebar__close {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: 1px solid var(--admin-elevated);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--admin-text-muted);
+  transition: var(--transition-hover);
+}
+
+.admin-sidebar__close:hover {
+  background: var(--admin-hover);
+  color: var(--admin-text);
+}
+
+/* ---- Nav links ---- */
+.admin-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-3);
+  flex: 1 1 auto;
+  /* Only the nav list scrolls; the logo header and footer stay pinned. */
+  overflow-y: auto;
+}
+
+.admin-nav__icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+}
+
+.admin-nav__link {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: 8px;
+  color: var(--admin-text-muted);
+  font-weight: 500;
+  font-size: 14px;
+  text-decoration: none;
+  transition: var(--transition-hover);
+  border: none;
+  background: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-family: var(--font-body);
+}
+
+.admin-nav__link:hover {
+  background: var(--admin-hover);
+  color: var(--admin-text);
+}
+
+.admin-nav__link--active {
+  background: var(--admin-active);
+  color: var(--admin-active-text);
+}
+
+.admin-nav__link--active:hover {
+  background: var(--admin-active);
+  color: var(--admin-active-text);
+}
+
+.admin-nav__link--active .admin-nav__icon {
+  color: var(--admin-active-text);
+}
+
+/* ---- Sidebar footer (sign out) ---- */
+.admin-sidebar__footer {
+  padding: var(--space-3);
+  border-top: 1px solid var(--admin-elevated);
+  /* Pinned at the bottom; does not scroll with the nav list. */
+  flex: 0 0 auto;
+  background: var(--admin-surface);
+}
+
+.admin-nav__signout {
+  color: var(--admin-text-muted);
+}
+
+.admin-nav__signout:hover {
+  background: var(--admin-hover);
+  color: var(--color-error, #EF4444);
+}
+
+/* ---- Main content area ---- */
+.admin-shell__main {
+  flex: 1 1 auto;
+  padding: var(--space-5);
+  min-height: 100vh;
+  width: 100%;
+}
+
+/* ---- Login card (black & white) ---- */
+.admin-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+}
+
+.admin-login__card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-elevated);
+  border-radius: var(--radius-card);
+  padding: var(--space-6);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.admin-login__title {
+  color: var(--admin-text);
+  font-size: 22px;
+  margin-bottom: var(--space-2);
+}
+
+.admin-login__subtitle {
+  color: var(--admin-text-muted);
+  font-size: 14px;
+  margin-bottom: var(--space-5);
+}
+
+.admin-login__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.admin-login__label {
+  color: var(--admin-text-muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.admin-login__input {
+  min-height: 48px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--admin-elevated);
+  border-radius: var(--radius-input);
+  background: var(--admin-surface);
+  color: var(--admin-text);
+  font-family: var(--font-body);
+  font-size: 15px;
+}
+
+.admin-login__input:focus {
+  outline: none;
+  border-color: var(--admin-text);
+}
+
+.admin-login__error {
+  color: var(--color-error);
+  font-size: 14px;
+  margin-bottom: var(--space-4);
+}
+
+.admin-login__submit {
+  width: 100%;
+  min-height: 48px;
+  border: none;
+  border-radius: var(--radius-button);
+  background: var(--admin-accent);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: var(--transition-hover);
+}
+
+.admin-login__submit:hover:not(:disabled) {
+  background: var(--admin-accent-hover);
+}
+
+.admin-login__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ==== Tablet+ (>=768px): persistent sidebar, no topbar ==== */
+@media (min-width: 768px) {
+  .admin-topbar {
+    display: none;
+  }
+
+  .admin-overlay {
+    display: none;
+  }
+
+  .admin-sidebar {
+    position: sticky;
+    top: 0;
+    transform: none;
+    height: 100vh;
+    flex: 0 0 260px;
+  }
+
+  .admin-sidebar__close {
+    display: none;
+  }
+
+  .admin-shell__main {
+    padding: var(--space-6);
+  }
+}
+
+/* ==== Desktop (>=1200px) ==== */
+@media (min-width: 1200px) {
+  .admin-shell__main {
+    padding: var(--space-7) var(--space-7);
+  }
+}

@@ -1,0 +1,120 @@
+/**
+ * Planet of Toys — admin dashboard styling.
+ *
+ * Consumes the dark admin tokens defined in styles/tokens.css under
+ * :root[data-theme="admin"] (set by AdminLayout). The customer brand palette is
+ * intentionally not used on the admin surface (design.md "Admin Panel Theme").
+ *
+ * Requirements: 15.1 (dashboard statistics), 15.2 (professional dark theme).
+ */
+
+.admin-dashboard {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.admin-dashboard__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.admin-dashboard__title {
+  color: var(--admin-text);
+  font-size: 24px;
+}
+
+.admin-dashboard__subtitle {
+  color: var(--admin-text-muted);
+  font-size: 14px;
+  margin: 0;
+}
+
+.admin-dashboard__error {
+  color: var(--color-error);
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-elevated);
+  border-radius: var(--radius-card);
+  padding: var(--space-3) var(--space-4);
+  font-size: 14px;
+  margin: 0;
+}
+
+/* ---- Shared admin card ---- */
+.admin-card {
+  background: var(--admin-surface);
+  border: 1px solid var(--admin-elevated);
+  border-radius: var(--radius-card);
+  padding: var(--space-5);
+}
+
+.admin-card__heading {
+  color: var(--admin-text);
+  font-size: 16px;
+  margin-bottom: var(--space-4);
+}
+
+/* ---- Metric cards ---- */
+.admin-dashboard__metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4);
+}
+
+.admin-card--metric {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.admin-card__label {
+  color: var(--admin-text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-card__value {
+  color: var(--admin-text);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.1;
+}
+
+/* ---- Status breakdown ---- */
+.admin-dashboard__status-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-3);
+}
+
+.admin-dashboard__status-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--admin-bg);
+  border: 1px solid var(--admin-elevated);
+  border-radius: var(--radius-input);
+}
+
+.admin-dashboard__status-name {
+  color: var(--admin-text-muted);
+  font-size: 14px;
+}
+
+.admin-dashboard__status-count {
+  color: var(--admin-text);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 18px;
+}
