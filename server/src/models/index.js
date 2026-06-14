@@ -36,3 +36,4 @@ export { default as SystemSettings } from "../modules/settings/systemSettings.mo
 export { default as PromoBanner } from "../modules/content/promoBanner.model.js";
 export { default as FooterContent } from "../modules/content/footerContent.model.js";
 export { default as UnmatchedWebhookEvent } from "../modules/webhooks/unmatchedWebhookEvent.model.js";
+export { default as NewsletterSubscriber } from "../modules/newsletter/subscriber.model.js";
