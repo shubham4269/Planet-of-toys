@@ -1,0 +1,117 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: #ffffff;
+  border-bottom: 1px solid #eee;
+  font-family: inherit;
+}
+.site-header__bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.75rem 1.25rem;
+}
+.site-header__menu-toggle {
+  display: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: #c8102e;
+  padding: 0.25rem;
+}
+.site-header__logo img {
+  display: block;
+  height: 44px;
+  width: auto;
+}
+.site-header__search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: #f3efe9;
+  border-radius: 999px;
+  padding: 0.25rem 0.5rem 0.25rem 1rem;
+  max-width: 640px;
+}
+.site-header__search-input {
+  flex: 1;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 0.95rem;
+  outline: none;
+  color: #222;
+}
+.site-header__search-btn {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  color: #555;
+  display: inline-flex;
+  padding: 0.35rem;
+}
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+.site-header__action {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  text-decoration: none;
+  color: #c8102e;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+.site-header__cart-icon {
+  position: relative;
+  display: inline-flex;
+}
+.site-header__badge {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #c8102e;
+  color: #fff;
+  font-size: 0.65rem;
+  line-height: 16px;
+  text-align: center;
+}
+.site-header__nav {
+  display: flex;
+  justify-content: center;
+  gap: 1.75rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.6rem 1.25rem;
+  flex-wrap: wrap;
+}
+.site-header__nav-link {
+  text-decoration: none;
+  color: #222;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.site-header__nav-link:hover { color: #c8102e; }
+
+@media (max-width: 768px) {
+  .site-header__menu-toggle { display: inline-flex; }
+  .site-header__action span:last-child { display: none; }
+  .site-header__actions { gap: 0.85rem; }
+  .site-header__nav {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .site-header__nav--open { display: flex; }
+}
