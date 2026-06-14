@@ -16,7 +16,7 @@ vi.mock("../../lib/adminAuth.js", () => ({
 beforeEach(() => {
   apiMock.get.mockReset();
   apiMock.put.mockReset();
-  globalThis.matchMedia ??= vi.fn().mockReturnValue({
+  globalThis.matchMedia = vi.fn().mockReturnValue({
     matches: false, addEventListener() {}, removeEventListener() {},
   });
 });
@@ -73,5 +73,27 @@ describe("PromoBannerEditor", () => {
     await waitFor(() => expect(apiMock.put).toHaveBeenCalled());
     const payload = apiMock.put.mock.calls[0][1];
     expect(payload.announcements.map((a) => a.text)).toEqual(["Second", "First"]);
+  });
+
+  it("filters the live preview by the selected device", async () => {
+    apiMock.get.mockResolvedValue({
+      banner: {
+        ...EMPTY.banner,
+        enabled: true,
+        announcements: [
+          { id: "d", text: "Desktop slide", showOnMobile: false, showOnDesktop: true, enabled: true },
+          { id: "m", text: "Mobile slide", showOnMobile: true, showOnDesktop: false, enabled: true },
+        ],
+      },
+    });
+    render(<PromoBannerEditor />);
+
+    // Desktop is the default preview device.
+    expect(await screen.findByText("Desktop slide")).toBeInTheDocument();
+    expect(screen.queryByText("Mobile slide")).toBeNull();
+
+    fireEvent.click(screen.getByRole("button", { name: /mobile preview/i }));
+    expect(await screen.findByText("Mobile slide")).toBeInTheDocument();
+    expect(screen.queryByText("Desktop slide")).toBeNull();
   });
 });

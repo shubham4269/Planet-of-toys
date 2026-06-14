@@ -6,13 +6,48 @@ import { getToken, notifyUnauthorized } from "../../lib/adminAuth.js";
 
 /**
  * Promotional header editor. Loads the banner, lets the admin toggle it, set
- * default colors / rotation interval / rightText, and manage the ordered list
- * of announcements (add / remove / reorder by drag-and-drop with up/down
- * fallback). A live preview renders the shared PromoBannerView from current
- * form state. Saves the full banner via PUT.
+ * default colors / rotation interval / rightText, and manage the ordered list of
+ * announcements (add / remove / reorder by drag-and-drop with up/down fallback).
+ * A framed live preview renders the shared PromoBannerView from current form
+ * state, with a Desktop/Mobile toggle. Saves the full banner via PUT.
  */
 
 const API_PATH = "/api/admin/content/promo-banner";
+
+/** Inline SVG icons (project rule: no icon fonts). */
+function IconDrag() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+      <circle cx="9" cy="6" r="1.4" fill="currentColor" />
+      <circle cx="15" cy="6" r="1.4" fill="currentColor" />
+      <circle cx="9" cy="12" r="1.4" fill="currentColor" />
+      <circle cx="15" cy="12" r="1.4" fill="currentColor" />
+      <circle cx="9" cy="18" r="1.4" fill="currentColor" />
+      <circle cx="15" cy="18" r="1.4" fill="currentColor" />
+    </svg>
+  );
+}
+function IconUp() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+      <path d="M6 15l6-6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+function IconDown() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+      <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+function IconRemove() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" aria-hidden="true">
+      <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 /** A blank announcement row for the editor. */
 function blankAnnouncement() {
@@ -94,6 +129,7 @@ export default function PromoBannerEditor() {
   const [message, setMessage] = useState(null);
   const [error, setError] = useState(null);
   const [dragIndex, setDragIndex] = useState(null);
+  const [previewDevice, setPreviewDevice] = useState("desktop");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -175,22 +211,21 @@ export default function PromoBannerEditor() {
     }
   }
 
-  if (loading) return <p>Loading…</p>;
-  if (!form) return <p>{error || "Unavailable."}</p>;
+  if (loading) return <p className="promo-editor__status">Loading…</p>;
+  if (!form) return <p className="promo-editor__status">{error || "Unavailable."}</p>;
 
-  // Preview uses the same component the storefront renders, and mirrors the
-  // public endpoint's eligibility filter (enabled + within the schedule window
-  // at "now") so the admin sees exactly what the storefront would currently
-  // show. Device targeting is intentionally not applied — the preview shows all
-  // currently-scheduled slides regardless of the editor's own screen size.
+  // Preview mirrors the public endpoint's eligibility (enabled + schedule window)
+  // and the storefront's device filter for the currently selected preview device.
   const previewNow = Date.now();
   const withinPreviewWindow = (a) => {
     if (a.startAt && previewNow < new Date(a.startAt).getTime()) return false;
     if (a.endAt && previewNow > new Date(a.endAt).getTime()) return false;
     return true;
   };
+  const matchesDevice = (a) =>
+    previewDevice === "mobile" ? a.showOnMobile : a.showOnDesktop;
   const previewAnnouncements = form.announcements
-    .filter((a) => a.enabled && a.text.trim() && withinPreviewWindow(a))
+    .filter((a) => a.enabled && a.text.trim() && withinPreviewWindow(a) && matchesDevice(a))
     .map((a) => ({
       id: a.id,
       text: a.text,
@@ -202,134 +237,192 @@ export default function PromoBannerEditor() {
 
   return (
     <form className="promo-editor" onSubmit={handleSave}>
-      <h1>Promotional Header</h1>
+      <header className="promo-editor__head">
+        <h1>Promotional Header</h1>
+        <div className="promo-editor__actions">
+          <button type="submit" className="promo-editor__save" disabled={saving}>
+            {saving ? "Saving…" : "Save"}
+          </button>
+          {message && <span className="promo-editor__ok">{message}</span>}
+          {error && <span className="promo-editor__err">{error}</span>}
+        </div>
+      </header>
 
-      <div className="promo-editor__preview">
-        <span className="promo-editor__preview-label">Live preview</span>
-        {form.enabled && previewAnnouncements.length > 0 ? (
-          <PromoBannerView
-            announcements={previewAnnouncements}
-            bgColor={form.bgColor}
-            textColor={form.textColor}
-            rotationIntervalMs={Number(form.rotationIntervalMs) || 5000}
-            rightText={form.rightText || null}
-          />
-        ) : (
-          <p className="promo-editor__preview-empty">
-            {form.enabled ? "Add an enabled announcement to preview." : "Banner is disabled."}
-          </p>
-        )}
-      </div>
+      <section className="promo-card">
+        <div className="promo-card__head">
+          <h2>Live preview</h2>
+          <div className="promo-editor__device" role="group" aria-label="Preview device">
+            <button
+              type="button"
+              className={`promo-editor__device-btn${previewDevice === "desktop" ? " promo-editor__device-btn--active" : ""}`}
+              aria-pressed={previewDevice === "desktop"}
+              aria-label="Desktop preview"
+              onClick={() => setPreviewDevice("desktop")}
+            >
+              Desktop
+            </button>
+            <button
+              type="button"
+              className={`promo-editor__device-btn${previewDevice === "mobile" ? " promo-editor__device-btn--active" : ""}`}
+              aria-pressed={previewDevice === "mobile"}
+              aria-label="Mobile preview"
+              onClick={() => setPreviewDevice("mobile")}
+            >
+              Mobile
+            </button>
+          </div>
+        </div>
+        <div className={`promo-editor__preview promo-editor__preview--${previewDevice}`}>
+          {form.enabled && previewAnnouncements.length > 0 ? (
+            <PromoBannerView
+              announcements={previewAnnouncements}
+              bgColor={form.bgColor}
+              textColor={form.textColor}
+              rotationIntervalMs={Number(form.rotationIntervalMs) || 5000}
+              rightText={form.rightText || null}
+            />
+          ) : (
+            <p className="promo-editor__preview-empty">
+              {form.enabled
+                ? "No announcement is eligible for this device/time."
+                : "Banner is disabled."}
+            </p>
+          )}
+        </div>
+      </section>
 
-      <fieldset className="promo-editor__settings">
-        <label className="promo-editor__row">
-          <input
-            type="checkbox"
-            checked={form.enabled}
-            onChange={(e) => updateField("enabled", e.target.checked)}
-          />
-          Enable banner
-        </label>
-        <label className="promo-editor__row">
-          Default background
-          <input type="color" value={form.bgColor}
-            onChange={(e) => updateField("bgColor", e.target.value)} />
-        </label>
-        <label className="promo-editor__row">
-          Default text color
-          <input type="color" value={form.textColor}
-            onChange={(e) => updateField("textColor", e.target.value)} />
-        </label>
-        <label className="promo-editor__row">
-          Rotation interval (seconds)
-          <input type="number" min="2" step="1"
-            value={Math.round(form.rotationIntervalMs / 1000)}
-            onChange={(e) => updateField("rotationIntervalMs", Number(e.target.value) * 1000)} />
-        </label>
-        <label className="promo-editor__row">
-          Right text (e.g. customer care)
-          <input type="text" value={form.rightText}
-            onChange={(e) => updateField("rightText", e.target.value)} />
-        </label>
-      </fieldset>
+      <section className="promo-card">
+        <div className="promo-card__head"><h2>Banner settings</h2></div>
+        <div className="promo-editor__grid">
+          <label className="promo-editor__check">
+            <input
+              type="checkbox"
+              checked={form.enabled}
+              onChange={(e) => updateField("enabled", e.target.checked)}
+            />
+            Enable banner
+          </label>
+          <label className="promo-editor__field">
+            <span>Default background</span>
+            <input type="color" value={form.bgColor}
+              onChange={(e) => updateField("bgColor", e.target.value)} />
+          </label>
+          <label className="promo-editor__field">
+            <span>Default text color</span>
+            <input type="color" value={form.textColor}
+              onChange={(e) => updateField("textColor", e.target.value)} />
+          </label>
+          <label className="promo-editor__field">
+            <span>Rotation interval (seconds)</span>
+            <input type="number" min="2" step="1"
+              value={Math.round(form.rotationIntervalMs / 1000)}
+              onChange={(e) => updateField("rotationIntervalMs", Number(e.target.value) * 1000)} />
+          </label>
+          <label className="promo-editor__field promo-editor__field--wide">
+            <span>Right text (e.g. customer care)</span>
+            <input type="text" value={form.rightText}
+              placeholder="Customer Care: 011-41410060"
+              onChange={(e) => updateField("rightText", e.target.value)} />
+          </label>
+        </div>
+      </section>
 
-      <h2>Announcements</h2>
-      <ul className="promo-editor__list">
-        {form.announcements.map((a, index) => (
-          <li
-            key={a.id}
-            className="promo-editor__item"
-            draggable
-            onDragStart={() => setDragIndex(index)}
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={() => onDrop(index)}
-          >
-            <div className="promo-editor__item-controls">
-              <button type="button" aria-label={`Move up announcement ${index + 1}`}
-                onClick={() => move(index, index - 1)} disabled={index === 0}>↑</button>
-              <button type="button" aria-label={`Move down announcement ${index + 1}`}
-                onClick={() => move(index, index + 1)}
-                disabled={index === form.announcements.length - 1}>↓</button>
-              <button type="button" aria-label={`Remove announcement ${index + 1}`}
-                onClick={() => removeAnnouncement(index)}>✕</button>
-            </div>
+      <section className="promo-card">
+        <div className="promo-card__head">
+          <h2>Announcements</h2>
+          <button type="button" className="promo-editor__add" onClick={addAnnouncement}>
+            Add announcement
+          </button>
+        </div>
+        <ul className="promo-editor__list">
+          {form.announcements.map((a, index) => (
+            <li
+              key={a.id}
+              className="promo-editor__item"
+              draggable
+              onDragStart={() => setDragIndex(index)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => onDrop(index)}
+            >
+              <div className="promo-editor__item-bar">
+                <span className="promo-editor__drag" aria-hidden="true"><IconDrag /></span>
+                <span className="promo-editor__item-title">Announcement {index + 1}</span>
+                <div className="promo-editor__item-controls">
+                  <button type="button" className="promo-editor__icon-btn"
+                    aria-label={`Move up announcement ${index + 1}`}
+                    onClick={() => move(index, index - 1)} disabled={index === 0}>
+                    <IconUp />
+                  </button>
+                  <button type="button" className="promo-editor__icon-btn"
+                    aria-label={`Move down announcement ${index + 1}`}
+                    onClick={() => move(index, index + 1)}
+                    disabled={index === form.announcements.length - 1}>
+                    <IconDown />
+                  </button>
+                  <button type="button" className="promo-editor__icon-btn promo-editor__icon-btn--danger"
+                    aria-label={`Remove announcement ${index + 1}`}
+                    onClick={() => removeAnnouncement(index)}>
+                    <IconRemove />
+                  </button>
+                </div>
+              </div>
 
-            <label>Announcement {index + 1} text
-              <input type="text" value={a.text}
-                onChange={(e) => updateAnnouncement(index, "text", e.target.value)} />
-            </label>
-            <label>Link URL (optional)
-              <input type="url" value={a.url}
-                onChange={(e) => updateAnnouncement(index, "url", e.target.value)} />
-            </label>
-            <label>Coupon code (optional)
-              <input type="text" value={a.couponCode}
-                onChange={(e) => updateAnnouncement(index, "couponCode", e.target.value)} />
-            </label>
-            <label>Slide background
-              <input type="color" value={a.bgColor || form.bgColor}
-                onChange={(e) => updateAnnouncement(index, "bgColor", e.target.value)} />
-            </label>
-            <label>Slide text color
-              <input type="color" value={a.textColor || form.textColor}
-                onChange={(e) => updateAnnouncement(index, "textColor", e.target.value)} />
-            </label>
-            <label>Start date
-              <input type="datetime-local" value={a.startAt}
-                onChange={(e) => updateAnnouncement(index, "startAt", e.target.value)} />
-            </label>
-            <label>End date
-              <input type="datetime-local" value={a.endAt}
-                onChange={(e) => updateAnnouncement(index, "endAt", e.target.value)} />
-            </label>
-            <label className="promo-editor__row">
-              <input type="checkbox" checked={a.showOnDesktop}
-                onChange={(e) => updateAnnouncement(index, "showOnDesktop", e.target.checked)} />
-              Show on desktop
-            </label>
-            <label className="promo-editor__row">
-              <input type="checkbox" checked={a.showOnMobile}
-                onChange={(e) => updateAnnouncement(index, "showOnMobile", e.target.checked)} />
-              Show on mobile
-            </label>
-            <label className="promo-editor__row">
-              <input type="checkbox" checked={a.enabled}
-                onChange={(e) => updateAnnouncement(index, "enabled", e.target.checked)} />
-              Enabled
-            </label>
-          </li>
-        ))}
-      </ul>
-
-      <button type="button" className="promo-editor__add" onClick={addAnnouncement}>
-        Add announcement
-      </button>
-
-      <div className="promo-editor__actions">
-        <button type="submit" disabled={saving}>{saving ? "Saving…" : "Save"}</button>
-        {message && <span className="promo-editor__ok">{message}</span>}
-        {error && <span className="promo-editor__err">{error}</span>}
-      </div>
+              <div className="promo-editor__grid">
+                <label className="promo-editor__field promo-editor__field--wide">
+                  <span>Announcement {index + 1} text</span>
+                  <input type="text" value={a.text}
+                    onChange={(e) => updateAnnouncement(index, "text", e.target.value)} />
+                </label>
+                <label className="promo-editor__field promo-editor__field--wide">
+                  <span>Link URL (optional)</span>
+                  <input type="url" value={a.url}
+                    onChange={(e) => updateAnnouncement(index, "url", e.target.value)} />
+                </label>
+                <label className="promo-editor__field">
+                  <span>Coupon code (optional)</span>
+                  <input type="text" value={a.couponCode}
+                    onChange={(e) => updateAnnouncement(index, "couponCode", e.target.value)} />
+                </label>
+                <label className="promo-editor__field">
+                  <span>Slide background</span>
+                  <input type="color" value={a.bgColor || form.bgColor}
+                    onChange={(e) => updateAnnouncement(index, "bgColor", e.target.value)} />
+                </label>
+                <label className="promo-editor__field">
+                  <span>Slide text color</span>
+                  <input type="color" value={a.textColor || form.textColor}
+                    onChange={(e) => updateAnnouncement(index, "textColor", e.target.value)} />
+                </label>
+                <label className="promo-editor__field">
+                  <span>Start date</span>
+                  <input type="datetime-local" value={a.startAt}
+                    onChange={(e) => updateAnnouncement(index, "startAt", e.target.value)} />
+                </label>
+                <label className="promo-editor__field">
+                  <span>End date</span>
+                  <input type="datetime-local" value={a.endAt}
+                    onChange={(e) => updateAnnouncement(index, "endAt", e.target.value)} />
+                </label>
+                <label className="promo-editor__check">
+                  <input type="checkbox" checked={a.showOnDesktop}
+                    onChange={(e) => updateAnnouncement(index, "showOnDesktop", e.target.checked)} />
+                  Show on desktop
+                </label>
+                <label className="promo-editor__check">
+                  <input type="checkbox" checked={a.showOnMobile}
+                    onChange={(e) => updateAnnouncement(index, "showOnMobile", e.target.checked)} />
+                  Show on mobile
+                </label>
+                <label className="promo-editor__check">
+                  <input type="checkbox" checked={a.enabled}
+                    onChange={(e) => updateAnnouncement(index, "enabled", e.target.checked)} />
+                  Enabled
+                </label>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </section>
     </form>
   );
 }
