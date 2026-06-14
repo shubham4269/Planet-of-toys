@@ -9,6 +9,7 @@ import SettingsPage from "./pages/admin/SettingsPage.jsx";
 import ContentPage from "./pages/admin/ContentPage.jsx";
 import PromoBannerPage from "./pages/admin/content/PromoBannerPage.jsx";
 import HeroBannerPage from "./pages/admin/content/HeroBannerPage.jsx";
+import FooterPage from "./pages/admin/content/FooterPage.jsx";
 import "./styles/tokens.css";
 
 /**
@@ -51,6 +52,7 @@ export function AppRoutes() {
             <Route index element={<Navigate to="promo-banner" replace />} />
             <Route path="promo-banner" element={<PromoBannerPage />} />
             <Route path="hero-banner" element={<HeroBannerPage />} />
+            <Route path="footer" element={<FooterPage />} />
           </Route>
           {/* System settings — integration credential management (Req 30). */}
           <Route path="settings" element={<SettingsPage />} />

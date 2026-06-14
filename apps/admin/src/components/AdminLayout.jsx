@@ -91,6 +91,7 @@ const NAV_ITEMS = [
     children: [
       { to: "/admin/content/promo-banner", label: "Promotional Banner" },
       { to: "/admin/content/hero-banner", label: "Hero Banner" },
+      { to: "/admin/content/footer", label: "Footer Content" },
     ],
   },
   { to: "/admin/settings", label: "Settings", Icon: IconSettings },
