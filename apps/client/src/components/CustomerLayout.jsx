@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import PromoBanner from "./PromoBanner.jsx";
 import Header from "./Header.jsx";
+import Footer from "./Footer.jsx";
 
 /**
  * Layout wrapper for the customer-facing storefront routes. Activates the light
@@ -20,6 +21,7 @@ export default function CustomerLayout() {
       <PromoBanner />
       <Header />
       <Outlet />
+      <Footer />
     </div>
   );
 }
