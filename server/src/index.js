@@ -1,24 +1,26 @@
-import { connectDatabase } from "./config/database.js";
+import { connectDatabase } from "./shared/config/database.js";
 import { createApp } from "./app.js";
-import { loadConfigOrExit } from "./config/env.js";
-import { createAuthRouter } from "./routers/auth.router.js";
-import { createPaymentRouter } from "./routers/payment.router.js";
-import { createPublicProductRouter } from "./routers/product.router.js";
-import { createMediaRouters } from "./routers/media.router.js";
-import { createSettingsRouter } from "./routers/settings.router.js";
-import { createShippingRouter } from "./routers/shipping.router.js";
-import { createOrdersRouter } from "./routers/order.router.js";
-import { createOtpRouter } from "./routers/otp.router.js";
-import { createWebhookRouter } from "./routers/webhook.router.js";
-import { createConfigRouter } from "./routers/config.router.js";
-import { requireAuth } from "./middleware/requireAuth.js";
-import { createRateLimiters } from "./middleware/rateLimiters.js";
-import { errorHandler, notFoundHandler } from "./middleware/errorHandler.js";
+import { loadConfigOrExit } from "./shared/config/env.js";
+import { createAuthRouter } from "./modules/auth/auth.router.js";
+import { createPaymentRouter } from "./modules/payments/payment.router.js";
+import { createPublicProductRouter } from "./modules/products/product.router.js";
+import { createMediaRouters } from "./modules/media/media.router.js";
+import { createSettingsRouter } from "./modules/settings/settings.router.js";
+import { createShippingRouter } from "./modules/shipping/shipping.router.js";
+import { createOrdersRouter } from "./modules/orders/order.router.js";
+import { createOtpRouter } from "./modules/orders/otp.router.js";
+import { createWebhookRouter } from "./modules/webhooks/webhook.router.js";
+import { createConfigRouter } from "./modules/settings/config.router.js";
+import { createContentAdminRouter } from "./modules/content/content.admin.router.js";
+import { createContentPublicRouter } from "./modules/content/content.public.router.js";
+import { requireAuth } from "./shared/middleware/requireAuth.js";
+import { createRateLimiters } from "./shared/middleware/rateLimiters.js";
+import { errorHandler, notFoundHandler } from "./shared/middleware/errorHandler.js";
 import {
   loginAuditRecorder,
   requestAuditRecorder,
-} from "./services/audit.service.js";
-import { retryPendingShipments } from "./services/shipping.service.js";
+} from "./modules/auth/audit.service.js";
+import { retryPendingShipments } from "./integrations/shiprocket/shipping.service.js";
 
 /**
  * Server entry point and composition root (task 20.1).
@@ -104,6 +106,10 @@ const app = createApp({
     // Public storefront config: GET /api/config -> { metaPixelId } so the
     // admin-set pixel id takes effect without a client rebuild (Req 3.4).
     config: createConfigRouter(),
+    // Admin content management: /api/admin/content/promo-banner, guarded.
+    contentAdmin: createContentAdminRouter({ requireAuth }),
+    // Public storefront content: GET /api/content/promo-banner (filtered).
+    content: createContentPublicRouter(),
   },
 });
 
