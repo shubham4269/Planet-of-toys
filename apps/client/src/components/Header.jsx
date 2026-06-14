@@ -20,41 +20,46 @@ const CATEGORIES = [
 
 function IconSearch() {
   return (
-    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" aria-hidden="true">
-      <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
-      <path d="M20 20l-3.5-3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" aria-hidden="true">
+      <circle cx="13" cy="10" r="6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M8.8 14.2L4.5 18.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 function IconUser() {
   return (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
-      <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.8" />
-      <path d="M4 21c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" aria-hidden="true">
+      <circle cx="12" cy="8" r="3.4" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M5.5 20c0-3.6 2.9-6.2 6.5-6.2s6.5 2.6 6.5 6.2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
 }
 function IconLoyalty() {
   return (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
-      <path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9 6.8 19.6l1-5.8L3.5 9.7l5.9-.9L12 3z"
-        stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" />
+    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" aria-hidden="true">
+      <path d="M7 4.5h10V9a5 5 0 01-10 0V4.5z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M7 6H4.5v1A3 3 0 007 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M17 6h2.5v1a3 3 0 01-2.5 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M12 14v2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M8.5 20h7l-1.2-3.5H9.7L8.5 20z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 function IconHeart() {
   return (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
-      <path d="M12 20s-7-4.3-9.3-8.3C1 8.5 2.6 5 6 5c2 0 3.2 1.1 4 2.3C10.8 6.1 12 5 14 5c3.4 0 5 3.5 3.3 6.7C19 15.7 12 20 12 20z"
-        stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" aria-hidden="true">
+      <path d="M12 20.8C12 20.8 3 14.5 3 8.8C3 5.6 5.4 3.2 8.4 3.2C10.3 3.2 11.4 4.3 12 5.4C12.6 4.3 13.7 3.2 15.6 3.2C18.6 3.2 21 5.6 21 8.8C21 14.5 12 20.8 12 20.8Z"
+        stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
 function IconBag() {
   return (
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true">
-      <path d="M6 8h12l-1 12H7L6 8z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
-      <path d="M9 8V6a3 3 0 016 0v2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    <svg viewBox="0 0 24 24" width="32" height="32" fill="none" aria-hidden="true">
+      <path d="M3 4h2l2.2 10.6a1.5 1.5 0 001.5 1.2h7.5a1.5 1.5 0 001.45-1.1L21 7.5H6"
+        stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="9.5" cy="19.5" r="1.4" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="17" cy="19.5" r="1.4" stroke="currentColor" strokeWidth="1.5" />
     </svg>
   );
 }
@@ -96,6 +101,9 @@ export default function Header() {
         </Link>
 
         <form className="site-header__search" role="search" onSubmit={handleSearch}>
+          <button type="submit" className="site-header__search-btn" aria-label="Search">
+            <IconSearch />
+          </button>
           <input
             type="search"
             className="site-header__search-input"
@@ -104,9 +112,6 @@ export default function Header() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
           />
-          <button type="submit" className="site-header__search-btn" aria-label="Search">
-            <IconSearch />
-          </button>
         </form>
 
         <nav className="site-header__actions" aria-label="Account and cart">

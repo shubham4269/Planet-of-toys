@@ -1,117 +1,148 @@
+/* Storefront site header — layout modelled on the Archies reference.
+   Accents use the brand secondary colour (blue). */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 50;
-  background: #ffffff;
-  border-bottom: 1px solid #eee;
-  font-family: inherit;
+  background: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-body);
 }
 .site-header__bar {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  max-width: 1280px;
+  gap: var(--space-6);
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 0.75rem 1.25rem;
+  height: 110px;
+  padding: 0 var(--space-6);
 }
 .site-header__menu-toggle {
   display: none;
   background: transparent;
   border: 0;
   cursor: pointer;
-  color: #c8102e;
-  padding: 0.25rem;
+  color: var(--color-secondary);
+  padding: var(--space-1);
+}
+
+.site-header__logo {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 .site-header__logo img {
   display: block;
-  height: 44px;
+  height: 80px;
   width: auto;
 }
+
+/* Search — outlined rounded pill, magnifier on the LEFT (compact width). */
 .site-header__search {
-  flex: 1;
+  flex: 0 1 440px;
   display: flex;
   align-items: center;
-  background: #f3efe9;
+  gap: var(--space-2);
+  background: var(--color-white);
+  border: 1.5px solid var(--color-secondary);
   border-radius: 999px;
-  padding: 0.25rem 0.5rem 0.25rem 1rem;
-  max-width: 640px;
+  padding: 0 var(--space-5) 0 var(--space-3);
+  height: 54px;
+  margin-left: auto;
+  transition: var(--transition-hover);
+}
+.site-header__search:focus-within {
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 0 3px rgba(46, 49, 146, 0.12);
 }
 .site-header__search-input {
   flex: 1;
   border: 0;
   background: transparent;
   font: inherit;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   outline: none;
-  color: #222;
+  color: var(--color-text-primary);
 }
+.site-header__search-input::placeholder { color: var(--color-text-secondary); }
 .site-header__search-btn {
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  color: #555;
+  flex-shrink: 0;
   display: inline-flex;
-  padding: 0.35rem;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  color: var(--color-secondary);
+  cursor: pointer;
 }
+
+/* Account / loyalty / wishlist / cart — brand blue, icon-over-label, on the right. */
 .site-header__actions {
   display: flex;
-  align-items: center;
-  gap: 1.25rem;
+  align-items: flex-start;
+  gap: var(--space-6);
+  flex-shrink: 0;
 }
 .site-header__action {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.15rem;
+  gap: 5px;
   text-decoration: none;
-  color: #c8102e;
-  font-size: 0.72rem;
+  color: var(--color-secondary);
+  font-size: 0.8rem;
   font-weight: 600;
 }
-.site-header__cart-icon {
-  position: relative;
-  display: inline-flex;
-}
+.site-header__cart-icon { position: relative; display: inline-flex; }
 .site-header__badge {
   position: absolute;
-  top: -6px;
-  right: -8px;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 4px;
+  top: -7px;
+  right: -9px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
   border-radius: 999px;
-  background: #c8102e;
-  color: #fff;
-  font-size: 0.65rem;
-  line-height: 16px;
+  background: var(--color-secondary);
+  color: var(--color-white);
+  font-size: 0.66rem;
+  font-weight: 700;
+  line-height: 18px;
   text-align: center;
 }
+
+/* Category nav — plain text links, left-aligned under the logo. */
 .site-header__nav {
   display: flex;
-  justify-content: center;
-  gap: 1.75rem;
-  max-width: 1280px;
+  justify-content: flex-start;
+  gap: var(--space-6);
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 0.6rem 1.25rem;
+  padding: var(--space-2) var(--space-6) var(--space-4);
   flex-wrap: wrap;
 }
 .site-header__nav-link {
   text-decoration: none;
-  color: #222;
+  color: var(--color-text-primary);
+  font-family: var(--font-heading);
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1rem;
 }
-.site-header__nav-link:hover { color: #c8102e; }
+.site-header__nav-link:hover { color: var(--color-secondary); }
 
 @media (max-width: 768px) {
+  .site-header__bar { gap: var(--space-3); padding: var(--space-3) var(--space-4); height: auto; }
   .site-header__menu-toggle { display: inline-flex; }
+  .site-header__logo img { height: 56px; }
   .site-header__action span:last-child { display: none; }
-  .site-header__actions { gap: 0.85rem; }
+  .site-header__actions { gap: var(--space-4); }
   .site-header__nav {
     display: none;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+    align-items: stretch;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4) var(--space-4);
   }
   .site-header__nav--open { display: flex; }
 }
