@@ -42,6 +42,20 @@ describe("content service — promo banner", () => {
     expect(banner.announcements[0].couponCode).toBe("FREE499");
   });
 
+  it("decodes HTML-escaped slashes in links so URLs are not corrupted", async () => {
+    // The global XSS sanitizer escapes "/" -> "&#x2F;" (and double-encodes on
+    // re-save). The service must store the real URL so the link works.
+    const banner = await service.updatePromoBanner({
+      enabled: true,
+      announcements: [
+        { text: "Shop", url: "&#x2F;checkout&#x2F;tent-house" },
+        { text: "Twice", url: "&amp;#x2F;products&amp;#x2F;lego" },
+      ],
+    });
+    expect(banner.announcements[0].url).toBe("/checkout/tent-house");
+    expect(banner.announcements[1].url).toBe("/products/lego");
+  });
+
   it("rejects an announcement with empty text", async () => {
     await expect(
       service.updatePromoBanner({ announcements: [{ text: "  " }] })

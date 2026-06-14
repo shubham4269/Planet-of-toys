@@ -23,6 +23,37 @@ const MIN_INTERVAL_MS = 2000;
 const DEFAULT_INTERVAL_MS = 5000;
 const SINGLETON_QUERY = { singleton: "promoBanner" };
 
+/**
+ * Reverse the global input sanitizer's HTML-entity escaping for the banner's
+ * human-/link-facing fields. The app-wide XSS sanitizer escapes string input
+ * (e.g. `/` -> `&#x2F;`, `&` -> `&amp;`), which corrupts URLs and visible text
+ * — and double-encodes them across save/load cycles. These banner fields are
+ * rendered by React (which escapes on output), so storing the decoded value is
+ * XSS-safe and keeps links working. Decodes repeatedly to undo double-encoding.
+ */
+const HTML_ENTITY = Object.freeze({
+  "&amp;": "&",
+  "&lt;": "<",
+  "&gt;": ">",
+  "&quot;": '"',
+  "&#x27;": "'",
+  "&#x2F;": "/",
+  "&#x60;": "`",
+  "&#x3D;": "=",
+});
+const HTML_ENTITY_RE = /&(?:amp|lt|gt|quot|#x27|#x2F|#x60|#x3D);/g;
+
+function decodeEntities(value) {
+  if (typeof value !== "string") return value;
+  let current = value;
+  for (let i = 0; i < 5; i += 1) {
+    const next = current.replace(HTML_ENTITY_RE, (m) => HTML_ENTITY[m]);
+    if (next === current) break;
+    current = next;
+  }
+  return current;
+}
+
 /** Validate an optional hex color; returns the trimmed value or null. */
 function sanitizeColor(value, label) {
   if (value === null || value === undefined || value === "") return null;
@@ -32,10 +63,10 @@ function sanitizeColor(value, label) {
   return value.trim();
 }
 
-/** Coerce an optional non-empty string; returns trimmed value or null. */
+/** Coerce an optional non-empty string; returns decoded, trimmed value or null. */
 function sanitizeOptionalString(value) {
   if (value === null || value === undefined) return null;
-  const trimmed = String(value).trim();
+  const trimmed = decodeEntities(String(value)).trim();
   return trimmed === "" ? null : trimmed;
 }
 
@@ -60,7 +91,7 @@ function sanitizeAnnouncement(raw, index) {
   if (!raw || typeof raw !== "object") {
     throw new ContentValidationError(`Announcement ${index + 1} is invalid.`);
   }
-  const text = typeof raw.text === "string" ? raw.text.trim() : "";
+  const text = typeof raw.text === "string" ? decodeEntities(raw.text).trim() : "";
   if (text === "") {
     throw new ContentValidationError(`Announcement ${index + 1} requires text.`);
   }
