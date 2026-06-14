@@ -35,7 +35,22 @@ export function createContentController(contentService) {
     }
   }
 
-  return { getPromoBanner, updatePromoBanner, getPublicPromoBanner };
+  /** GET /api/admin/content/footer — full footer for the editor. */
+  async function getFooter(_req, res, next) {
+    try { res.json({ footer: await contentService.getFooter() }); } catch (err) { next(err); }
+  }
+
+  /** PUT /api/admin/content/footer — validate + persist. */
+  async function updateFooter(req, res, next) {
+    try { res.json({ footer: await contentService.updateFooter(req.body ?? {}) }); } catch (err) { next(err); }
+  }
+
+  /** GET /api/content/footer — public footer. */
+  async function getPublicFooter(_req, res, next) {
+    try { res.json({ footer: await contentService.getPublicFooter() }); } catch (err) { next(err); }
+  }
+
+  return { getPromoBanner, updatePromoBanner, getPublicPromoBanner, getFooter, updateFooter, getPublicFooter };
 }
 
 export default createContentController;
