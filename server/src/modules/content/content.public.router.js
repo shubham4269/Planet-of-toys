@@ -18,6 +18,7 @@ export function createContentPublicRouter({
   const controller = createContentController(contentService);
 
   router.get("/promo-banner", controller.getPublicPromoBanner);
+  router.get("/footer", controller.getPublicFooter);
 
   return router;
 }

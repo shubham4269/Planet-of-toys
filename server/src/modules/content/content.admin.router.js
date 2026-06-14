@@ -22,6 +22,8 @@ export function createContentAdminRouter({
   router.use(requireAuth);
   router.get("/promo-banner", controller.getPromoBanner);
   router.put("/promo-banner", controller.updatePromoBanner);
+  router.get("/footer", controller.getFooter);
+  router.put("/footer", controller.updateFooter);
 
   return router;
 }
