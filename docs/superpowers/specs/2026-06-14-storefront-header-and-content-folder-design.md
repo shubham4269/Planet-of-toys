@@ -61,8 +61,10 @@ promotional header:
     - Wishlist → `/wishlist` (heart SVG)
     - Cart → `/cart` (bag SVG) with a small count badge (static `0` placeholder for now,
       rendered as a styled span so wiring a real count later is a one-line change).
-- **Row 2 (category nav):** horizontal links — New Arrivals, Shop by Age, Brands, Sale —
-  each routing to `/products` (placeholders) for now.
+- **Row 2 (category nav):** horizontal links driven by a **config array** (e.g.
+  `const CATEGORIES = [{ label, to }, …]`) defined once in `Header.jsx` and mapped to links —
+  not hardcoded JSX — so categories are edited in one place. Defaults: New Arrivals, Shop by
+  Age, Brands, Sale, each routing to `/products` (placeholders) for now.
 - **Behavior:** header is sticky on scroll. On mobile (≤768px) the category nav collapses
   behind a hamburger toggle (local `useState`); the search box and action labels condense
   (labels hidden, icons remain). No external UI libraries; plain React + CSS.
@@ -120,7 +122,12 @@ container so future sub-sections render through it.
   move-up / move-down (**SVG** chevrons), and remove (**SVG** ✕) — replacing the current
   `↑ ↓ ✕` text glyphs. Fields below in a two-column grid. Drag-and-drop + up/down reorder
   behavior is preserved exactly (and the existing aria-labels remain so tests keep passing).
-- Live preview framed to look like the real storefront bar (centered, constrained width).
+- Live preview framed to look like the real storefront bar (centered, constrained width),
+  with a **Desktop / Mobile preview toggle**: two buttons above the preview switch its frame
+  width (full vs a ~390px phone-width frame) and apply the matching device filter
+  (`showOnDesktop` vs `showOnMobile`) to the previewed announcements, so the admin can see
+  how each viewport renders. Defaults to Desktop. (This filtering is preview-only and layered
+  on top of the existing enabled + schedule-window filter.)
 - Right-text field: update placeholder/help to `Customer Care: 011-41410060` so admins enter
   the full label; the banner renders the text verbatim (no code change to rendering).
 
