@@ -105,16 +105,32 @@ and the same admin Content page.
   additional sections/tabs here.
 - `PromoBannerEditor` controls:
   - Master `enabled` toggle, `rotationIntervalMs` (shown in seconds), default `bgColor`/`textColor`, `rightText`.
-  - Announcements editor: add / remove / reorder (up-down), each row with `text`, `url`,
-    `couponCode`, `bgColor`, `textColor`, `startAt`, `endAt`, `showOnMobile`, `showOnDesktop`,
-    per-slide `enabled`.
+  - Announcements editor: add / remove / **reorder via drag-and-drop**, each row with `text`,
+    `url`, `couponCode`, `bgColor`, `textColor`, `startAt`, `endAt`, `showOnMobile`,
+    `showOnDesktop`, per-slide `enabled`.
   - Save → `PUT /api/admin/content/promo-banner` (reuses the admin API client + auth used by
     existing admin pages).
+- **Ordering:** array order is canonical. The editor reorders the array via drag-and-drop
+  (native HTML5 drag events — no new dependency) with **up/down buttons as an accessible
+  fallback**. No separate `sortOrder` field; persisting the array preserves order.
+- **Live preview panel:** the editor renders a live, non-interactive preview of the banner
+  that updates as fields change, using the shared presentational component (below). It shows
+  the currently-eligible slides so the admin sees exactly what the storefront will render.
+
+## Shared presentational component (`packages/shared-web`)
+
+- New pure, props-driven React component `PromoBannerView` in
+  `packages/shared-web/src/promoBanner/` (no fetching, no app-specific logic), exported via the
+  package. It renders the banner chrome: rotating slides, prev/next SVG arrows, coupon copy
+  chip, per-slide colors, and the `rightText` slot. React added as a peer dependency.
+- Consumed by **both** the storefront wrapper and the admin **live preview**, guaranteeing the
+  preview matches production exactly.
 
 ## Storefront (`apps/client`)
 
 - New `PromoBanner.jsx`, rendered at the **top of `CustomerLayout`** above `<Outlet>` so it
-  appears on every storefront page.
+  appears on every storefront page. It is a thin wrapper that fetches data + filters by viewport,
+  then renders the shared `PromoBannerView`.
 - Fetches `GET /api/content/promo-banner`. Renders nothing when disabled or no eligible slides.
 - Filters slides by **viewport** using `matchMedia` (`showOnMobile`/`showOnDesktop`); date and
   enabled filtering already applied server-side.
@@ -138,7 +154,8 @@ and the same admin Content page.
 - Service: date-window + enabled filtering, singleton create-on-read, validation/clamping.
 - Routers: admin auth guard on `/api/admin/content`, public endpoint shape and filtering, no
   admin-only fields leak from the public endpoint.
-- Admin component: `PromoBannerEditor` add/remove/reorder + save payload.
+- Admin component: `PromoBannerEditor` add/remove/reorder (incl. up/down fallback) + save payload + live preview reflects edits.
+- Shared `PromoBannerView`: rotation, coupon copy, per-slide colors, rightText, empty render.
 - Storefront component: rotation, viewport filtering, coupon copy, disabled/empty renders nothing,
   reduced-motion behavior.
 
