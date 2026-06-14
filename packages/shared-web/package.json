@@ -1,0 +1,24 @@
+{
+  "name": "@planet-of-toys/shared-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Shared frontend utilities (API client, formatting) for the Planet of Toys storefront and admin apps",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./apiClient": "./src/apiClient.js",
+    "./format": "./src/format.js",
+    "./promoBanner": "./src/promoBanner/PromoBannerView.jsx"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.8"
+  }
+}
