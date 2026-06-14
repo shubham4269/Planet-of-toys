@@ -178,9 +178,19 @@ export default function PromoBannerEditor() {
   if (loading) return <p>Loading…</p>;
   if (!form) return <p>{error || "Unavailable."}</p>;
 
-  // Preview uses the same component the storefront renders.
+  // Preview uses the same component the storefront renders, and mirrors the
+  // public endpoint's eligibility filter (enabled + within the schedule window
+  // at "now") so the admin sees exactly what the storefront would currently
+  // show. Device targeting is intentionally not applied — the preview shows all
+  // currently-scheduled slides regardless of the editor's own screen size.
+  const previewNow = Date.now();
+  const withinPreviewWindow = (a) => {
+    if (a.startAt && previewNow < new Date(a.startAt).getTime()) return false;
+    if (a.endAt && previewNow > new Date(a.endAt).getTime()) return false;
+    return true;
+  };
   const previewAnnouncements = form.announcements
-    .filter((a) => a.enabled && a.text.trim())
+    .filter((a) => a.enabled && a.text.trim() && withinPreviewWindow(a))
     .map((a) => ({
       id: a.id,
       text: a.text,
