@@ -64,7 +64,7 @@ export default function FooterEditor() {
   function updLink(ci, li, patch) { const links = form.columns[ci].links.slice(); links[li] = { ...links[li], ...patch }; updColumn(ci, { links }); }
 
   async function save(e) {
-    e.preventDefault(); setSaving(true); setMsg(null); setErr(null);
+    e?.preventDefault?.(); setSaving(true); setMsg(null); setErr(null);
     try { const res = await apiClient.put(API_PATH, toPayload(form), { token: getToken() }); setForm(toForm(res?.footer)); setMsg("Saved."); }
     catch (e2) { if (e2 instanceof ApiError && e2.status === 401) { notifyUnauthorized(); return; } setErr(e2 instanceof ApiError ? e2.message : "Could not save the footer."); }
     finally { setSaving(false); }
@@ -75,11 +75,11 @@ export default function FooterEditor() {
 
   const previewSocial = form.social.filter((s) => s.url.trim());
   return (
-    <form className="footer-editor" onSubmit={save}>
+    <div className="footer-editor">
       <header className="footer-editor__head">
         <h1>Footer Content</h1>
         <div className="footer-editor__actions">
-          <button type="submit" className="footer-editor__save" disabled={saving}>{saving ? "Saving…" : "Save"}</button>
+          <button type="button" className="footer-editor__save" disabled={saving} onClick={save}>{saving ? "Saving…" : "Save"}</button>
           {msg && <span className="footer-editor__ok">{msg}</span>}
           {err && <span className="footer-editor__err">{err}</span>}
         </div>
@@ -198,6 +198,6 @@ export default function FooterEditor() {
         <label className="footer-editor__field"><span>Copyright text</span>
           <input value={form.copyrightText} onChange={(e)=>set({copyrightText:e.target.value})} placeholder="© 2026 Planet of Toys. All rights reserved." /></label>
       </section>
-    </form>
+    </div>
   );
 }
