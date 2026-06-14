@@ -376,6 +376,9 @@
   font: inherit;
   text-align: left;
 }
+/* Parent of the active route: subtle highlight only (not the full active block,
+   so the active child below stands out clearly). */
+.admin-nav__group-toggle--current { font-weight: 700; }
 .admin-nav__chevron-wrap {
   margin-left: auto;
   display: inline-flex;
@@ -385,6 +388,9 @@
 .admin-nav__children {
   display: flex;
   flex-direction: column;
-  margin-left: 2.25rem;
+  gap: 0.15rem;
+  margin: 0.15rem 0 0.25rem 1rem;
+  padding-left: 1rem;
+  border-left: 1px solid var(--admin-elevated, #D9E2F2);
 }
 .admin-nav__sublink { font-size: 0.9rem; }

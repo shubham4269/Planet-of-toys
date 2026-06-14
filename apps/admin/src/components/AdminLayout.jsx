@@ -88,7 +88,10 @@ const NAV_ITEMS = [
     label: "Content",
     Icon: IconContent,
     basePath: "/admin/content",
-    children: [{ to: "/admin/content/promo-banner", label: "Promotional Banner" }],
+    children: [
+      { to: "/admin/content/promo-banner", label: "Promotional Banner" },
+      { to: "/admin/content/hero-banner", label: "Hero Banner" },
+    ],
   },
   { to: "/admin/settings", label: "Settings", Icon: IconSettings },
 ];
@@ -107,7 +110,7 @@ function NavGroup({ item, currentPath }) {
     <div className="admin-nav__group">
       <button
         type="button"
-        className={`admin-nav__link admin-nav__group-toggle${underGroup ? " admin-nav__link--active" : ""}`}
+        className={`admin-nav__link admin-nav__group-toggle${underGroup ? " admin-nav__group-toggle--current" : ""}`}
         aria-expanded={open}
         onClick={() => setOpen((o) => !o)}
       >
