@@ -13,6 +13,9 @@ import { createWebhookRouter } from "./modules/webhooks/webhook.router.js";
 import { createConfigRouter } from "./modules/settings/config.router.js";
 import { createContentAdminRouter } from "./modules/content/content.admin.router.js";
 import { createContentPublicRouter } from "./modules/content/content.public.router.js";
+import { createNewsletterPublicRouter } from "./modules/newsletter/newsletter.public.router.js";
+import { createNewsletterAdminRouter } from "./modules/newsletter/newsletter.admin.router.js";
+import rateLimit from "express-rate-limit";
 import { requireAuth } from "./shared/middleware/requireAuth.js";
 import { createRateLimiters } from "./shared/middleware/rateLimiters.js";
 import { errorHandler, notFoundHandler } from "./shared/middleware/errorHandler.js";
@@ -67,6 +70,9 @@ const { uploadRouter: mediaUploadRouter, serveRouter: mediaServeRouter } =
     requireAuth,
   });
 
+// Tight limiter for the public newsletter subscribe endpoint (abuse protection).
+const newsletterLimiter = rateLimit({ windowMs: 60 * 1000, max: 10, standardHeaders: true, legacyHeaders: false });
+
 const app = createApp({
   allowedOrigins: config.cors.allowedOrigins,
   // Global limiter on every request; tighter limiters per sensitive mount.
@@ -75,6 +81,7 @@ const app = createApp({
     otp: limiters.otpLimiter,
     payment: limiters.paymentLimiter,
     orders: limiters.orderLimiter,
+    newsletter: newsletterLimiter,
   },
   routers: {
     // Auth + admin surface: login, dashboard, orders, products (Req 14–17, 25).
@@ -110,6 +117,9 @@ const app = createApp({
     contentAdmin: createContentAdminRouter({ requireAuth }),
     // Public storefront content: GET /api/content/promo-banner (filtered).
     content: createContentPublicRouter(),
+    // Newsletter: public subscribe + admin subscriber management.
+    newsletter: createNewsletterPublicRouter(),
+    newsletterAdmin: createNewsletterAdminRouter({ requireAuth }),
   },
 });
 

@@ -19,6 +19,8 @@ export const ROUTER_MOUNTS = Object.freeze({
   config: "/api/config",
   contentAdmin: "/api/admin/content",
   content: "/api/content",
+  newsletter: "/api/newsletter",
+  newsletterAdmin: "/api/admin/newsletter",
 });
 
 export default ROUTER_MOUNTS;
