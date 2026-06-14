@@ -63,6 +63,14 @@ function IconContent() {
   );
 }
 
+function IconChevron() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" className="admin-nav__chevron" aria-hidden="true">
+      <path d="M9 6l6 6-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function IconSignOut() {
   return (
     <svg viewBox="0 0 24 24" fill="none" className="admin-nav__icon">
@@ -76,9 +84,57 @@ const NAV_ITEMS = [
   { to: "/admin", label: "Dashboard", Icon: IconDashboard, end: true },
   { to: "/admin/products", label: "Products", Icon: IconProducts },
   { to: "/admin/orders", label: "Orders", Icon: IconOrders },
-  { to: "/admin/content", label: "Content", Icon: IconContent },
+  {
+    label: "Content",
+    Icon: IconContent,
+    basePath: "/admin/content",
+    children: [{ to: "/admin/content/promo-banner", label: "Promotional Banner" }],
+  },
   { to: "/admin/settings", label: "Settings", Icon: IconSettings },
 ];
+
+/** Expandable sidebar group: a parent label that toggles a list of child links. */
+function NavGroup({ item, currentPath }) {
+  const underGroup = currentPath.startsWith(item.basePath);
+  const [open, setOpen] = useState(underGroup);
+
+  // Keep the group open whenever the active route is inside it.
+  useEffect(() => {
+    if (underGroup) setOpen(true);
+  }, [underGroup]);
+
+  return (
+    <div className="admin-nav__group">
+      <button
+        type="button"
+        className={`admin-nav__link admin-nav__group-toggle${underGroup ? " admin-nav__link--active" : ""}`}
+        aria-expanded={open}
+        onClick={() => setOpen((o) => !o)}
+      >
+        <item.Icon />
+        <span>{item.label}</span>
+        <span className={`admin-nav__chevron-wrap${open ? " admin-nav__chevron-wrap--open" : ""}`}>
+          <IconChevron />
+        </span>
+      </button>
+      {open && (
+        <div className="admin-nav__children">
+          {item.children.map((child) => (
+            <NavLink
+              key={child.to}
+              to={child.to}
+              className={({ isActive }) =>
+                `admin-nav__link admin-nav__sublink${isActive ? " admin-nav__link--active" : ""}`
+              }
+            >
+              <span>{child.label}</span>
+            </NavLink>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function AdminLayout() {
   const navigate = useNavigate();
@@ -168,19 +224,23 @@ export default function AdminLayout() {
         </div>
 
         <nav className="admin-sidebar__nav">
-          {NAV_ITEMS.map((item) => (
-            <NavLink
-              key={item.to}
-              to={item.to}
-              end={item.end}
-              className={({ isActive }) =>
-                `admin-nav__link${isActive ? " admin-nav__link--active" : ""}`
-              }
-            >
-              <item.Icon />
-              <span>{item.label}</span>
-            </NavLink>
-          ))}
+          {NAV_ITEMS.map((item) =>
+            item.children ? (
+              <NavGroup key={item.label} item={item} currentPath={location.pathname} />
+            ) : (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                className={({ isActive }) =>
+                  `admin-nav__link${isActive ? " admin-nav__link--active" : ""}`
+                }
+              >
+                <item.Icon />
+                <span>{item.label}</span>
+              </NavLink>
+            )
+          )}
         </nav>
 
         <div className="admin-sidebar__footer">

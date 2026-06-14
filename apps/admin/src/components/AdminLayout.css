@@ -365,3 +365,26 @@
     padding: var(--space-7) var(--space-7);
   }
 }
+
+/* Expandable nav group (Content folder). */
+.admin-nav__group { display: flex; flex-direction: column; }
+.admin-nav__group-toggle {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+.admin-nav__chevron-wrap {
+  margin-left: auto;
+  display: inline-flex;
+  transition: transform 0.15s ease;
+}
+.admin-nav__chevron-wrap--open { transform: rotate(90deg); }
+.admin-nav__children {
+  display: flex;
+  flex-direction: column;
+  margin-left: 2.25rem;
+}
+.admin-nav__sublink { font-size: 0.9rem; }

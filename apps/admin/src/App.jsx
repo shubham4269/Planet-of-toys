@@ -7,6 +7,7 @@ import ProductsPage from "./pages/admin/ProductsPage.jsx";
 import OrdersPage from "./pages/admin/OrdersPage.jsx";
 import SettingsPage from "./pages/admin/SettingsPage.jsx";
 import ContentPage from "./pages/admin/ContentPage.jsx";
+import PromoBannerPage from "./pages/admin/content/PromoBannerPage.jsx";
 import "./styles/tokens.css";
 
 /**
@@ -44,8 +45,11 @@ export function AppRoutes() {
           <Route path="products" element={<ProductsPage />} />
           {/* Order management — list/detail, cancel, manual courier/AWB (Req 17). */}
           <Route path="orders" element={<OrdersPage />} />
-          {/* Content management — promotional header (Content section). */}
-          <Route path="content" element={<ContentPage />} />
+          {/* Content management — folder hosting storefront content sub-pages. */}
+          <Route path="content" element={<ContentPage />}>
+            <Route index element={<Navigate to="promo-banner" replace />} />
+            <Route path="promo-banner" element={<PromoBannerPage />} />
+          </Route>
           {/* System settings — integration credential management (Req 30). */}
           <Route path="settings" element={<SettingsPage />} />
           <Route path="*" element={<NotFound />} />

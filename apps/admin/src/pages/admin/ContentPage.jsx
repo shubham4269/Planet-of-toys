@@ -1,17 +1,14 @@
-// apps/admin/src/pages/admin/ContentPage.jsx
-import PromoBannerEditor from "./PromoBannerEditor.jsx";
+import { Outlet } from "react-router-dom";
 import "./ContentPage.css";
 
 /**
- * Admin Content section. Container for storefront content management. For now it
- * hosts the Promotional Header editor; future content types (Hero Sliders,
- * Homepage Sections, Membership Promotions, Footer Content) become additional
- * sections/tabs here.
+ * Admin Content section layout. Hosts the active content sub-page via <Outlet>
+ * (Promotional Banner now; Hero Slider, etc. later).
  */
 export default function ContentPage() {
   return (
     <section className="content-page">
-      <PromoBannerEditor />
+      <Outlet />
     </section>
   );
 }
