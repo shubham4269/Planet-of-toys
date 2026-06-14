@@ -94,6 +94,12 @@ const NAV_ITEMS = [
       { to: "/admin/content/footer", label: "Footer Content" },
     ],
   },
+  {
+    label: "Marketing",
+    Icon: IconContent,
+    basePath: "/admin/marketing",
+    children: [{ to: "/admin/marketing/subscribers", label: "Newsletter Subscribers" }],
+  },
   { to: "/admin/settings", label: "Settings", Icon: IconSettings },
 ];
 
