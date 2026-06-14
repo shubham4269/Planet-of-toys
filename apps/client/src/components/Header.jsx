@@ -110,19 +110,19 @@ export default function Header() {
         </form>
 
         <nav className="site-header__actions" aria-label="Account and cart">
-          <Link to="/account" className="site-header__action">
+          <Link to="/account" className="site-header__action" aria-label="Sign in">
             <IconUser />
             <span>Sign in</span>
           </Link>
-          <Link to="/loyalty" className="site-header__action">
+          <Link to="/loyalty" className="site-header__action" aria-label="Loyalty">
             <IconLoyalty />
             <span>Loyalty</span>
           </Link>
-          <Link to="/wishlist" className="site-header__action">
+          <Link to="/wishlist" className="site-header__action" aria-label="Wishlist">
             <IconHeart />
             <span>Wishlist</span>
           </Link>
-          <Link to="/cart" className="site-header__action site-header__action--cart">
+          <Link to="/cart" className="site-header__action site-header__action--cart" aria-label="Cart">
             <span className="site-header__cart-icon">
               <IconBag />
               <span className="site-header__badge" aria-hidden="true">0</span>
