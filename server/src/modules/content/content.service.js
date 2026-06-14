@@ -1,4 +1,5 @@
 import PromoBanner from "./promoBanner.model.js";
+import FooterContent from "./footerContent.model.js";
 
 /**
  * Content module service — promotional header (and, in future, other content
@@ -84,6 +85,69 @@ function sanitizeDate(value, label) {
 function sanitizeBool(value, fallback) {
   if (value === undefined || value === null) return fallback;
   return Boolean(value);
+}
+
+const FOOTER_SINGLETON = { singleton: "footer" };
+const SOCIAL_PLATFORMS = ["facebook", "instagram", "youtube", "whatsapp", "twitter"];
+const TRUST_ICON_KEYS = ["shield", "truck", "lock", "gift", "star", "heart"];
+
+/** Decode + trim a string field (always returns a string, possibly empty). */
+function sanitizeText(value) {
+  if (value === null || value === undefined) return "";
+  return decodeEntities(String(value)).trim();
+}
+function sanitizeFooterLink(raw) {
+  return { label: sanitizeText(raw?.label), url: sanitizeText(raw?.url), enabled: sanitizeBool(raw?.enabled, true) };
+}
+function sanitizeFooter(payload) {
+  if (!payload || typeof payload !== "object") {
+    throw new ContentValidationError("A footer payload is required.");
+  }
+  const columns = Array.isArray(payload.columns) ? payload.columns : [];
+  const social = Array.isArray(payload.social) ? payload.social : [];
+  const trust = Array.isArray(payload.trustHighlights) ? payload.trustHighlights : [];
+  const bottom = Array.isArray(payload.bottomLinks) ? payload.bottomLinks : [];
+  const nl = payload.newsletter ?? {};
+  const mp = payload.membershipPromo ?? {};
+  const ct = payload.contact ?? {};
+  return {
+    enabled: sanitizeBool(payload.enabled, true),
+    columns: columns.map((c) => ({
+      title: sanitizeText(c?.title),
+      enabled: sanitizeBool(c?.enabled, true),
+      links: (Array.isArray(c?.links) ? c.links : []).map(sanitizeFooterLink),
+    })),
+    newsletter: {
+      enabled: sanitizeBool(nl.enabled, true),
+      title: sanitizeText(nl.title),
+      subtitle: sanitizeText(nl.subtitle),
+      placeholder: sanitizeText(nl.placeholder) || "Enter your email",
+      buttonLabel: sanitizeText(nl.buttonLabel) || "Subscribe",
+    },
+    membershipPromo: {
+      enabled: sanitizeBool(mp.enabled, true),
+      title: sanitizeText(mp.title),
+      description: sanitizeText(mp.description),
+      buttonLabel: sanitizeText(mp.buttonLabel),
+      buttonUrl: sanitizeText(mp.buttonUrl),
+    },
+    social: social.filter((s) => SOCIAL_PLATFORMS.includes(s?.platform)).map((s) => ({ platform: s.platform, url: sanitizeText(s?.url) })),
+    contact: {
+      companyName: sanitizeText(ct.companyName),
+      address: sanitizeText(ct.address),
+      phone: sanitizeText(ct.phone),
+      email: sanitizeText(ct.email),
+      whatsapp: sanitizeText(ct.whatsapp),
+      supportHours: sanitizeText(ct.supportHours),
+    },
+    trustHighlights: trust.map((t) => ({
+      iconKey: TRUST_ICON_KEYS.includes(t?.iconKey) ? t.iconKey : "shield",
+      title: sanitizeText(t?.title),
+      subtitle: sanitizeText(t?.subtitle),
+    })),
+    bottomLinks: bottom.map(sanitizeFooterLink),
+    copyrightText: sanitizeText(payload.copyrightText),
+  };
 }
 
 /** Validate + normalize one announcement from arbitrary input. */
@@ -210,7 +274,47 @@ export function createContentService() {
     };
   }
 
-  return { getPromoBanner, updatePromoBanner, getPublicPromoBanner };
+  async function loadFooter() {
+    return FooterContent.findOneAndUpdate(
+      FOOTER_SINGLETON,
+      { $setOnInsert: FOOTER_SINGLETON },
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+  }
+  async function getFooter() {
+    return (await loadFooter()).toJSON();
+  }
+  async function updateFooter(payload) {
+    const sanitized = sanitizeFooter(payload);
+    const doc = await FooterContent.findOneAndUpdate(
+      FOOTER_SINGLETON,
+      { $set: sanitized, $setOnInsert: FOOTER_SINGLETON },
+      { upsert: true, new: true, setDefaultsOnInsert: true, runValidators: true }
+    );
+    return doc.toJSON();
+  }
+  async function getPublicFooter() {
+    const f = (await loadFooter()).toJSON();
+    if (!f.enabled) return { enabled: false };
+    const columns = f.columns
+      .filter((c) => c.enabled)
+      .map((c) => ({ id: c.id, title: c.title, links: c.links.filter((l) => l.enabled).map((l) => ({ id: l.id, label: l.label, url: l.url })) }))
+      .filter((c) => c.links.length > 0);
+    const out = {
+      enabled: true,
+      columns,
+      social: f.social.filter((s) => s.url).map((s) => ({ id: s.id, platform: s.platform, url: s.url })),
+      contact: f.contact,
+      trustHighlights: f.trustHighlights.map((t) => ({ id: t.id, iconKey: t.iconKey, title: t.title, subtitle: t.subtitle })),
+      bottomLinks: f.bottomLinks.filter((l) => l.enabled).map((l) => ({ id: l.id, label: l.label, url: l.url })),
+      copyrightText: f.copyrightText,
+    };
+    if (f.newsletter.enabled) out.newsletter = f.newsletter;
+    if (f.membershipPromo.enabled) out.membershipPromo = f.membershipPromo;
+    return out;
+  }
+
+  return { getPromoBanner, updatePromoBanner, getPublicPromoBanner, getFooter, updateFooter, getPublicFooter };
 }
 
 export default createContentService;
