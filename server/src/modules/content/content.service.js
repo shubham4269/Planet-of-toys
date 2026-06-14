@@ -309,8 +309,14 @@ export function createContentService() {
       bottomLinks: f.bottomLinks.filter((l) => l.enabled).map((l) => ({ id: l.id, label: l.label, url: l.url })),
       copyrightText: f.copyrightText,
     };
-    if (f.newsletter.enabled) out.newsletter = f.newsletter;
-    if (f.membershipPromo.enabled) out.membershipPromo = f.membershipPromo;
+    if (f.newsletter.enabled) {
+      const { title, subtitle, placeholder, buttonLabel } = f.newsletter;
+      out.newsletter = { title, subtitle, placeholder, buttonLabel };
+    }
+    if (f.membershipPromo.enabled) {
+      const { title, description, buttonLabel, buttonUrl } = f.membershipPromo;
+      out.membershipPromo = { title, description, buttonLabel, buttonUrl };
+    }
     return out;
   }
 

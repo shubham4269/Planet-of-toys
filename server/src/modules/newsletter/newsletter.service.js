@@ -14,6 +14,17 @@ export class NewsletterValidationError extends Error {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const normalizeEmail = (v) => String(v ?? "").trim().toLowerCase();
 
+/** Escape regex metacharacters so admin search input is treated literally. */
+const escapeRegex = (v) => String(v).trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/** Build the Mongo query for list/export from search + status filters. */
+function buildSubscriberQuery({ search = "", status = "" } = {}) {
+  const query = {};
+  if (search) query.email = { $regex: escapeRegex(search), $options: "i" };
+  if (status === "subscribed" || status === "unsubscribed") query.status = status;
+  return query;
+}
+
 /** Escape a CSV cell (wrap in quotes, double internal quotes). */
 function csvCell(value) {
   const s = value == null ? "" : String(value);
@@ -48,9 +59,7 @@ export function createNewsletterService() {
 
   /** Paginated subscriber list with optional email search + status filter. */
   async function listSubscribers({ search = "", status = "", page = 1, limit = 20 } = {}) {
-    const query = {};
-    if (search) query.email = { $regex: String(search).trim(), $options: "i" };
-    if (status === "subscribed" || status === "unsubscribed") query.status = status;
+    const query = buildSubscriberQuery({ search, status });
     const pageNum = Math.max(1, Number(page) || 1);
     const perPage = Math.min(100, Math.max(1, Number(limit) || 20));
     const [docs, total] = await Promise.all([
@@ -71,9 +80,7 @@ export function createNewsletterService() {
 
   /** Build a CSV of all matching subscribers (header + rows). */
   async function exportCsv({ search = "", status = "" } = {}) {
-    const query = {};
-    if (search) query.email = { $regex: String(search).trim(), $options: "i" };
-    if (status === "subscribed" || status === "unsubscribed") query.status = status;
+    const query = buildSubscriberQuery({ search, status });
     const docs = await NewsletterSubscriber.find(query).sort({ createdAt: -1 });
     const header = "email,status,source,subscribedAt";
     const rows = docs.map((d) =>
