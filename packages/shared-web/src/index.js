@@ -16,3 +16,6 @@ export * from "./format.js";
 
 // Promotional header presentational component (consumed by storefront + admin).
 export { default as PromoBannerView } from "./promoBanner/PromoBannerView.jsx";
+
+// Storefront footer presentational component (consumed by storefront + admin preview).
+export { default as FooterView } from "./footer/FooterView.jsx";
