@@ -21,7 +21,7 @@
 .pot-footer__link:hover { color: var(--color-primary); }
 
 /* ---- Right: community panel (newsletter + social) ---- */
-.pot-footer__community { background: var(--color-secondary); color: #fff; padding: var(--space-8) var(--space-7); display: grid; gap: var(--space-5); align-content: center; max-width: 34rem; }
+.pot-footer__community { background: var(--color-secondary); color: #fff; padding: var(--space-8); display: grid; gap: var(--space-5); align-content: center; }
 .pot-footer__newsletter { display: grid; gap: var(--space-3); }
 .pot-footer__newsletter-mark {
   display: inline-flex; align-items: center; justify-content: center;
@@ -32,15 +32,16 @@
 .pot-footer__newsletter-note { margin: var(--space-1) 0 0; font-size: 0.82rem; color: rgba(255, 255, 255, 0.7); }
 .pot-footer__community-title {
   font-family: var(--font-heading);
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   line-height: 1.15;
   font-weight: 800;
   margin: 0;
+  color: var(--color-accent);
 }
-.pot-footer__community-sub { margin: -0.25rem 0 var(--space-2); opacity: 0.92; font-size: 0.95rem; line-height: 1.5; max-width: 30rem; }
+.pot-footer__community-sub { margin: -0.25rem 0 var(--space-2); opacity: 0.92; font-size: 0.95rem; line-height: 1.5; }
 
 /* Newsletter: pill input with a circular red arrow submit inside it. */
-.pot-footer__form { position: relative; max-width: 30rem; }
+.pot-footer__form { position: relative; width: 100%; }
 .pot-footer__input {
   width: 100%;
   border: 0;
