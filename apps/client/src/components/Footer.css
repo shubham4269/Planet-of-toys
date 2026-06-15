@@ -5,7 +5,7 @@
 .pot-footer__main { display: grid; grid-template-columns: 1.55fr 1fr; gap: 0; }
 
 /* ---- Left: navigation + trust + contact ---- */
-.pot-footer__left { background: #eef3fb; padding: var(--space-8) var(--space-7); display: flex; flex-direction: column; }
+.pot-footer__left { background: #eef3fb; padding: var(--space-8) var(--space-7); display: flex; flex-direction: column; justify-content: center; }
 .pot-footer__columns { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); }
 .pot-footer__col-title {
   font-family: var(--font-heading);
@@ -20,24 +20,16 @@
 .pot-footer__link { text-decoration: none; color: #475569; font-size: 1.02rem; font-weight: 500; transition: color 120ms ease; }
 .pot-footer__link:hover { color: var(--color-primary); }
 
-.pot-footer__trust { list-style: none; margin: var(--space-7) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-6); }
-.pot-footer__trust-item { display: flex; align-items: center; gap: var(--space-3); font-size: 0.9rem; color: #334155; }
-.pot-footer__trust-icon {
+/* ---- Right: community panel (newsletter + social) ---- */
+.pot-footer__community { background: var(--color-secondary); color: #fff; padding: var(--space-8) var(--space-7); display: grid; gap: var(--space-5); align-content: center; max-width: 34rem; }
+.pot-footer__newsletter { display: grid; gap: var(--space-3); }
+.pot-footer__newsletter-mark {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 40px; height: 40px; border-radius: 999px;
-  background: #fff; color: var(--color-secondary);
-  box-shadow: var(--shadow-card);
+  width: 60px; height: 60px; border-radius: 999px;
+  border: 1.5px solid rgba(255, 255, 255, 0.4); color: #fff;
+  margin-bottom: var(--space-2);
 }
-.pot-footer__trust-text { display: grid; }
-.pot-footer__trust-text strong { font-weight: 700; color: #1f2937; }
-.pot-footer__trust-sub { color: #64748b; font-size: 0.8rem; }
-
-.pot-footer__contact { font-style: normal; margin-top: auto; padding-top: var(--space-7); font-size: 0.95rem; color: #475569; display: grid; gap: 4px; max-width: 22rem; }
-.pot-footer__contact-name { font-weight: 800; font-family: var(--font-heading); color: var(--color-secondary); font-size: 1.05rem; margin-bottom: 2px; }
-
-/* ---- Right: community panel (newsletter + membership + social) ---- */
-.pot-footer__community { background: var(--color-secondary); color: #fff; padding: var(--space-8) var(--space-7); display: grid; gap: var(--space-5); align-content: start; }
-.pot-footer__newsletter-mark { display: inline-flex; color: #fff; opacity: 0.95; margin-bottom: -0.25rem; }
+.pot-footer__newsletter-note { margin: var(--space-1) 0 0; font-size: 0.82rem; color: rgba(255, 255, 255, 0.7); }
 .pot-footer__community-title {
   font-family: var(--font-heading);
   font-size: 1.6rem;

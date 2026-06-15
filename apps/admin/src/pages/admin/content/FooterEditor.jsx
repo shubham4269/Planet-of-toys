@@ -7,7 +7,6 @@ import "./FooterEditor.css";
 
 const API_PATH = "/api/admin/content/footer";
 const PLATFORMS = ["facebook", "instagram", "youtube", "whatsapp", "twitter"];
-const ICON_KEYS = ["shield", "truck", "lock", "gift", "star", "heart"];
 const rid = () => `n-${Math.random().toString(36).slice(2)}`;
 
 function toForm(f) {
@@ -90,7 +89,7 @@ export default function FooterEditor() {
           <FooterView columns={form.columns.filter((c)=>c.enabled).map((c)=>({ id:c.id, title:c.title, links:c.links.filter((l)=>l.enabled).map((l)=>({id:l.id,label:l.label,url:l.url})) }))}
             newsletter={form.newsletter.enabled ? form.newsletter : undefined}
             membershipPromo={form.membershipPromo.enabled ? form.membershipPromo : undefined}
-            social={previewSocial} contact={form.contact} trustHighlights={form.trustHighlights}
+            social={previewSocial}
             bottomLinks={form.bottomLinks.filter((l)=>l.enabled)} copyrightText={form.copyrightText} />
         </div>
       </section>
@@ -155,32 +154,6 @@ export default function FooterEditor() {
               <input value={s.url} placeholder="https://…" onChange={(e)=>{ const social=form.social.slice(); social[i]={...s,url:e.target.value}; set({social}); }} /></label>
           ))}
         </div>
-      </section>
-
-      <section className="footer-card"><div className="footer-card__head"><h2>Contact</h2></div>
-        <div className="footer-editor__grid">
-          {["companyName","address","phone","email","whatsapp","supportHours"].map((k) => (
-            <label key={k} className="footer-editor__field"><span>{k}</span>
-              <input value={form.contact[k]} onChange={(e)=>set({contact:{...form.contact,[k]:e.target.value}})} /></label>
-          ))}
-        </div>
-      </section>
-
-      <section className="footer-card">
-        <div className="footer-card__head"><h2>Trust highlights</h2>
-          <button type="button" className="footer-editor__add" onClick={()=>set({trustHighlights:[...form.trustHighlights,{id:rid(),iconKey:"shield",title:"",subtitle:""}]})}>Add highlight</button></div>
-        <ul className="footer-editor__list">
-          {form.trustHighlights.map((t, i) => (
-            <li key={t.id} className="footer-editor__grid footer-editor__item">
-              <label className="footer-editor__field"><span>Icon</span>
-                <select value={t.iconKey} onChange={(e)=>{ const ts=form.trustHighlights.slice(); ts[i]={...t,iconKey:e.target.value}; set({trustHighlights:ts}); }}>
-                  {ICON_KEYS.map((k)=>(<option key={k} value={k}>{k}</option>))}</select></label>
-              <label className="footer-editor__field"><span>Title</span><input value={t.title} onChange={(e)=>{ const ts=form.trustHighlights.slice(); ts[i]={...t,title:e.target.value}; set({trustHighlights:ts}); }} /></label>
-              <label className="footer-editor__field"><span>Subtitle</span><input value={t.subtitle} onChange={(e)=>{ const ts=form.trustHighlights.slice(); ts[i]={...t,subtitle:e.target.value}; set({trustHighlights:ts}); }} /></label>
-              <button type="button" aria-label={`Remove highlight ${i+1}`} onClick={()=>set({trustHighlights:form.trustHighlights.filter((_,x)=>x!==i)})}>✕</button>
-            </li>
-          ))}
-        </ul>
       </section>
 
       <section className="footer-card">

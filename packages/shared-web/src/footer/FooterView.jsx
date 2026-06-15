@@ -35,30 +35,6 @@ const SOCIAL_ICON = {
   ),
   twitter: <path d="M6 6l12 12M18 6L6 18" />,
 };
-const TRUST_ICON = {
-  shield: <path d="M12 3l7 3v5c0 4-3 6.5-7 8-4-1.5-7-4-7-8V6z" />,
-  truck: (
-    <>
-      <path d="M3 7h10v8H3zM13 10h4l3 3v2h-7z" />
-      <circle cx="7" cy="17" r="1.6" />
-      <circle cx="17" cy="17" r="1.6" />
-    </>
-  ),
-  lock: (
-    <>
-      <rect x="5" y="10" width="14" height="10" rx="2" />
-      <path d="M8 10V7a4 4 0 018 0v3" />
-    </>
-  ),
-  gift: (
-    <>
-      <rect x="4" y="9" width="16" height="11" rx="1.5" />
-      <path d="M4 13h16M12 9v11M9 9a2 2 0 110-4c2 0 3 4 3 4M15 9a2 2 0 100-4c-2 0-3 4-3 4" />
-    </>
-  ),
-  star: <path d="M12 4l2.3 4.7 5.2.8-3.7 3.6.9 5.1L12 15.8 7.3 18.2l.9-5.1L4.5 9.5l5.2-.8z" />,
-  heart: <path d="M12 20s-7-4.3-9-8c-1.5-3 .5-6 3.5-6 2 0 3.5 1.3 5.5 3.5C16 4.3 17.5 3 19.5 3c3 0 5 3 3.5 6-2 3.7-9 8-9 8z" />,
-};
 const ENVELOPE = (
   <>
     <rect x="3" y="5.5" width="18" height="13" rx="2.5" />
@@ -85,15 +61,14 @@ const icon = (child, size = 20) => (
 );
 
 export default function FooterView({
-  columns = [], newsletter, membershipPromo, social = [], contact = {},
-  trustHighlights = [], bottomLinks = [], copyrightText = "",
+  columns = [], newsletter, membershipPromo, social = [],
+  bottomLinks = [], copyrightText = "",
   onSubscribe, status = "idle", message = "",
 }) {
   const [email, setEmail] = useState("");
-  const hasContact = contact && Object.values(contact).some(Boolean);
   const nothing =
     columns.length === 0 && !newsletter && !membershipPromo && social.length === 0 &&
-    !hasContact && trustHighlights.length === 0 && bottomLinks.length === 0 && !copyrightText;
+    bottomLinks.length === 0 && !copyrightText;
   if (nothing) return null;
 
   function handleSubmit(e) {
@@ -118,29 +93,6 @@ export default function FooterView({
                 </nav>
               ))}
             </div>
-          )}
-          {trustHighlights.length > 0 && (
-            <ul className="pot-footer__trust">
-              {trustHighlights.map((t) => (
-                <li key={t.id} className="pot-footer__trust-item">
-                  <span className="pot-footer__trust-icon">{icon(TRUST_ICON[t.iconKey] || TRUST_ICON.shield, 24)}</span>
-                  <span className="pot-footer__trust-text">
-                    <strong>{t.title}</strong>
-                    {t.subtitle && <span className="pot-footer__trust-sub">{t.subtitle}</span>}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-          {hasContact && (
-            <address className="pot-footer__contact">
-              {contact.companyName && <div className="pot-footer__contact-name">{contact.companyName}</div>}
-              {contact.address && <div>{contact.address}</div>}
-              {contact.phone && <div>Phone: {contact.phone}</div>}
-              {contact.whatsapp && <div>WhatsApp: {contact.whatsapp}</div>}
-              {contact.email && <div>Email: {contact.email}</div>}
-              {contact.supportHours && <div>{contact.supportHours}</div>}
-            </address>
           )}
         </div>
 
@@ -168,6 +120,7 @@ export default function FooterView({
               {message && (
                 <p className={`pot-footer__msg pot-footer__msg--${status}`} role="status">{message}</p>
               )}
+              <p className="pot-footer__newsletter-note">No spam — just good things. Unsubscribe anytime.</p>
             </div>
           )}
           {membershipPromo && (membershipPromo.title || membershipPromo.description) && (
