@@ -72,7 +72,7 @@ const footer = {
   },
 
   membershipPromo: {
-    enabled: true,
+    enabled: false,
     title: "Planet Families",
     description:
       "Unlock exclusive rewards, birthday benefits, and member-only offers.",
