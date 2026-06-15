@@ -66,6 +66,8 @@ export default function FooterView({
   onSubscribe, status = "idle", message = "",
 }) {
   const [email, setEmail] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [consentError, setConsentError] = useState(false);
   const nothing =
     columns.length === 0 && !newsletter && !membershipPromo && social.length === 0 &&
     bottomLinks.length === 0 && !copyrightText;
@@ -73,6 +75,11 @@ export default function FooterView({
 
   function handleSubmit(e) {
     e.preventDefault();
+    if (!consent) {
+      setConsentError(true);
+      return;
+    }
+    setConsentError(false);
     if (onSubscribe) onSubscribe(email);
   }
 
@@ -117,10 +124,27 @@ export default function FooterView({
                   {icon(ARROW, 22)}
                 </button>
               </form>
+              <label className="pot-footer__consent">
+                <input
+                  type="checkbox"
+                  className="pot-footer__consent-box"
+                  checked={consent}
+                  onChange={(e) => { setConsent(e.target.checked); if (e.target.checked) setConsentError(false); }}
+                  aria-label="Consent to receive emails"
+                />
+                <span className="pot-footer__consent-text">
+                  By subscribing, you agree to our{" "}
+                  <a href="/terms-of-service">Terms of Service</a> and{" "}
+                  <a href="/privacy-policy">Privacy Policy</a>, and consent to receive promotional
+                  emails from Planet of Toys. Unsubscribe anytime — consent is not a condition of any purchase.
+                </span>
+              </label>
+              {consentError && (
+                <p className="pot-footer__msg pot-footer__msg--error" role="alert">Please accept to continue.</p>
+              )}
               {message && (
                 <p className={`pot-footer__msg pot-footer__msg--${status}`} role="status">{message}</p>
               )}
-              <p className="pot-footer__newsletter-note">No spam — just good things. Unsubscribe anytime.</p>
             </div>
           )}
           {membershipPromo && (membershipPromo.title || membershipPromo.description) && (

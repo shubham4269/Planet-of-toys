@@ -27,8 +27,22 @@ describe("Footer", () => {
     render(<Footer />);
     expect(await screen.findByText("Shop")).toBeInTheDocument();
     fireEvent.change(screen.getByLabelText(/email address/i), { target: { value: "me@x.com" } });
+    fireEvent.click(screen.getByRole("checkbox", { name: /consent/i }));
     fireEvent.click(screen.getByRole("button", { name: /subscribe/i }));
     await waitFor(() => expect(apiMock.post).toHaveBeenCalledWith("/api/newsletter/subscribe", { email: "me@x.com" }));
     expect(await screen.findByText(/thanks/i)).toBeInTheDocument();
+  });
+  it("requires consent before subscribing", async () => {
+    apiMock.get.mockResolvedValue({ footer: {
+      enabled: true,
+      columns: [{ id: "c", title: "Shop", links: [] }],
+      newsletter: { enabled: true, title: "Join", placeholder: "Enter your email", buttonLabel: "Subscribe" },
+      social: [], bottomLinks: [], copyrightText: "© 2026",
+    }});
+    render(<Footer />);
+    fireEvent.change(await screen.findByLabelText(/email address/i), { target: { value: "me@x.com" } });
+    fireEvent.click(screen.getByRole("button", { name: /subscribe/i }));
+    expect(apiMock.post).not.toHaveBeenCalled();
+    expect(screen.getByText(/please accept to continue/i)).toBeInTheDocument();
   });
 });

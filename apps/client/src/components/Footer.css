@@ -29,7 +29,10 @@
   border: 1.5px solid rgba(255, 255, 255, 0.4); color: #fff;
   margin-bottom: var(--space-2);
 }
-.pot-footer__newsletter-note { margin: var(--space-1) 0 0; font-size: 0.82rem; color: rgba(255, 255, 255, 0.7); }
+.pot-footer__consent { display: flex; align-items: flex-start; gap: 0.6rem; margin-top: var(--space-1); cursor: pointer; }
+.pot-footer__consent-box { margin-top: 2px; width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--color-primary); cursor: pointer; }
+.pot-footer__consent-text { font-size: 0.78rem; line-height: 1.5; color: rgba(255, 255, 255, 0.75); }
+.pot-footer__consent-text a { color: #fff; text-decoration: underline; }
 .pot-footer__community-title {
   font-family: var(--font-heading);
   font-size: 1.7rem;
