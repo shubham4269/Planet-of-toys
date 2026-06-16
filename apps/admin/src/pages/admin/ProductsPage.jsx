@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import apiClient, { API_BASE_URL, ApiError } from "../../lib/apiClient.js";
+import apiClient, { API_BASE_URL, ApiError } from "@planet-of-toys/shared-web/apiClient";
 import { getToken, notifyUnauthorized } from "../../lib/adminAuth.js";
-import { formatINR, mediaUrl } from "../../lib/format.js";
+import { formatINR, mediaUrl } from "@planet-of-toys/shared-web/format";
+import TaxonomyAssignment from "./catalog/TaxonomyAssignment.jsx";
 import "./ProductsPage.css";
 
 /**
@@ -43,6 +44,9 @@ function emptyForm() {
     specifications: [],
     faqs: [],
     variants: [],
+    categoryIds: [],
+    collectionIds: [],
+    attributeValueIds: [],
   };
 }
 
@@ -74,6 +78,9 @@ function formFromProduct(product) {
           images: Array.isArray(v.images) ? [...v.images] : [],
         }))
       : [],
+    categoryIds: Array.isArray(product.categoryIds) ? product.categoryIds.map(String) : [],
+    collectionIds: Array.isArray(product.collectionIds) ? product.collectionIds.map(String) : [],
+    attributeValueIds: Array.isArray(product.attributeValueIds) ? product.attributeValueIds.map(String) : [],
   };
 }
 
@@ -105,6 +112,9 @@ function payloadFromForm(form) {
         images: v.images,
       }))
       .filter((v) => v.color),
+    categoryIds: form.categoryIds ?? [],
+    collectionIds: form.collectionIds ?? [],
+    attributeValueIds: form.attributeValueIds ?? [],
   };
 }
 
@@ -899,6 +909,19 @@ export default function ProductsPage() {
               {uploading ? (
                 <p className="admin-products__muted">Uploading…</p>
               ) : null}
+            </fieldset>
+
+            {/* ---- Catalog taxonomy: categories, collections, attribute values ---- */}
+            <fieldset className="admin-products__fieldset">
+              <legend className="admin-products__legend">Catalog</legend>
+              <TaxonomyAssignment
+                value={{
+                  categoryIds: form.categoryIds,
+                  collectionIds: form.collectionIds,
+                  attributeValueIds: form.attributeValueIds,
+                }}
+                onChange={(next) => setForm((prev) => ({ ...prev, ...next }))}
+              />
             </fieldset>
 
             <div className="admin-products__card-foot">
