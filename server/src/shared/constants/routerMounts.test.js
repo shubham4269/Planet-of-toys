@@ -24,3 +24,12 @@ describeCat("ROUTER_MOUNTS — catalog", () => {
     expectCat(MOUNTS_CAT.catalog).toBe("/api/catalog");
   });
 });
+
+import { describe as describeHero, it as itHero, expect as expectHero } from "vitest";
+import { ROUTER_MOUNTS as MOUNTS_HERO } from "./routerMounts.js";
+describeHero("ROUTER_MOUNTS — hero", () => {
+  itHero("declares hero admin + public mount paths", () => {
+    expectHero(MOUNTS_HERO.heroAdmin).toBe("/api/admin/hero");
+    expectHero(MOUNTS_HERO.hero).toBe("/api/hero");
+  });
+});

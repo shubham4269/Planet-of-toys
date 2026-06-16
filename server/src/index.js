@@ -17,6 +17,8 @@ import { createNewsletterPublicRouter } from "./modules/newsletter/newsletter.pu
 import { createNewsletterAdminRouter } from "./modules/newsletter/newsletter.admin.router.js";
 import { createCatalogAdminRouter } from "./modules/catalog/catalog.admin.router.js";
 import { createCatalogPublicRouter } from "./modules/catalog/catalog.public.router.js";
+import { createHeroPublicRouter } from "./modules/hero/hero.public.router.js";
+import { createHeroAdminRouter } from "./modules/hero/hero.admin.router.js";
 import rateLimit from "express-rate-limit";
 import { requireAuth } from "./shared/middleware/requireAuth.js";
 import { createRateLimiters } from "./shared/middleware/rateLimiters.js";
@@ -126,6 +128,10 @@ const app = createApp({
     catalogAdmin: createCatalogAdminRouter({ requireAuth }),
     // Public storefront catalog reads: /api/catalog.
     catalog: createCatalogPublicRouter(),
+    // Public storefront hero slides: /api/hero.
+    hero: createHeroPublicRouter(),
+    // Admin hero management: /api/admin/hero, guarded.
+    heroAdmin: createHeroAdminRouter({ requireAuth }),
   },
 });
 
