@@ -1,0 +1,11 @@
+/* apps/client/src/components/CatalogBrowse.css */
+.catalog-browse { display: grid; grid-template-columns: 260px 1fr; gap: var(--space-6, 32px); margin-top: var(--space-6, 32px); }
+.catalog-browse__toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.catalog-browse__filters-btn { display: none; border: 1px solid #cbd5e1; background: #fff; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+.catalog-browse__pager { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 28px; }
+.catalog-browse__pager button { border: 1px solid #cbd5e1; background: #fff; border-radius: 8px; padding: 8px 16px; cursor: pointer; }
+.catalog-browse__pager button:disabled { opacity: 0.5; cursor: default; }
+@media (max-width: 860px) {
+  .catalog-browse { grid-template-columns: 1fr; }
+  .catalog-browse__filters-btn { display: inline-block; }
+}
