@@ -1,0 +1,16 @@
+/* apps/admin/src/pages/admin/catalog/CatalogPage.css — shared by all catalog pages */
+.catalog-page { display: grid; gap: var(--space-5, 24px); }
+.catalog-page__status { color: var(--admin-text-muted, #64748b); }
+.catalog-page__err { color: #b91c1c; background: #fee2e2; padding: 10px 14px; border-radius: 8px; margin: 0; }
+.catalog-card { background: var(--admin-bg, #fff); border: 1px solid var(--admin-elevated, #d9e2f2); border-radius: 14px; padding: 20px; }
+.catalog-card > h2 { margin: 0 0 16px; font-size: 1.05rem; }
+.catalog-page__add { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+.catalog-page__field { display: grid; gap: 6px; font-size: 0.85rem; }
+.catalog-page__field input, .catalog-page__field select, .catalog-page__field textarea { padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 8px; font: inherit; }
+.catalog-page__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.catalog-page__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border: 1px solid #eef2f9; border-radius: 10px; }
+.catalog-page__row-actions { display: flex; gap: 8px; align-items: center; }
+.catalog-page__row-actions button, .catalog-page__upload { border: 1px solid #cbd5e1; background: #fff; border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 0.85rem; }
+.catalog-page__check { display: inline-flex; align-items: center; gap: 6px; font-size: 0.82rem; }
+.catalog-page__row-name { background: none; border: 0; font: inherit; font-weight: 600; cursor: pointer; text-align: left; }
+.catalog-page__count { font-size: 0.8rem; color: var(--admin-text-muted, #64748b); }
