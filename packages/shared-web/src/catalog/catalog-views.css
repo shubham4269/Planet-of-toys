@@ -1,0 +1,41 @@
+/* packages/shared-web/src/catalog/catalog-views.css
+   Shared, token-driven styling for the catalog View components. Intrinsic
+   responsive grids (auto-fill + minmax) reflow by CONTAINER width, so the same
+   markup is identical in the admin preview and on the storefront. */
+
+/* CategoryView */
+.pot-cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+.pot-cat-card { display: block; text-align: left; border: 1px solid #e6ebf5; border-radius: 14px; overflow: hidden; background: #fff; padding: 0 0 12px; font: inherit; cursor: default; }
+button.pot-cat-card { cursor: pointer; }
+.pot-cat-card__media { aspect-ratio: 4 / 3; background: #f1f5fb; }
+.pot-cat-card__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pot-cat-card__placeholder { display: block; width: 100%; height: 100%; }
+.pot-cat-card__name { margin: 12px 12px 2px; font-size: 1rem; font-weight: 700; }
+.pot-cat-card__meta { margin: 0 12px; font-size: 0.8rem; color: #64748b; }
+
+/* CollectionView */
+.pot-collection__hero { background: #2e3192; color: #fff; border-radius: 16px; padding: 40px 24px; background-size: cover; background-position: center; }
+.pot-collection__hero--image { position: relative; }
+.pot-collection__hero-inner { position: relative; }
+.pot-collection__title { margin: 0; font-size: 1.8rem; font-weight: 800; }
+.pot-collection__subtitle { margin: 8px 0 0; opacity: 0.92; }
+.pot-collection__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-top: 20px; }
+.pot-collection__empty { margin-top: 20px; color: #64748b; }
+.pot-prod-card { border: 1px solid #e6ebf5; border-radius: 14px; overflow: hidden; background: #fff; padding-bottom: 12px; }
+.pot-prod-card__media { aspect-ratio: 1 / 1; background: #f1f5fb; }
+.pot-prod-card__img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pot-prod-card__placeholder { display: block; width: 100%; height: 100%; }
+.pot-prod-card__name { margin: 12px 12px 2px; font-size: 0.95rem; font-weight: 600; }
+.pot-prod-card__price { margin: 0 12px; font-weight: 800; color: #f81424; }
+
+/* AttributeFilterView */
+.pot-filter { border: 0; margin: 0; padding: 0; }
+.pot-filter__title { font-weight: 700; padding: 0; margin-bottom: 8px; }
+.pot-filter__body { display: grid; gap: 8px; }
+.pot-filter__body--color, .pot-filter__body--button { grid-auto-flow: column; justify-content: start; gap: 10px; }
+.pot-filter__opt { display: flex; align-items: center; gap: 8px; font-size: 0.95rem; }
+.pot-filter__select { padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px; }
+.pot-filter__swatches { display: flex; gap: 8px; }
+.pot-filter__swatch { width: 26px; height: 26px; border-radius: 999px; border: 1px solid rgba(0,0,0,0.15); cursor: pointer; }
+.pot-filter__pill { border: 1px solid #cbd5e1; border-radius: 999px; padding: 6px 14px; background: #fff; cursor: pointer; }
+.pot-filter__range { width: 100%; }

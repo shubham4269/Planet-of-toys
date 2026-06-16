@@ -1,0 +1,8 @@
+/* apps/admin/src/pages/admin/catalog/DevicePreview.css */
+.device-preview { display: flex; gap: var(--space-5, 24px); align-items: flex-start; flex-wrap: wrap; }
+.device-preview__frame { border: 1px solid var(--admin-elevated, #d9e2f2); border-radius: 12px; background: #fff; padding: 12px; }
+.device-preview__frame--desktop { flex: 1 1 520px; min-width: 0; }
+.device-preview__frame--mobile { flex: 0 0 auto; }
+.device-preview__label { display: inline-block; font-size: 0.75rem; font-weight: 700; color: var(--admin-text-muted, #64748b); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+.device-preview__viewport { overflow: hidden; border-radius: 8px; }
+.device-preview__frame--mobile .device-preview__viewport { border: 1px solid var(--admin-elevated, #d9e2f2); }
