@@ -2,7 +2,7 @@
 import NavigationItem, { NAV_TARGET_TYPES, NAV_MENUS } from "./navigationItem.model.js";
 import { CatalogValidationError } from "./catalog.errors.js";
 
-const WRITABLE = ["label", "targetType", "targetId", "url", "menu", "parentId", "sortOrder", "openInNewTab", "isActive"];
+const WRITABLE = ["label", "targetType", "targetId", "url", "menu", "menuKey", "parentId", "sortOrder", "openInNewTab", "isActive", "isMegaMenu", "featured", "image"];
 
 function pick(input) {
   const out = {};
@@ -16,6 +16,19 @@ function validate(data) {
   }
   if (data.menu !== undefined && !NAV_MENUS.includes(data.menu)) {
     throw new CatalogValidationError(`menu must be one of: ${NAV_MENUS.join(", ")}.`);
+  }
+  // Internal links to entities are entity-based, never raw URLs.
+  if ((data.targetType === "category" || data.targetType === "collection") && data.url) {
+    throw new CatalogValidationError("Category/collection navigation items must use targetId, not a url.");
+  }
+}
+
+/** Enforce required target fields at creation time. */
+function validateTargetRequired(data) {
+  if (data.targetType === "category" || data.targetType === "collection") {
+    if (!data.targetId) throw new CatalogValidationError("This navigation target requires a targetId.");
+  } else if (data.targetType === "internalRoute" || data.targetType === "externalUrl") {
+    if (!data.url || String(data.url).trim() === "") throw new CatalogValidationError("This navigation target requires a url.");
   }
 }
 
@@ -31,6 +44,7 @@ export async function createNavigationItem(input = {}) {
   }
   const data = pick(input);
   validate(data);
+  validateTargetRequired(data);
   data.label = input.label.trim();
   const doc = await NavigationItem.create(data);
   return doc.toJSON();

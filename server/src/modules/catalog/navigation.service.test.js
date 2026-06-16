@@ -13,8 +13,8 @@ afterEach(async () => { await NavigationItem.deleteMany({}); });
 
 describe("navigation.service (foundation)", () => {
   it("creates a nav item and lists active sorted", async () => {
-    await svc.createNavigationItem({ label: "B", targetType: "collection", sortOrder: 2 });
-    await svc.createNavigationItem({ label: "A", targetType: "category", sortOrder: 1 });
+    await svc.createNavigationItem({ label: "B", targetType: "collection", targetId: new mongoose.Types.ObjectId(), sortOrder: 2 });
+    await svc.createNavigationItem({ label: "A", targetType: "category", targetId: new mongoose.Types.ObjectId(), sortOrder: 1 });
     const list = await svc.listNavigationItems({ includeArchived: false });
     expect(list.map((n) => n.label)).toEqual(["A", "B"]);
   });
