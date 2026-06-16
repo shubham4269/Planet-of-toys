@@ -65,6 +65,12 @@ const productSchema = new Schema(
     // Optional color variations with per-color stock and images.
     variants: { type: [variantSchema], default: [] },
     active: { type: Boolean, required: true, default: true },
+    // Catalog taxonomy references (Sub-project A). Flat id arrays; attribute
+    // grouping is derived via AttributeValue.attributeId. Indexed for filter
+    // queries (Sub-project B).
+    categoryIds: { type: [{ type: Schema.Types.ObjectId, ref: "Category" }], default: [], index: true },
+    collectionIds: { type: [{ type: Schema.Types.ObjectId, ref: "Collection" }], default: [], index: true },
+    attributeValueIds: { type: [{ type: Schema.Types.ObjectId, ref: "AttributeValue" }], default: [], index: true },
   },
   {
     timestamps: true,

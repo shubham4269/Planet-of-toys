@@ -37,3 +37,8 @@ export { default as PromoBanner } from "../modules/content/promoBanner.model.js"
 export { default as FooterContent } from "../modules/content/footerContent.model.js";
 export { default as UnmatchedWebhookEvent } from "../modules/webhooks/unmatchedWebhookEvent.model.js";
 export { default as NewsletterSubscriber } from "../modules/newsletter/subscriber.model.js";
+export { default as Category } from "../modules/catalog/category.model.js";
+export { default as Collection } from "../modules/catalog/collection.model.js";
+export { default as Attribute, DISPLAY_TYPES } from "../modules/catalog/attribute.model.js";
+export { default as AttributeValue } from "../modules/catalog/attributeValue.model.js";
+export { default as NavigationItem, NAV_TARGET_TYPES, NAV_MENUS } from "../modules/catalog/navigationItem.model.js";
