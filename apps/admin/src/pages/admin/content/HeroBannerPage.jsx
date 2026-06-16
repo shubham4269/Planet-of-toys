@@ -19,6 +19,55 @@ const empty = {
   status: "draft", priority: 0, startDate: "", endDate: "", active: true,
 };
 
+// Which media slots each displayMode exposes. `kind` (image|video) drives the
+// file accept filter + the thumbnail preview. collection_grid pulls its imagery
+// from the linked collection's products, so it needs no per-slide media.
+const MEDIA_SLOTS = {
+  full_banner: [
+    { field: "desktopMedia", label: "Desktop image", kind: "image" },
+    { field: "mobileMedia", label: "Mobile image", kind: "image" },
+  ],
+  split: [
+    { field: "desktopMedia", label: "Desktop image", kind: "image" },
+    { field: "mobileMedia", label: "Mobile image", kind: "image" },
+  ],
+  event: [
+    { field: "desktopMedia", label: "Desktop image", kind: "image" },
+    { field: "mobileMedia", label: "Mobile image", kind: "image" },
+  ],
+  video: [
+    { field: "video", label: "Video", kind: "video" },
+    { field: "posterImage", label: "Poster image", kind: "image" },
+    { field: "desktopMedia", label: "Desktop image (fallback)", kind: "image" },
+    { field: "mobileMedia", label: "Mobile image (fallback)", kind: "image" },
+  ],
+  collection_grid: [],
+};
+
+/** A single media slot: current asset thumbnail + Upload/Replace + Remove. */
+function MediaField({ label, kind, value, resolveUrl, onUpload, onRemove }) {
+  return (
+    <div className="hero-media">
+      <span className="hero-media__label">{label}</span>
+      <div className="hero-media__preview">
+        {value
+          ? (kind === "video"
+              ? <video className="hero-media__thumb" src={resolveUrl(value)} muted playsInline />
+              : <img className="hero-media__thumb" src={resolveUrl(value)} alt={label} />)
+          : <span className="hero-media__empty">No media</span>}
+      </div>
+      <div className="hero-media__actions">
+        <label className="catalog-page__upload" aria-label={`${value ? "Replace" : "Upload"} ${label}`}>
+          {value ? "Replace" : "Upload"}
+          <input type="file" accept={kind === "video" ? "video/*" : "image/*"} hidden
+            onChange={(e) => e.target.files[0] && onUpload(e.target.files[0])} />
+        </label>
+        {value && <button type="button" aria-label={`Remove ${label}`} onClick={onRemove}>Remove</button>}
+      </div>
+    </div>
+  );
+}
+
 export default function HeroBannerPage() {
   const [slides, setSlides] = useState(null);
   const [showDeleted, setShowDeleted] = useState(false);
@@ -153,13 +202,16 @@ export default function HeroBannerPage() {
             <input type="date" value={form.startDate} onChange={(e) => set({ startDate: e.target.value })} /></label>
           <label className="catalog-page__field"><span>End date</span>
             <input type="date" value={form.endDate} onChange={(e) => set({ endDate: e.target.value })} /></label>
-          <label className="catalog-page__upload" aria-label="Upload desktop media">Desktop<input type="file" accept="image/*" hidden onChange={(e) => e.target.files[0] && upload("desktopMedia", e.target.files[0])} /></label>
-          <label className="catalog-page__upload" aria-label="Upload mobile media">Mobile<input type="file" accept="image/*" hidden onChange={(e) => e.target.files[0] && upload("mobileMedia", e.target.files[0])} /></label>
-          {form.displayMode === "video" && (
-            <>
-              <label className="catalog-page__upload" aria-label="Upload video">Video<input type="file" accept="video/*" hidden onChange={(e) => e.target.files[0] && upload("video", e.target.files[0])} /></label>
-              <label className="catalog-page__upload" aria-label="Upload poster">Poster<input type="file" accept="image/*" hidden onChange={(e) => e.target.files[0] && upload("posterImage", e.target.files[0])} /></label>
-            </>
+          {(MEDIA_SLOTS[form.displayMode] || []).length === 0 ? (
+            <p className="hero-media__note">Grid images come from the linked collection’s products — no slide image needed.</p>
+          ) : (
+            <div className="hero-media-grid">
+              {(MEDIA_SLOTS[form.displayMode] || []).map((slot) => (
+                <MediaField key={slot.field} label={slot.label} kind={slot.kind} value={form[slot.field]}
+                  resolveUrl={(f) => mediaUrl(f)} onUpload={(file) => upload(slot.field, file)}
+                  onRemove={() => set({ [slot.field]: null })} />
+              ))}
+            </div>
           )}
           <label className="catalog-page__check"><input type="checkbox" checked={form.active} onChange={(e) => set({ active: e.target.checked })} /> Active</label>
           <button type="button" onClick={save}>{editingId ? "Save slide" : "Add slide"}</button>
