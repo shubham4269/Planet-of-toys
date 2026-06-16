@@ -112,6 +112,7 @@ const NAV_ITEMS = [
       { to: "/admin/content/promo-banner", label: "Promotional Banner" },
       { to: "/admin/content/hero-banner", label: "Hero Banner" },
       { to: "/admin/content/footer", label: "Footer Content" },
+      { to: "/admin/content/navigation", label: "Navigation" },
     ],
   },
   {
