@@ -22,6 +22,7 @@ describe("AttributeValue model", () => {
 
   it("enforces unique (attributeId, slug) but allows same slug under different attributes", async () => {
     await AttributeValue.syncIndexes();
+    await AttributeValue.init(); // ensure the unique compound index is fully built before inserts
     const a1 = new mongoose.Types.ObjectId();
     const a2 = new mongoose.Types.ObjectId();
     await AttributeValue.create({ attributeId: a1, name: "Red", slug: "red" });
