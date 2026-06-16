@@ -15,6 +15,8 @@ import { createContentAdminRouter } from "./modules/content/content.admin.router
 import { createContentPublicRouter } from "./modules/content/content.public.router.js";
 import { createNewsletterPublicRouter } from "./modules/newsletter/newsletter.public.router.js";
 import { createNewsletterAdminRouter } from "./modules/newsletter/newsletter.admin.router.js";
+import { createCatalogAdminRouter } from "./modules/catalog/catalog.admin.router.js";
+import { createCatalogPublicRouter } from "./modules/catalog/catalog.public.router.js";
 import rateLimit from "express-rate-limit";
 import { requireAuth } from "./shared/middleware/requireAuth.js";
 import { createRateLimiters } from "./shared/middleware/rateLimiters.js";
@@ -120,6 +122,10 @@ const app = createApp({
     // Newsletter: public subscribe + admin subscriber management.
     newsletter: createNewsletterPublicRouter(),
     newsletterAdmin: createNewsletterAdminRouter({ requireAuth }),
+    // Admin catalog management: /api/admin/catalog, guarded.
+    catalogAdmin: createCatalogAdminRouter({ requireAuth }),
+    // Public storefront catalog reads: /api/catalog.
+    catalog: createCatalogPublicRouter(),
   },
 });
 

@@ -15,3 +15,12 @@ describeNl("ROUTER_MOUNTS — newsletter", () => {
     expectNl(MOUNTS_NL.newsletterAdmin).toBe("/api/admin/newsletter");
   });
 });
+
+import { describe as describeCat, it as itCat, expect as expectCat } from "vitest";
+import { ROUTER_MOUNTS as MOUNTS_CAT } from "./routerMounts.js";
+describeCat("ROUTER_MOUNTS — catalog", () => {
+  itCat("declares catalog admin + public mount paths", () => {
+    expectCat(MOUNTS_CAT.catalogAdmin).toBe("/api/admin/catalog");
+    expectCat(MOUNTS_CAT.catalog).toBe("/api/catalog");
+  });
+});
