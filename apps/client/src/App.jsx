@@ -7,6 +7,7 @@ import TermsOfServicePage from "./pages/TermsOfServicePage.jsx";
 import ShippingPolicyPage from "./pages/ShippingPolicyPage.jsx";
 import RefundPolicyPage from "./pages/RefundPolicyPage.jsx";
 import CollectionPage from "./pages/CollectionPage.jsx";
+import CategoryPage from "./pages/CategoryPage.jsx";
 import "./styles/tokens.css";
 
 /**
@@ -50,6 +51,7 @@ export function AppRoutes() {
 
         {/* Collection storefront page (Sub-project A proof). */}
         <Route path="collections/:slug" element={<CollectionPage />} />
+        <Route path="category/:slug" element={<CategoryPage />} />
 
         {/* Checkout — order summary, customer form, serviceability, payment (Req 4,5,6). */}
         <Route path="checkout" element={<CheckoutPage />} />
