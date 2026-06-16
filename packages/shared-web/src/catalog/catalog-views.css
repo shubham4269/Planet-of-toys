@@ -60,3 +60,27 @@ button.pot-cat-card { cursor: pointer; }
   .pot-filterview--open { transform: translateX(0); }
   .pot-filterview__close { display: inline-block; }
 }
+
+/* NavigationView */
+.pot-nav__bar { list-style: none; margin: 0; padding: 0; display: flex; gap: 4px; flex-wrap: wrap; }
+.pot-nav__item { position: relative; }
+.pot-nav__top { display: inline-block; border: 0; background: none; font: inherit; font-weight: 600; color: inherit;
+  padding: 10px 14px; cursor: pointer; text-decoration: none; }
+.pot-nav__top:hover { color: #2e3192; }
+.pot-nav__panel { position: absolute; top: 100%; left: 0; z-index: 30; display: flex; gap: 24px;
+  background: #fff; border: 1px solid #e6ebf5; border-radius: 12px; padding: 18px; min-width: 420px;
+  box-shadow: 0 12px 40px rgba(0,0,0,.12); }
+.pot-nav__links { display: grid; gap: 8px; align-content: start; min-width: 160px; }
+.pot-nav__link { text-decoration: none; color: #334155; }
+.pot-nav__link:hover { color: #2e3192; }
+.pot-nav__featured { display: flex; gap: 12px; }
+.pot-nav__card { width: 150px; text-decoration: none; color: inherit; border: 1px solid #e6ebf5; border-radius: 12px; overflow: hidden; }
+.pot-nav__card-img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+.pot-nav__card-ph { display: block; width: 100%; aspect-ratio: 4 / 3; background: #f1f5fb; }
+.pot-nav__card-label { display: block; padding: 8px 10px; font-weight: 600; font-size: 0.9rem; }
+/* mobile */
+.pot-nav__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.pot-nav__m-top { display: block; width: 100%; text-align: left; border: 0; background: none; font: inherit;
+  font-weight: 600; padding: 12px 4px; cursor: pointer; text-decoration: none; color: inherit; border-bottom: 1px solid #eef2f9; }
+.pot-nav__m-children { list-style: none; margin: 0; padding: 4px 0 8px 16px; display: grid; gap: 6px; }
+.pot-nav__m-link { text-decoration: none; color: #334155; }

@@ -28,4 +28,5 @@ export { default as ProductCard } from "./catalog/ProductCard.jsx";
 export { default as ProductGrid } from "./catalog/ProductGrid.jsx";
 export { default as SortControl, SORT_OPTIONS } from "./catalog/SortControl.jsx";
 export { default as FilterView } from "./catalog/FilterView.jsx";
+export { default as NavigationView } from "./catalog/NavigationView.jsx";
 export * from "./catalog/filterParams.js";
