@@ -1,5 +1,7 @@
 // server/src/modules/catalog/navigation.service.js
 import NavigationItem, { NAV_TARGET_TYPES, NAV_MENUS } from "./navigationItem.model.js";
+import Category from "./category.model.js";
+import Collection from "./collection.model.js";
 import { CatalogValidationError } from "./catalog.errors.js";
 
 const WRITABLE = ["label", "targetType", "targetId", "url", "menu", "menuKey", "parentId", "sortOrder", "openInNewTab", "isActive", "isMegaMenu", "featured", "image"];
@@ -32,8 +34,9 @@ function validateTargetRequired(data) {
   }
 }
 
-export async function listNavigationItems({ includeArchived = false } = {}) {
+export async function listNavigationItems({ includeArchived = false, menuKey } = {}) {
   const query = includeArchived ? {} : { deletedAt: null };
+  if (menuKey) query.menuKey = menuKey;
   const docs = await NavigationItem.find(query).sort({ sortOrder: 1, label: 1 });
   return docs.map((d) => d.toJSON());
 }
@@ -78,4 +81,46 @@ export async function restoreNavigationItem(id) {
   doc.deletedAt = null;
   await doc.save();
   return doc.toJSON();
+}
+
+/** Active navigation tree for a menu, with hrefs resolved from entity slugs server-side. */
+export async function getPublicNavigation({ menuKey = "header" } = {}) {
+  const docs = await NavigationItem.find({ menuKey, deletedAt: null, isActive: true }).sort({ sortOrder: 1, label: 1 });
+  const items = docs.map((d) => d.toJSON());
+
+  const catIds = items.filter((i) => i.targetType === "category" && i.targetId).map((i) => i.targetId);
+  const colIds = items.filter((i) => i.targetType === "collection" && i.targetId).map((i) => i.targetId);
+  const cats = catIds.length ? await Category.find({ _id: { $in: catIds }, deletedAt: null }) : [];
+  const cols = colIds.length ? await Collection.find({ _id: { $in: colIds }, deletedAt: null }) : [];
+  const catSlug = new Map(cats.map((c) => [String(c._id), c.slug]));
+  const colSlug = new Map(cols.map((c) => [String(c._id), c.slug]));
+  const hrefOf = (i) => {
+    if (i.targetType === "category") { const s = catSlug.get(String(i.targetId)); return s ? `/category/${s}` : "#"; }
+    if (i.targetType === "collection") { const s = colSlug.get(String(i.targetId)); return s ? `/collections/${s}` : "#"; }
+    return i.url || "#";
+  };
+
+  const nodes = new Map();
+  const roots = [];
+  for (const i of items) {
+    nodes.set(String(i.id), {
+      id: i.id, label: i.label, href: hrefOf(i), openInNewTab: i.openInNewTab,
+      isMegaMenu: i.isMegaMenu, featured: i.featured, image: i.image, children: [],
+    });
+  }
+  for (const i of items) {
+    const node = nodes.get(String(i.id));
+    const pid = i.parentId ? String(i.parentId) : null;
+    if (pid && nodes.has(pid)) nodes.get(pid).children.push(node);
+    else roots.push(node);
+  }
+  return roots;
+}
+
+/** Apply [{ id, parentId, sortOrder }] in one pass. */
+export async function reorderNavigationItems(items = []) {
+  if (!Array.isArray(items)) throw new CatalogValidationError("Reorder payload must be an array.");
+  await Promise.all(items.map((it) =>
+    NavigationItem.updateOne({ _id: it.id }, { $set: { parentId: it.parentId ?? null, sortOrder: Number(it.sortOrder) || 0 } })));
+  return listNavigationItems({ includeArchived: false });
 }
