@@ -11,6 +11,9 @@ import PromoBannerPage from "./pages/admin/content/PromoBannerPage.jsx";
 import HeroBannerPage from "./pages/admin/content/HeroBannerPage.jsx";
 import FooterPage from "./pages/admin/content/FooterPage.jsx";
 import SubscribersPage from "./pages/admin/marketing/SubscribersPage.jsx";
+import CategoriesPage from "./pages/admin/catalog/CategoriesPage.jsx";
+import CollectionsPage from "./pages/admin/catalog/CollectionsPage.jsx";
+import AttributesPage from "./pages/admin/catalog/AttributesPage.jsx";
 import "./styles/tokens.css";
 
 /**
@@ -48,6 +51,13 @@ export function AppRoutes() {
           <Route path="products" element={<ProductsPage />} />
           {/* Order management — list/detail, cancel, manual courier/AWB (Req 17). */}
           <Route path="orders" element={<OrdersPage />} />
+          {/* Catalog management — categories, collections, attributes. */}
+          <Route path="catalog">
+            <Route index element={<Navigate to="categories" replace />} />
+            <Route path="categories" element={<CategoriesPage />} />
+            <Route path="collections" element={<CollectionsPage />} />
+            <Route path="attributes" element={<AttributesPage />} />
+          </Route>
           {/* Content management — folder hosting storefront content sub-pages. */}
           <Route path="content" element={<ContentPage />}>
             <Route index element={<Navigate to="promo-banner" replace />} />

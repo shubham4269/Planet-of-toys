@@ -80,10 +80,30 @@ function IconSignOut() {
   );
 }
 
+function IconCatalog() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className="admin-nav__icon">
+      <path d="M4 7l8-4 8 4-8 4-8-4z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+      <path d="M4 7v10l8 4 8-4V7" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+      <path d="M12 11v10" stroke="currentColor" strokeWidth="1.8" />
+    </svg>
+  );
+}
+
 const NAV_ITEMS = [
   { to: "/admin", label: "Dashboard", Icon: IconDashboard, end: true },
   { to: "/admin/products", label: "Products", Icon: IconProducts },
   { to: "/admin/orders", label: "Orders", Icon: IconOrders },
+  {
+    label: "Catalog",
+    Icon: IconCatalog,
+    basePath: "/admin/catalog",
+    children: [
+      { to: "/admin/catalog/categories", label: "Categories" },
+      { to: "/admin/catalog/collections", label: "Collections" },
+      { to: "/admin/catalog/attributes", label: "Attributes" },
+    ],
+  },
   {
     label: "Content",
     Icon: IconContent,
