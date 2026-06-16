@@ -7,6 +7,8 @@ import { bulkAssign } from "./productAssign.service.js";
 import { resolveFilters } from "./filterResolver.service.js";
 import { queryCollectionProducts } from "./collectionQuery.service.js";
 import { getFilterConfig, saveFilterConfig } from "./filterConfig.service.js";
+import { getPublicNavigation } from "./navigation.service.js";
+import { resolveCategoryFilters, queryCategoryProducts } from "./categoryBrowse.service.js";
 
 /**
  * Catalog controller — thin HTTP layer over the catalog services. Admin handlers
@@ -86,6 +88,27 @@ export function createCatalogController() {
     // ---- admin: filter config (Sub-project B) ----
     getFilterConfig: wrap(async (req, res) => res.json({ config: await getFilterConfig(req.params.id) })),
     putFilterConfig: wrap(async (req, res) => res.json({ config: await saveFilterConfig(req.params.id, req.body?.filters ?? []) })),
+
+    // ---- public: navigation + category browse (Sub-project C) ----
+    publicNavigation: wrap(async (req, res) => res.json({ items: await getPublicNavigation({ menuKey: req.query.menuKey || "header" }) })),
+    categoryFilters: wrap(async (req, res) => {
+      const filters = await resolveCategoryFilters(req.params.slug);
+      if (!filters) return res.status(404).json({ error: { message: "Not found", status: 404 } });
+      return res.json({ filters });
+    }),
+    categoryProducts: wrap(async (req, res) => {
+      const result = await queryCategoryProducts(req.params.slug, req.query || {});
+      if (!result) return res.status(404).json({ error: { message: "Not found", status: 404 } });
+      return res.json(result);
+    }),
+
+    // ---- admin: navigation CRUD (Sub-project C) ----
+    navList: wrap(async (req, res) => res.json({ items: await navigation.listNavigationItems({ includeArchived: req.query.archived === "true", menuKey: req.query.menuKey }) })),
+    navCreate: wrap(async (req, res) => res.status(201).json({ item: await navigation.createNavigationItem(req.body ?? {}) })),
+    navUpdate: wrap(async (req, res) => res.json({ item: await navigation.updateNavigationItem(req.params.id, req.body ?? {}) })),
+    navArchive: wrap(async (req, res) => res.json({ item: await navigation.archiveNavigationItem(req.params.id) })),
+    navRestore: wrap(async (req, res) => res.json({ item: await navigation.restoreNavigationItem(req.params.id) })),
+    navReorder: wrap(async (req, res) => res.json({ items: await navigation.reorderNavigationItems(req.body?.items ?? req.body ?? []) })),
 
     // navigation services are foundation-only (no routes in Sub-project A); kept
     // imported so future wiring lives alongside the rest of the controller.
