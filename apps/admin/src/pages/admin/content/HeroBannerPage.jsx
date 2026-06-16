@@ -147,7 +147,9 @@ export default function HeroBannerPage() {
         throw new Error(body?.error?.message || `Upload failed (${res.status}).`);
       }
       const data = await res.json();
-      set({ [field]: data.filename });
+      const ref = data?.media?.filename || data?.media?.url;
+      if (!ref) throw new Error("Upload succeeded but no media reference was returned.");
+      set({ [field]: ref });
     } catch (e) { setErr(e.message || "Upload failed."); }
   }
 

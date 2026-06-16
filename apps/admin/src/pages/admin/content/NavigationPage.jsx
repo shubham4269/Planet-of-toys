@@ -76,7 +76,7 @@ export default function NavigationPage() {
     const fd = new FormData(); fd.append("file", file);
     const res = await fetch(`${API_BASE_URL}/api/admin/media`, { method: "POST", headers: { Authorization: `Bearer ${getToken()}` }, body: fd });
     const data = await res.json();
-    await patch(id, { image: data.filename });
+    await patch(id, { image: data?.media?.filename || data?.media?.url });
   }
 
   const topLevel = useMemo(() => (items ?? []).filter((i) => !i.parentId), [items]);

@@ -50,7 +50,7 @@ export default function CollectionsPage() {
     const form = new FormData(); form.append("file", file);
     const res = await fetch(`${API_BASE_URL}/api/admin/media`, { method: "POST", headers: { Authorization: `Bearer ${getToken()}` }, body: form });
     const data = await res.json();
-    await patch(id, { heroImage: data.filename });
+    await patch(id, { heroImage: data?.media?.filename || data?.media?.url });
   }
 
   // ---- per-collection filter configuration (Sub-project B) ----

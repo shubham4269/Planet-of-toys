@@ -65,7 +65,7 @@ export default function CategoriesPage() {
     const form = new FormData(); form.append("file", file);
     const res = await fetch(`${API_BASE_URL}/api/admin/media`, { method: "POST", headers: { Authorization: `Bearer ${getToken()}` }, body: form });
     const data = await res.json();
-    await apiClient.put(`${BASE}/${id}`, { image: data.filename }, auth());
+    await apiClient.put(`${BASE}/${id}`, { image: data?.media?.filename || data?.media?.url }, auth());
     await load();
   }
 
