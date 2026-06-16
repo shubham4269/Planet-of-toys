@@ -16,15 +16,19 @@ const FUTURE_SECTIONS = [
 export default function HomePage() {
   return (
     <main className="home">
-      <section className="home__section home__hero" aria-label="Highlights">
+      {/* Full-bleed flagship hero — spans the viewport width, outside the content container. */}
+      <section className="home__hero" aria-label="Highlights">
         <HeroEngine />
       </section>
-      {FUTURE_SECTIONS.map((label) => (
-        <section key={label} className="home__section home__placeholder" aria-label={label}>
-          <h2 className="home__heading">{label}</h2>
-          <p className="home__soon">Coming soon</p>
-        </section>
-      ))}
+      {/* Remaining sections stay within the standard content container. */}
+      <div className="home__below">
+        {FUTURE_SECTIONS.map((label) => (
+          <section key={label} className="home__section home__placeholder" aria-label={label}>
+            <h2 className="home__heading">{label}</h2>
+            <p className="home__soon">Coming soon</p>
+          </section>
+        ))}
+      </div>
     </main>
   );
 }
