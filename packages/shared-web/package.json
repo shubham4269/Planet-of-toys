@@ -9,7 +9,9 @@
     ".": "./src/index.js",
     "./apiClient": "./src/apiClient.js",
     "./format": "./src/format.js",
-    "./promoBanner": "./src/promoBanner/PromoBannerView.jsx"
+    "./promoBanner": "./src/promoBanner/PromoBannerView.jsx",
+    "./catalog": "./src/catalog/index.js",
+    "./catalog/catalog-views.css": "./src/catalog/catalog-views.css"
   },
   "peerDependencies": {
     "react": ">=18"

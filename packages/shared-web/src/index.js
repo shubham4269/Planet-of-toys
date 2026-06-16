@@ -19,3 +19,8 @@ export { default as PromoBannerView } from "./promoBanner/PromoBannerView.jsx";
 
 // Storefront footer presentational component (consumed by storefront + admin preview).
 export { default as FooterView } from "./footer/FooterView.jsx";
+
+// Catalog presentational components (storefront + admin preview).
+export { default as CategoryView } from "./catalog/CategoryView.jsx";
+export { default as CollectionView } from "./catalog/CollectionView.jsx";
+export { default as AttributeFilterView } from "./catalog/AttributeFilterView.jsx";
