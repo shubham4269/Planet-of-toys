@@ -62,7 +62,7 @@ button.pot-cat-card { cursor: pointer; }
 }
 
 /* NavigationView — outlined pill nav (Melissa & Doug style) */
-.pot-nav__bar { list-style: none; margin: 0; padding: 14px 0; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.pot-nav__bar { list-style: none; margin: 0; padding: 0; display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-start; }
 .pot-nav__item { position: relative; }
 .pot-nav__top { display: inline-block; border: 1.5px solid #2e3192; border-radius: 999px; background: #fff;
   font: inherit; font-weight: 600; color: #2e3192; padding: 9px 20px; cursor: pointer; text-decoration: none;
