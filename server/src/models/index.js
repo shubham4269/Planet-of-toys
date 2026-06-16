@@ -42,3 +42,4 @@ export { default as Collection } from "../modules/catalog/collection.model.js";
 export { default as Attribute, DISPLAY_TYPES } from "../modules/catalog/attribute.model.js";
 export { default as AttributeValue } from "../modules/catalog/attributeValue.model.js";
 export { default as NavigationItem, NAV_TARGET_TYPES, NAV_MENUS } from "../modules/catalog/navigationItem.model.js";
+export { default as CollectionFilterConfig } from "../modules/catalog/collectionFilterConfig.model.js";

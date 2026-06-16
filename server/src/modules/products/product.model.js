@@ -71,6 +71,13 @@ const productSchema = new Schema(
     categoryIds: { type: [{ type: Schema.Types.ObjectId, ref: "Category" }], default: [], index: true },
     collectionIds: { type: [{ type: Schema.Types.ObjectId, ref: "Collection" }], default: [], index: true },
     attributeValueIds: { type: [{ type: Schema.Types.ObjectId, ref: "AttributeValue" }], default: [], index: true },
+    // Merchandising + best-selling (Sub-project B). salesCount drives the
+    // best-selling sort and is manually editable now; a future order-analytics
+    // pipeline can populate it without changing the sort layer. isFeatured /
+    // merchandisingRank are foundation for homepage merchandising (Sub-project E).
+    salesCount: { type: Number, default: 0, index: true },
+    isFeatured: { type: Boolean, default: false, index: true },
+    merchandisingRank: { type: Number, default: 0, index: true },
   },
   {
     timestamps: true,
