@@ -1,4 +1,5 @@
 // packages/shared-web/src/catalog/CollectionView.jsx
+import ProductCard from "./ProductCard.jsx";
 /**
  * CollectionView — presentational collection page: a hero band (title/subtitle/
  * image) followed by a product card grid. Pure and responsive (the grid reflows
@@ -30,19 +31,9 @@ export default function CollectionView({
 
       {products.length > 0 ? (
         <div className="pot-collection__grid">
-          {products.map((p) => {
-            const img = Array.isArray(p.images) && p.images[0] ? resolveImageUrl(p.images[0]) : null;
-            return (
-              <article key={p.id} className="pot-prod-card">
-                <div className="pot-prod-card__media">
-                  {img ? <img src={img} alt={p.name} className="pot-prod-card__img" />
-                       : <span className="pot-prod-card__placeholder" aria-hidden="true" />}
-                </div>
-                <h3 className="pot-prod-card__name">{p.name}</h3>
-                <p className="pot-prod-card__price">{formatPrice(p.price)}</p>
-              </article>
-            );
-          })}
+          {products.map((p) => (
+            <ProductCard key={p.id} product={p} resolveImageUrl={resolveImageUrl} formatPrice={formatPrice} />
+          ))}
         </div>
       ) : (
         <p className="pot-collection__empty">No products in this collection yet.</p>
