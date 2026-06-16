@@ -30,3 +30,7 @@ export { default as SortControl, SORT_OPTIONS } from "./catalog/SortControl.jsx"
 export { default as FilterView } from "./catalog/FilterView.jsx";
 export { default as NavigationView } from "./catalog/NavigationView.jsx";
 export * from "./catalog/filterParams.js";
+
+// Hero engine (storefront homepage + admin preview).
+export { default as HeroEngineView } from "./hero/HeroEngineView.jsx";
+export { default as HeroSlideView } from "./hero/HeroSlideView.jsx";

@@ -11,7 +11,9 @@
     "./format": "./src/format.js",
     "./promoBanner": "./src/promoBanner/PromoBannerView.jsx",
     "./catalog": "./src/catalog/index.js",
-    "./catalog/catalog-views.css": "./src/catalog/catalog-views.css"
+    "./catalog/catalog-views.css": "./src/catalog/catalog-views.css",
+    "./hero": "./src/hero/index.js",
+    "./hero/hero-views.css": "./src/hero/hero-views.css"
   },
   "peerDependencies": {
     "react": ">=18"
