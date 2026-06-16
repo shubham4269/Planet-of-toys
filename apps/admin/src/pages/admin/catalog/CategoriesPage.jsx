@@ -1,6 +1,6 @@
 // apps/admin/src/pages/admin/catalog/CategoriesPage.jsx
 import { useCallback, useEffect, useMemo, useState } from "react";
-import apiClient, { ApiError } from "@planet-of-toys/shared-web/apiClient";
+import apiClient, { ApiError, API_BASE_URL } from "@planet-of-toys/shared-web/apiClient";
 import { mediaUrl } from "@planet-of-toys/shared-web/format";
 import { CategoryView } from "@planet-of-toys/shared-web";
 import { getToken, notifyUnauthorized } from "../../../lib/adminAuth.js";
@@ -63,7 +63,7 @@ export default function CategoriesPage() {
 
   async function uploadImage(id, file) {
     const form = new FormData(); form.append("file", file);
-    const res = await fetch("/api/admin/media", { method: "POST", headers: { Authorization: `Bearer ${getToken()}` }, body: form });
+    const res = await fetch(`${API_BASE_URL}/api/admin/media`, { method: "POST", headers: { Authorization: `Bearer ${getToken()}` }, body: form });
     const data = await res.json();
     await apiClient.put(`${BASE}/${id}`, { image: data.filename }, auth());
     await load();

@@ -1,6 +1,6 @@
 // apps/admin/src/pages/admin/catalog/CollectionsPage.jsx
 import { useCallback, useEffect, useState } from "react";
-import apiClient, { ApiError } from "@planet-of-toys/shared-web/apiClient";
+import apiClient, { ApiError, API_BASE_URL } from "@planet-of-toys/shared-web/apiClient";
 import { mediaUrl, formatINR } from "@planet-of-toys/shared-web/format";
 import { CollectionView, FilterView } from "@planet-of-toys/shared-web";
 import { getToken, notifyUnauthorized } from "../../../lib/adminAuth.js";
@@ -48,7 +48,7 @@ export default function CollectionsPage() {
 
   async function uploadHero(id, file) {
     const form = new FormData(); form.append("file", file);
-    const res = await fetch("/api/admin/media", { method: "POST", headers: { Authorization: `Bearer ${getToken()}` }, body: form });
+    const res = await fetch(`${API_BASE_URL}/api/admin/media`, { method: "POST", headers: { Authorization: `Bearer ${getToken()}` }, body: form });
     const data = await res.json();
     await patch(id, { heroImage: data.filename });
   }

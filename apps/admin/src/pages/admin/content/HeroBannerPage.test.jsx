@@ -36,20 +36,23 @@ describe("HeroBannerPage", () => {
     await waitFor(() => expect(apiMock.post).toHaveBeenCalledWith("/api/admin/hero", expect.objectContaining({ title: "New Campaign", type: expect.any(String), displayMode: expect.any(String) }), expect.any(Object)));
   });
 
-  it("shows media slots conditionally by displayMode", async () => {
+  it("asks image vs video and shows the right media slots", async () => {
     mock();
     render(<HeroBannerPage />);
     await screen.findByRole("heading", { name: "Hero Banner" });
-    // full_banner (default): desktop + mobile image uploads, no video.
+    // Default = Image: desktop + mobile image uploads, no video.
+    expect(screen.getByLabelText(/media type/i)).toHaveValue("image");
     expect(screen.getByLabelText(/upload desktop image/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/upload mobile image/i)).toBeInTheDocument();
     expect(screen.queryByLabelText(/upload video/i)).toBeNull();
-    // switch to video: video + poster + fallback image slots appear.
-    fireEvent.change(screen.getByLabelText(/display mode/i), { target: { value: "video" } });
+    // Choose Video: video + poster (+ fallback image) slots appear; layout select hidden.
+    fireEvent.change(screen.getByLabelText(/media type/i), { target: { value: "video" } });
     expect(screen.getByLabelText(/upload video/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/upload poster image/i)).toBeInTheDocument();
-    // collection_grid: no per-slide media (grid comes from the collection).
-    fireEvent.change(screen.getByLabelText(/display mode/i), { target: { value: "collection_grid" } });
+    expect(screen.queryByLabelText(/^layout$/i)).toBeNull();
+    // Back to Image, layout collection_grid: no per-slide media (grid comes from the collection).
+    fireEvent.change(screen.getByLabelText(/media type/i), { target: { value: "image" } });
+    fireEvent.change(screen.getByLabelText(/^layout$/i), { target: { value: "collection_grid" } });
     expect(screen.queryByLabelText(/upload desktop image/i)).toBeNull();
     expect(screen.getByText(/grid images come from the linked collection/i)).toBeInTheDocument();
   });

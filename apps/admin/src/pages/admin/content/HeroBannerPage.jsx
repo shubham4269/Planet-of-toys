@@ -1,6 +1,6 @@
 // apps/admin/src/pages/admin/content/HeroBannerPage.jsx
 import { useCallback, useEffect, useMemo, useState } from "react";
-import apiClient, { ApiError } from "@planet-of-toys/shared-web/apiClient";
+import apiClient, { ApiError, API_BASE_URL } from "@planet-of-toys/shared-web/apiClient";
 import { mediaUrl, formatINR } from "@planet-of-toys/shared-web/format";
 import { HeroEngineView } from "@planet-of-toys/shared-web";
 import "@planet-of-toys/shared-web/hero/hero-views.css";
@@ -10,7 +10,8 @@ import "../catalog/CatalogPage.css";
 
 const HERO = "/api/admin/hero";
 const TYPES = ["campaign", "product", "video", "collection", "category", "seasonal"];
-const MODES = ["full_banner", "video", "split", "collection_grid", "event"];
+// Image-based layouts (the "video" displayMode is chosen via the Media type switch).
+const LAYOUT_MODES = ["full_banner", "split", "collection_grid", "event"];
 const CTA_TYPES = ["none", "product", "collection", "category", "customUrl"];
 const empty = {
   type: "campaign", displayMode: "full_banner", title: "", subtitle: "", ctaText: "",
@@ -137,10 +138,24 @@ export default function HeroBannerPage() {
     catch (e) { if (e instanceof ApiError && e.status === 401) return notifyUnauthorized(); setErr("Could not reorder."); }
   }
   async function upload(field, file) {
-    const fd = new FormData(); fd.append("file", file);
-    const res = await fetch("/api/admin/media", { method: "POST", headers: { Authorization: `Bearer ${getToken()}` }, body: fd });
-    const data = await res.json();
-    set({ [field]: data.filename });
+    setErr(null);
+    try {
+      const fd = new FormData(); fd.append("file", file);
+      const res = await fetch(`${API_BASE_URL}/api/admin/media`, { method: "POST", headers: { Authorization: `Bearer ${getToken()}` }, body: fd });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body?.error?.message || `Upload failed (${res.status}).`);
+      }
+      const data = await res.json();
+      set({ [field]: data.filename });
+    } catch (e) { setErr(e.message || "Upload failed."); }
+  }
+
+  // Media type is derived from displayMode: "video" mode is video-based, the rest are image-based.
+  const mediaType = form.displayMode === "video" ? "video" : "image";
+  function setMediaType(next) {
+    if (next === "video") set({ displayMode: "video" });
+    else if (form.displayMode === "video") set({ displayMode: "full_banner" });
   }
 
   const previewSlides = useMemo(() => {
@@ -168,8 +183,15 @@ export default function HeroBannerPage() {
             <input type="text" value={form.title} onChange={(e) => set({ title: e.target.value })} /></label>
           <label className="catalog-page__field"><span>Type</span>
             <select value={form.type} onChange={(e) => set({ type: e.target.value })}>{TYPES.map((t) => <option key={t} value={t}>{t}</option>)}</select></label>
-          <label className="catalog-page__field"><span>Display mode</span>
-            <select value={form.displayMode} onChange={(e) => set({ displayMode: e.target.value })}>{MODES.map((m) => <option key={m} value={m}>{m}</option>)}</select></label>
+          <label className="catalog-page__field"><span>Media type</span>
+            <select value={mediaType} onChange={(e) => setMediaType(e.target.value)}>
+              <option value="image">Image</option>
+              <option value="video">Video</option>
+            </select></label>
+          {mediaType === "image" && (
+            <label className="catalog-page__field"><span>Layout</span>
+              <select value={form.displayMode} onChange={(e) => set({ displayMode: e.target.value })}>{LAYOUT_MODES.map((m) => <option key={m} value={m}>{m}</option>)}</select></label>
+          )}
           <label className="catalog-page__field"><span>Subtitle</span>
             <input type="text" value={form.subtitle} onChange={(e) => set({ subtitle: e.target.value })} /></label>
           <label className="catalog-page__field"><span>CTA text</span>

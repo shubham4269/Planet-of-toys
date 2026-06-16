@@ -1,6 +1,6 @@
 // apps/admin/src/pages/admin/content/NavigationPage.jsx
 import { useCallback, useEffect, useMemo, useState } from "react";
-import apiClient, { ApiError } from "@planet-of-toys/shared-web/apiClient";
+import apiClient, { ApiError, API_BASE_URL } from "@planet-of-toys/shared-web/apiClient";
 import { mediaUrl } from "@planet-of-toys/shared-web/format";
 import { NavigationView } from "@planet-of-toys/shared-web";
 import { getToken, notifyUnauthorized } from "../../../lib/adminAuth.js";
@@ -74,7 +74,7 @@ export default function NavigationPage() {
   }
   async function uploadImage(id, file) {
     const fd = new FormData(); fd.append("file", file);
-    const res = await fetch("/api/admin/media", { method: "POST", headers: { Authorization: `Bearer ${getToken()}` }, body: fd });
+    const res = await fetch(`${API_BASE_URL}/api/admin/media`, { method: "POST", headers: { Authorization: `Bearer ${getToken()}` }, body: fd });
     const data = await res.json();
     await patch(id, { image: data.filename });
   }
