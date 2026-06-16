@@ -10,7 +10,8 @@
     "start": "node src/index.js",
     "test": "vitest run",
     "test:watch": "vitest",
-    "seed:footer": "node src/scripts/seed-footer.js"
+    "seed:footer": "node src/scripts/seed-footer.js",
+    "seed:catalog": "node src/scripts/seed-catalog.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
