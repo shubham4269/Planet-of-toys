@@ -58,7 +58,10 @@ HeroSlide {
   categoryId (ref Category|null), customUrl (String),
   // media (filenames via the existing media endpoint):
   desktopMedia, mobileMedia, video, posterImage,
+  // optional manual product selection for displayMode "collection_grid":
+  gridProductIds ([ref Product], default []),   // if set, overrides derived grid items
   // status / scheduling / ordering (ALL slide types):
+  status: enum [draft, published] (default "draft"),   // Draft/Published (publish gate)
   active (Bool, default true),
   deletedAt (Date|null),                 // soft delete (#2)
   startDate (Date|null), endDate (Date|null),   // scheduling on every type (#3)
@@ -73,9 +76,11 @@ HeroSlide {
 // Indexes: { deletedAt:1, active:1 }, { priority:-1, sortOrder:1 }, { startDate:1 }, { endDate:1 }
 ```
 
-**Public visibility rule:** a slide is shown when `deletedAt == null` AND `active == true` AND
-(`startDate == null` OR `startDate <= now`) AND (`endDate == null` OR `endDate >= now`).
-**Order:** `priority` desc, then `sortOrder` asc, then `createdAt` desc.
+**Public visibility rule:** a slide is shown when `deletedAt == null` AND `status == "published"`
+AND `active == true` AND (`startDate == null` OR `startDate <= now`) AND (`endDate == null` OR
+`endDate >= now`). **Order:** `priority` desc, then `sortOrder` asc, then `createdAt` desc.
+(`status` gates whether a slide is publishable at all; `active` is the quick on/off toggle within
+published — both must pass.)
 
 ## 3. Updated API contracts
 
@@ -86,8 +91,10 @@ Public  GET /api/hero
              desktopMedia, mobileMedia, video, posterImage, gridItems? }
     ctaHref: product→/product/:slug · collection→/collections/:slug ·
              category→/category/:slug · customUrl→customUrl · none→null
-    gridItems: present only for displayMode "collection_grid" linked to a collection/category —
-               up to 4 product cards {id,slug,name,price,images} (reuses queryProductsForScope)
+    gridItems: present only for displayMode "collection_grid" — up to 4 product cards
+               {id,slug,name,price,images}. Source: the slide's `gridProductIds` (manual
+               selection, in order) when set; otherwise derived from the linked
+               collection/category (reuses queryProductsForScope, limit 4).
 
 Admin (auth)   ROUTER_MOUNTS.heroAdmin = /api/admin/hero
   GET    /                 (all; ?includeDeleted=true to include soft-deleted)
@@ -102,13 +109,15 @@ ROUTER_MOUNTS.hero = /api/hero
 ## 4. Updated admin UX (Content → Hero Banner)
 
 The reserved Hero Banner page becomes the editor:
-- **Slide list:** type + displayMode badges, title, active toggle, move up/down (reorder),
-  edit, **soft-delete**; an **"Show deleted"** filter exposes soft-deleted slides with a
-  **Restore** action. Priority shown/editable.
+- **Slide list:** type + displayMode + **status (Draft/Published)** badges, title, active toggle,
+  move up/down (reorder), edit, **soft-delete**; an **"Show deleted"** filter exposes
+  soft-deleted slides with a **Restore** action. Priority shown/editable.
 - **Add/Edit form (adapts to `type` + `displayMode`):** title/subtitle/CTA text; `ctaType` +
   the matching Product/Collection/Category picker or Custom URL; desktop/mobile image uploads;
   **video + poster** uploads (when displayMode=video); **start/end dates** (all types);
-  **priority** + active. Uploads use the existing media endpoint; pickers reuse the
+  **status (Draft/Published)**; **priority** + active. When displayMode=`collection_grid`, an
+  **optional manual product multi-select** (`gridProductIds`); leaving it empty falls back to the
+  linked collection/category. Uploads use the existing media endpoint; pickers reuse the
   `TaxonomyAssignment`/entity-select pattern.
 - **Live preview:** `HeroEngineView` in `DevicePreview` (desktop + mobile), fed from the
   in-progress slide(s).
