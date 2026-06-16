@@ -52,6 +52,14 @@ export function createCatalogAdminRouter({ requireAuth = (req, res, next) => nex
   // bulk product assignment
   router.post("/products/bulk-assign", c.bulkAssignProducts);
 
+  // navigation (literal /reorder before /:id)
+  router.get("/navigation", c.navList);
+  router.post("/navigation", c.navCreate);
+  router.put("/navigation/reorder", c.navReorder);
+  router.put("/navigation/:id", c.navUpdate);
+  router.post("/navigation/:id/archive", c.navArchive);
+  router.post("/navigation/:id/restore", c.navRestore);
+
   return router;
 }
 
