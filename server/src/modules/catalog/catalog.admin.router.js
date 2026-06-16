@@ -32,6 +32,8 @@ export function createCatalogAdminRouter({ requireAuth = (req, res, next) => nex
   router.put("/collections/:id", c.updateCollection);
   router.post("/collections/:id/archive", c.archiveCollection);
   router.post("/collections/:id/restore", c.restoreCollection);
+  router.get("/collections/:id/filter-config", c.getFilterConfig);
+  router.put("/collections/:id/filter-config", c.putFilterConfig);
 
   // attributes + inline values
   router.get("/attributes", c.listAttributes);
