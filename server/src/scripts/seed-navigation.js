@@ -7,16 +7,13 @@ import * as categories from "../modules/catalog/category.service.js";
 import * as nav from "../modules/catalog/navigation.service.js";
 
 /**
- * Seed the storefront HEADER navigation (menuKey "header"). The primary category
- * sequence starts with Pretend Play: Pretend Play, Learning Toys, Puzzles,
- * Arts & Crafts, Trains & More Toys, then Sale and Discover.
+ * Seed the storefront HEADER navigation (menuKey "header") with all eight items:
+ * Shop By Age, Pretend Play, Learning Toys, Puzzles, Arts & Crafts,
+ * Trains & More Toys, Sale, Discover.
  *
  * Toy-type items are entity-based (they point at a Category via targetId — the
  * category is created if missing, so the link resolves to /category/<slug>).
- * "Sale" and "Discover" are internal routes for now.
- *
- * "Shop By Age" is intentionally NOT part of the main category flow; it is meant
- * to live as a separate utility/filter control, so it is not seeded inline here.
+ * "Shop By Age", "Sale", and "Discover" are internal routes for now.
  *
  * This RESETS the header menu (removes existing header items) so the result
  * matches exactly, then is safe to re-run. Everything stays editable afterwards
@@ -43,7 +40,10 @@ async function main() {
     await NavigationItem.deleteMany({ menuKey: "header" });
 
     let order = 0;
-    // 1-5. Category-backed pills (the primary sequence starts with Pretend Play).
+    // 1. Shop By Age (internal route — age browsing lands here for now).
+    await nav.createNavigationItem({ label: "Shop By Age", targetType: "internalRoute", url: "/shop-by-age", menuKey: "header", sortOrder: order++ });
+
+    // 2-6. Category-backed pills.
     for (const name of CATEGORY_ITEMS) {
       // eslint-disable-next-line no-await-in-loop
       const targetId = await categoryId(name);
@@ -51,12 +51,12 @@ async function main() {
       await nav.createNavigationItem({ label: name, targetType: "category", targetId, menuKey: "header", sortOrder: order++ });
     }
 
-    // 6. Sale, 7. Discover (internal routes).
+    // 7. Sale, 8. Discover (internal routes).
     await nav.createNavigationItem({ label: "Sale", targetType: "internalRoute", url: "/sale", menuKey: "header", sortOrder: order++ });
     await nav.createNavigationItem({ label: "Discover", targetType: "internalRoute", url: "/discover", menuKey: "header", sortOrder: order++ });
 
     // eslint-disable-next-line no-console
-    console.log("Header navigation seeded (7 items, starting with Pretend Play).");
+    console.log("Header navigation seeded (8 items, starting with Shop By Age).");
   } finally {
     await disconnectDatabase();
   }

@@ -119,7 +119,9 @@
   gap: var(--space-6);
   max-width: 1320px;
   margin: 0 auto;
-  padding: var(--space-1) var(--space-6) var(--space-3);
+  /* Tight vertical rhythm; left indent = bar padding + logo width (82px) + gap,
+     so the row begins just after the logo column (aligned with the search bar). */
+  padding: var(--space-1) var(--space-6) var(--space-2) calc(var(--space-6) + 82px + var(--space-6));
   flex-wrap: wrap;
 }
 .site-header__nav-link {
@@ -150,7 +152,7 @@
 .site-header__nav-mobile { display: none; }
 @media (max-width: 860px) {
   .site-header__nav-desktop { display: none; }
-  .site-header__nav { display: none; }
+  .site-header__nav { display: none; padding: var(--space-2) var(--space-4) var(--space-4); }
   .site-header__nav--open { display: block; }
   .site-header__nav--open .site-header__nav-mobile { display: block; }
 }
