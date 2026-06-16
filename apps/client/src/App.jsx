@@ -8,6 +8,7 @@ import ShippingPolicyPage from "./pages/ShippingPolicyPage.jsx";
 import RefundPolicyPage from "./pages/RefundPolicyPage.jsx";
 import CollectionPage from "./pages/CollectionPage.jsx";
 import CategoryPage from "./pages/CategoryPage.jsx";
+import HomePage from "./pages/HomePage.jsx";
 import "./styles/tokens.css";
 
 /**
@@ -41,7 +42,7 @@ export function AppRoutes() {
     <Routes>
       <Route element={<CustomerLayout />}>
         {/* Catalogue — scaffolded for future implementation. */}
-        <Route index element={<Placeholder title="Planet of Toys" />} />
+        <Route index element={<HomePage />} />
         <Route path="products" element={<Placeholder title="Products" />} />
         <Route path="product/:slug" element={<Placeholder title="Product" />} />
         <Route path="cart" element={<Placeholder title="Your cart" />} />

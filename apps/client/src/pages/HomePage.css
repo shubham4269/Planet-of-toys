@@ -1,0 +1,6 @@
+/* apps/client/src/pages/HomePage.css */
+.home { max-width: 1320px; margin: 0 auto; padding: var(--space-5, 24px); display: grid; gap: var(--space-7, 48px); }
+.home__hero:empty { display: none; }
+.home__heading { margin: 0 0 8px; font-family: var(--font-heading, inherit); font-size: 1.4rem; font-weight: 800; color: var(--color-text-primary, #1e293b); }
+.home__soon { margin: 0; color: var(--color-text-secondary, #64748b); }
+.home__placeholder { border: 1px dashed var(--color-border, #e6ebf5); border-radius: 14px; padding: 28px; }
