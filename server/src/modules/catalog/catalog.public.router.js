@@ -13,6 +13,8 @@ export function createCatalogPublicRouter() {
   router.get("/categories/:slug", c.publicCategoryBySlug);
   router.get("/collections", c.publicCollections);
   router.get("/collections/:slug", c.publicCollectionBySlug);
+  router.get("/collections/:slug/filters", c.collectionFilters);
+  router.get("/collections/:slug/products", c.collectionProducts);
   router.get("/attributes", c.publicAttributes);
   return router;
 }

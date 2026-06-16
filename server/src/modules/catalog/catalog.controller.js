@@ -4,6 +4,9 @@ import * as collections from "./collection.service.js";
 import * as attributes from "./attribute.service.js";
 import * as navigation from "./navigation.service.js";
 import { bulkAssign } from "./productAssign.service.js";
+import { resolveFilters } from "./filterResolver.service.js";
+import { queryCollectionProducts } from "./collectionQuery.service.js";
+import { getFilterConfig, saveFilterConfig } from "./filterConfig.service.js";
 
 /**
  * Catalog controller — thin HTTP layer over the catalog services. Admin handlers
@@ -67,6 +70,22 @@ export function createCatalogController() {
       return res.json({ collection, products });
     }),
     publicAttributes: wrap(async (_req, res) => res.json({ attributes: await attributes.listPublicAttributes() })),
+
+    // ---- public: dynamic filters + product query (Sub-project B) ----
+    collectionFilters: wrap(async (req, res) => {
+      const collection = await collections.getPublicCollectionBySlug(req.params.slug);
+      if (!collection) return res.status(404).json({ error: { message: "Not found", status: 404 } });
+      return res.json({ filters: await resolveFilters(collection.id) });
+    }),
+    collectionProducts: wrap(async (req, res) => {
+      const result = await queryCollectionProducts(req.params.slug, req.query || {});
+      if (!result) return res.status(404).json({ error: { message: "Not found", status: 404 } });
+      return res.json(result);
+    }),
+
+    // ---- admin: filter config (Sub-project B) ----
+    getFilterConfig: wrap(async (req, res) => res.json({ config: await getFilterConfig(req.params.id) })),
+    putFilterConfig: wrap(async (req, res) => res.json({ config: await saveFilterConfig(req.params.id, req.body?.filters ?? []) })),
 
     // navigation services are foundation-only (no routes in Sub-project A); kept
     // imported so future wiring lives alongside the rest of the controller.
