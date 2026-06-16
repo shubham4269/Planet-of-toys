@@ -43,3 +43,4 @@ export { default as Attribute, DISPLAY_TYPES } from "../modules/catalog/attribut
 export { default as AttributeValue } from "../modules/catalog/attributeValue.model.js";
 export { default as NavigationItem, NAV_TARGET_TYPES, NAV_MENUS } from "../modules/catalog/navigationItem.model.js";
 export { default as CollectionFilterConfig } from "../modules/catalog/collectionFilterConfig.model.js";
+export { default as HeroSlide, HERO_TYPES, HERO_DISPLAY_MODES, HERO_CTA_TYPES, HERO_STATUSES } from "../modules/hero/heroSlide.model.js";
