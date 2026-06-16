@@ -13,6 +13,11 @@ async function defaultFilters() {
   return filters;
 }
 
+/** The synthesized default filter list (all active filterable attributes + price). */
+export async function defaultFilterConfig() {
+  return defaultFilters();
+}
+
 /**
  * Resolve the stored config for a collection, or the synthesized default when
  * none exists. Returns { collectionId, filters, isDefault } with filters sorted.

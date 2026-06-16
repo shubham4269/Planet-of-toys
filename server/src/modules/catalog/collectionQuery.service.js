@@ -57,11 +57,9 @@ async function buildConditions(query) {
  * @param {string} slug collection slug
  * @param {Record<string,string>} query flat query params (f_<attrSlug>, price, category, sort, page, limit)
  */
-export async function queryCollectionProducts(slug, query = {}) {
-  const collection = await Collection.findOne({ slug, isActive: true, deletedAt: null });
-  if (!collection) return null;
-
-  const base = { collectionIds: collection._id, active: true };
+/** Filter + sort + paginate products within a browse scope ({ field, id }). */
+export async function queryProductsForScope(scope, query = {}) {
+  const base = { [scope.field]: scope.id, active: true };
   const and = await buildConditions(query);
   const filter = and.length ? { ...base, $and: and } : base;
 
@@ -80,4 +78,10 @@ export async function queryCollectionProducts(slug, query = {}) {
     pageCount: Math.max(1, Math.ceil(total / limit)),
     appliedFilters: { sort: query.sort || "featured", page, limit },
   };
+}
+
+export async function queryCollectionProducts(slug, query = {}) {
+  const collection = await Collection.findOne({ slug, isActive: true, deletedAt: null });
+  if (!collection) return null;
+  return queryProductsForScope({ field: "collectionIds", id: collection._id }, query);
 }

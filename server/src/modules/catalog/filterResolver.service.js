@@ -6,20 +6,20 @@ import Category from "./category.model.js";
 import { Product } from "../../models/index.js";
 import { getFilterConfig } from "./filterConfig.service.js";
 
-/** Min/max product price within a collection's active products (0/0 if empty). */
-async function priceRange(collectionId) {
-  const oid = new mongoose.Types.ObjectId(String(collectionId));
+/** Min/max product price within a scope's active products (0/0 if empty). */
+async function priceRange(scope) {
+  const oid = new mongoose.Types.ObjectId(String(scope.id));
   const rows = await Product.aggregate([
-    { $match: { collectionIds: oid, active: true } },
+    { $match: { [scope.field]: oid, active: true } },
     { $group: { _id: null, min: { $min: "$price" }, max: { $max: "$price" } } },
   ]);
   if (!rows.length) return { min: 0, max: 0 };
   return { min: rows[0].min ?? 0, max: rows[0].max ?? 0 };
 }
 
-/** Distinct category options among a collection's active products. */
-async function categoryOptions(collectionId) {
-  const ids = await Product.distinct("categoryIds", { collectionIds: collectionId, active: true });
+/** Distinct category options among a scope's active products. */
+async function categoryOptions(scope) {
+  const ids = await Product.distinct("categoryIds", { [scope.field]: scope.id, active: true });
   if (!ids.length) return [];
   const cats = await Category.find({ _id: { $in: ids }, isActive: true, deletedAt: null }).sort({ sortOrder: 1, name: 1 });
   return cats.map((c) => ({ slug: c.slug, name: c.name }));
@@ -35,9 +35,8 @@ async function categoryOptions(collectionId) {
  *   price     → { key:"price", type:"price", min, max }
  *   category  → { key:"category", type:"category", options:[{slug,name}] }
  */
-export async function resolveFilters(collectionId) {
-  const { filters } = await getFilterConfig(collectionId);
-  const enabled = filters.filter((f) => f.enabled !== false).sort((a, b) => a.sortOrder - b.sortOrder);
+export async function resolveFiltersForScope(scope, configFilters) {
+  const enabled = configFilters.filter((f) => f.enabled !== false).sort((a, b) => a.sortOrder - b.sortOrder);
   const defs = [];
   for (const f of enabled) {
     if (f.type === "attribute") {
@@ -53,13 +52,19 @@ export async function resolveFilters(collectionId) {
       });
     } else if (f.type === "price") {
       // eslint-disable-next-line no-await-in-loop
-      const { min, max } = await priceRange(collectionId);
+      const { min, max } = await priceRange(scope);
       defs.push({ key: "price", type: "price", min, max });
     } else if (f.type === "category") {
       // eslint-disable-next-line no-await-in-loop
-      const options = await categoryOptions(collectionId);
+      const options = await categoryOptions(scope);
       defs.push({ key: "category", type: "category", options });
     }
   }
   return defs;
+}
+
+/** Collection filters: scope = collectionIds, config = stored/synthesized. */
+export async function resolveFilters(collectionId) {
+  const { filters } = await getFilterConfig(collectionId);
+  return resolveFiltersForScope({ field: "collectionIds", id: collectionId }, filters);
 }
