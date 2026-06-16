@@ -24,3 +24,8 @@ export { default as FooterView } from "./footer/FooterView.jsx";
 export { default as CategoryView } from "./catalog/CategoryView.jsx";
 export { default as CollectionView } from "./catalog/CollectionView.jsx";
 export { default as AttributeFilterView } from "./catalog/AttributeFilterView.jsx";
+export { default as ProductCard } from "./catalog/ProductCard.jsx";
+export { default as ProductGrid } from "./catalog/ProductGrid.jsx";
+export { default as SortControl, SORT_OPTIONS } from "./catalog/SortControl.jsx";
+export { default as FilterView } from "./catalog/FilterView.jsx";
+export * from "./catalog/filterParams.js";

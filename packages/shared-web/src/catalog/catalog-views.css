@@ -39,3 +39,24 @@ button.pot-cat-card { cursor: pointer; }
 .pot-filter__swatch { width: 26px; height: 26px; border-radius: 999px; border: 1px solid rgba(0,0,0,0.15); cursor: pointer; }
 .pot-filter__pill { border: 1px solid #cbd5e1; border-radius: 999px; padding: 6px 14px; background: #fff; cursor: pointer; }
 .pot-filter__range { width: 100%; }
+
+/* FilterView + browse controls */
+.pot-filterview { display: grid; gap: 20px; align-content: start; }
+.pot-filterview__head { display: flex; align-items: center; justify-content: space-between; }
+.pot-filterview__title { margin: 0; font-size: 1.1rem; font-weight: 800; }
+.pot-filterview__close { display: none; border: 0; background: none; font-size: 1.6rem; line-height: 1; cursor: pointer; }
+.pot-filter--price .pot-filter__price-row { display: flex; gap: 10px; }
+.pot-filter__price-field { display: grid; gap: 4px; font-size: 0.8rem; }
+.pot-filter__price-field input { width: 100%; padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px; }
+.pot-filter__swatch--on { outline: 2px solid #2e3192; outline-offset: 2px; }
+.pot-filter__pill--on { background: #2e3192; color: #fff; border-color: #2e3192; }
+.pot-grid__empty { color: #64748b; padding: 24px 0; }
+.pot-sort { display: inline-flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+.pot-sort__select { padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 8px; }
+/* Mobile drawer: hidden off-canvas until open. The storefront page decides when to apply it. */
+@media (max-width: 860px) {
+  .pot-filterview { position: fixed; inset: 0 20% 0 0; background: #fff; z-index: 40; padding: 20px;
+    transform: translateX(-105%); transition: transform 180ms ease; overflow: auto; box-shadow: 0 0 40px rgba(0,0,0,.2); }
+  .pot-filterview--open { transform: translateX(0); }
+  .pot-filterview__close { display: inline-block; }
+}
