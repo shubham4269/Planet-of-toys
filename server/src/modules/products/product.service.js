@@ -1,5 +1,5 @@
-import { Product } from "../models/index.js";
-import { AppError } from "../middleware/errorHandler.js";
+import { Product } from "../../models/index.js";
+import { AppError } from "../../shared/middleware/errorHandler.js";
 
 /**
  * Product Service (Req 1, 16).
@@ -41,6 +41,9 @@ const PUBLIC_FIELDS = Object.freeze([
   "trustBadges",
   "stock",
   "variants",
+  "categoryIds",
+  "collectionIds",
+  "attributeValueIds",
 ]);
 
 /**
@@ -62,6 +65,9 @@ const WRITABLE_FIELDS = Object.freeze([
   "stock",
   "variants",
   "active",
+  "categoryIds",
+  "collectionIds",
+  "attributeValueIds",
 ]);
 
 /**
