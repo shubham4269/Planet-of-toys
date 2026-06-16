@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import apiClient from "@planet-of-toys/shared-web/apiClient";
+import { mediaUrl } from "@planet-of-toys/shared-web/format";
+import { NavigationView } from "@planet-of-toys/shared-web";
 import logo from "../assets/logo.webp";
 import "./Header.css";
 
@@ -9,14 +12,6 @@ import "./Header.css";
  * Visual only — no real auth/cart/search logic yet; links route to existing or
  * placeholder routes and search submits to /products. All icons are inline SVG.
  */
-
-/** Category nav links — edit here to change the menu (config, not hardcoded JSX). */
-const CATEGORIES = [
-  { label: "New Arrivals", to: "/products" },
-  { label: "Shop by Age", to: "/products" },
-  { label: "Brands", to: "/products" },
-  { label: "Sale", to: "/products" },
-];
 
 function IconSearch() {
   return (
@@ -75,6 +70,15 @@ export default function Header() {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [menuOpen, setMenuOpen] = useState(false);
+  const [navItems, setNavItems] = useState([]);
+
+  useEffect(() => {
+    let active = true;
+    apiClient.get("/api/catalog/navigation?menuKey=header")
+      .then((res) => { if (active) setNavItems(res.items || []); })
+      .catch(() => { if (active) setNavItems([]); });
+    return () => { active = false; };
+  }, []);
 
   function handleSearch(event) {
     event.preventDefault();
@@ -137,22 +141,14 @@ export default function Header() {
         </nav>
       </div>
 
-      <nav
-        id="site-header-nav"
-        className={`site-header__nav${menuOpen ? " site-header__nav--open" : ""}`}
-        aria-label="Categories"
-      >
-        {CATEGORIES.map((c) => (
-          <Link
-            key={c.label}
-            to={c.to}
-            className="site-header__nav-link"
-            onClick={() => setMenuOpen(false)}
-          >
-            {c.label}
-          </Link>
-        ))}
-      </nav>
+      <div id="site-header-nav" className={`site-header__nav${menuOpen ? " site-header__nav--open" : ""}`}>
+        <div className="site-header__nav-desktop">
+          <NavigationView items={navItems} variant="desktop" resolveImageUrl={(f) => mediaUrl(f)} onNavigate={() => setMenuOpen(false)} />
+        </div>
+        <div className="site-header__nav-mobile">
+          <NavigationView items={navItems} variant="mobile" resolveImageUrl={(f) => mediaUrl(f)} onNavigate={() => setMenuOpen(false)} />
+        </div>
+      </div>
     </header>
   );
 }

@@ -1,7 +1,16 @@
-import { describe, it, expect } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { render, screen, fireEvent, waitFor, cleanup } from "@testing-library/react";
 import { MemoryRouter, useLocation } from "react-router-dom";
 import Header from "./Header.jsx";
+
+const apiMock = vi.hoisted(() => ({ get: vi.fn() }));
+vi.mock("@planet-of-toys/shared-web/apiClient", () => ({ default: apiMock, ApiError: class extends Error {} }));
+
+beforeEach(() => {
+  apiMock.get.mockReset();
+  apiMock.get.mockResolvedValue({ items: [{ id: "1", label: "New Arrivals", href: "/collections/new", isMegaMenu: false, children: [] }] });
+});
+afterEach(cleanup);
 
 /** Echoes the current location so we can assert navigation. */
 function LocationDisplay() {
@@ -29,11 +38,11 @@ describe("Header", () => {
     expect(screen.getByRole("link", { name: /^cart$/i })).toBeInTheDocument();
   });
 
-  it("renders the category nav from the config array", () => {
+  it("renders the CMS-driven navigation fetched from the API", async () => {
     renderHeader();
-    for (const label of ["New Arrivals", "Shop by Age", "Brands", "Sale"]) {
-      expect(screen.getByRole("link", { name: label })).toBeInTheDocument();
-    }
+    await waitFor(() => expect(apiMock.get).toHaveBeenCalledWith("/api/catalog/navigation?menuKey=header"));
+    // Rendered in both desktop + mobile containers.
+    expect((await screen.findAllByRole("link", { name: "New Arrivals" })).length).toBeGreaterThan(0);
   });
 
   it("submits search to /products with the query", () => {

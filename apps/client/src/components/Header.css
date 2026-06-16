@@ -146,3 +146,11 @@
   }
   .site-header__nav--open { display: flex; }
 }
+
+.site-header__nav-mobile { display: none; }
+@media (max-width: 860px) {
+  .site-header__nav-desktop { display: none; }
+  .site-header__nav { display: none; }
+  .site-header__nav--open { display: block; }
+  .site-header__nav--open .site-header__nav-mobile { display: block; }
+}
