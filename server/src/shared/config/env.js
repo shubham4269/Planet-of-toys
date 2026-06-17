@@ -131,12 +131,13 @@ export function buildConfig(env = process.env) {
 
     // Upload settings (Req 23).
     uploads: Object.freeze({
-      maxUploadSizeMb: parseInteger(env.MAX_UPLOAD_SIZE_MB, 10),
+      maxUploadSizeMb: parseInteger(env.MAX_UPLOAD_SIZE_MB, 50),
       allowedMediaTypes: parseList(env.ALLOWED_MEDIA_TYPES, [
         "image/jpeg",
         "image/png",
         "image/webp",
         "video/mp4",
+        "video/webm",
       ]),
     }),
 

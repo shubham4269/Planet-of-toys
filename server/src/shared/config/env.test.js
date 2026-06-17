@@ -91,8 +91,9 @@ describe("buildConfig", () => {
     expect(config.server.port).toBe(4000);
     expect(config.auth.sessionExpiration).toBe("2h");
     expect(config.cors.allowedOrigins).toEqual(["http://localhost:5173"]);
-    expect(config.uploads.maxUploadSizeMb).toBe(10);
+    expect(config.uploads.maxUploadSizeMb).toBe(50);
     expect(config.uploads.allowedMediaTypes).toContain("image/webp");
+    expect(config.uploads.allowedMediaTypes).toContain("video/webm");
     expect(config.rateLimits.otp.max).toBe(3);
     expect(config.rateLimits.login.blockThreshold).toBe(5);
   });
