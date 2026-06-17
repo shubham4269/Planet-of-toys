@@ -67,7 +67,7 @@ const limiters = createRateLimiters(config.rateLimits);
 const loginAudit = loginAuditRecorder();
 const settingsAudit = requestAuditRecorder();
 
-// Build media routers (upload + serve share a single media service).
+// Build media routers (upload + serve + admin library share one media service).
 const { uploadRouter: mediaUploadRouter, serveRouter: mediaServeRouter } =
   createMediaRouters({
     uploads: config.uploads,

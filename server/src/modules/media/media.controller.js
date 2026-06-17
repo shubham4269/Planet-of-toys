@@ -1,4 +1,4 @@
-import { MediaValidationError } from "../services/media.service.js";
+import { MediaValidationError } from "./media.service.js";
 
 /**
  * Media controller (Req 18, 23).
@@ -39,6 +39,49 @@ export function createUploadHandler(mediaService) {
         },
       });
     } catch (err) {
+      next(err);
+    }
+  };
+}
+
+/**
+ * Build the media-library list handler bound to a media library service.
+ * Maps `?q=&type=&filter=` query params to the service call.
+ *
+ * @param {{ listMedia: Function }} mediaLibraryService
+ * @returns {import("express").RequestHandler}
+ */
+export function createListHandler(mediaLibraryService) {
+  return async function listMedia(req, res, next) {
+    try {
+      const { q = "", type = "all", filter = "all" } = req.query;
+      const { items, summary } = await mediaLibraryService.listMedia({ q, type, filter });
+      res.status(200).json({ items, summary });
+    } catch (err) {
+      next(err);
+    }
+  };
+}
+
+/**
+ * Build the media-library delete handler. Returns 200 on success, 409 with a
+ * `usedBy` payload when the file is referenced, 400 for an invalid name, and
+ * 404 when the file is missing — using the status carried by MediaLibraryError.
+ *
+ * @param {{ deleteMedia: Function }} mediaLibraryService
+ * @returns {import("express").RequestHandler}
+ */
+export function createDeleteHandler(mediaLibraryService) {
+  return async function deleteMedia(req, res, next) {
+    try {
+      const result = await mediaLibraryService.deleteMedia(req.params.filename);
+      res.status(200).json(result);
+    } catch (err) {
+      if (err && err.name === "MediaLibraryError") {
+        const body = { error: { message: err.message, status: err.status } };
+        if (err.usedBy) body.usedBy = err.usedBy;
+        return res.status(err.status).json(body);
+      }
       next(err);
     }
   };

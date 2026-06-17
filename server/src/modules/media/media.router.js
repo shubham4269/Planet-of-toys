@@ -1,8 +1,9 @@
 import { Router } from "express";
 import express from "express";
 import multer from "multer";
-import { createMediaService, MediaValidationError } from "../services/media.service.js";
-import { createUploadHandler } from "../controllers/media.controller.js";
+import { createMediaService, MediaValidationError } from "./media.service.js";
+import { createMediaLibraryService } from "./mediaLibrary.service.js";
+import { createUploadHandler, createListHandler, createDeleteHandler } from "./media.controller.js";
 
 /**
  * Media router (Req 18, 23).
@@ -58,7 +59,7 @@ function wrapMulter(uploadMiddleware) {
  * @param {import("express").RequestHandler} [options.requireAuth] auth guard.
  * @returns {import("express").Router}
  */
-export function createMediaUploadRouter({ mediaService, requireAuth = passthrough }) {
+export function createMediaUploadRouter({ mediaService, mediaLibraryService, requireAuth = passthrough }) {
   const router = Router();
 
   const upload = multer({
@@ -72,6 +73,13 @@ export function createMediaUploadRouter({ mediaService, requireAuth = passthroug
     wrapMulter(upload.single("file")),
     createUploadHandler(mediaService)
   );
+
+  // Admin Media Library: list + guarded delete. Additive — only registered when
+  // a library service is supplied (it queries catalog/hero models for usage).
+  if (mediaLibraryService) {
+    router.get("/", requireAuth, createListHandler(mediaLibraryService));
+    router.delete("/:filename", requireAuth, createDeleteHandler(mediaLibraryService));
+  }
 
   return router;
 }
@@ -135,9 +143,12 @@ export function createMediaRouters({
   const service =
     mediaService || createMediaService({ uploads, mediaDir });
 
+  const library = createMediaLibraryService({ getMediaDir: service.getMediaDir });
+
   return {
     mediaService: service,
-    uploadRouter: createMediaUploadRouter({ mediaService: service, requireAuth }),
+    mediaLibraryService: library,
+    uploadRouter: createMediaUploadRouter({ mediaService: service, mediaLibraryService: library, requireAuth }),
     serveRouter: createMediaServeRouter({ mediaService: service }),
   };
 }
