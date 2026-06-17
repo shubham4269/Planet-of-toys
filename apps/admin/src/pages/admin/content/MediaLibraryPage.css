@@ -1,0 +1,29 @@
+/* apps/admin/src/pages/admin/content/MediaLibraryPage.css */
+.medialib { display: grid; gap: var(--space-5, 24px); }
+.medialib__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.medialib__upload-btn { font-size: .85rem; font-weight: 700; padding: 8px 16px; border-radius: 8px; background: var(--color-primary, #f81424); color: #fff; cursor: pointer; }
+.medialib__upload-btn input { display: none; }
+.medialib__summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; }
+.medialib__stat { border: 1px solid var(--color-border, #e6ebf5); border-radius: 12px; padding: 14px 16px; background: #fff; }
+.medialib__stat-value { font-size: 1.25rem; font-weight: 800; color: var(--color-text-primary, #1e293b); }
+.medialib__stat-label { font-size: .8rem; color: var(--color-text-secondary, #64748b); }
+.medialib__toolbar { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.medialib__toolbar input[type="search"] { padding: 8px 12px; border: 1px solid var(--color-border, #e6ebf5); border-radius: 8px; min-width: 220px; }
+.medialib__toolbar select { padding: 8px 10px; border: 1px solid var(--color-border, #e6ebf5); border-radius: 8px; }
+.medialib__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.medialib__empty { color: var(--color-text-secondary, #64748b); }
+.medialib__card { border: 1px solid var(--color-border, #e6ebf5); border-radius: 14px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
+.medialib__thumb { aspect-ratio: 4 / 3; background: #f1f5fb; display: grid; place-items: center; overflow: hidden; }
+.medialib__thumb img, .medialib__thumb video { width: 100%; height: 100%; object-fit: cover; }
+.medialib__meta { padding: 10px 12px; display: grid; gap: 4px; }
+.medialib__name { font-weight: 700; font-size: .9rem; word-break: break-all; }
+.medialib__sub { font-size: .78rem; color: var(--color-text-secondary, #64748b); }
+.medialib__badge { justify-self: start; font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.medialib__badge--used { background: #e7f6ec; color: #1a7f43; }
+.medialib__badge--unused { background: #fdeaea; color: #b42318; }
+.medialib__actions { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px 12px; }
+.medialib__actions button, .medialib__actions a { font-size: .78rem; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--color-border, #e6ebf5); background: #fff; color: var(--color-text-primary, #1e293b); cursor: pointer; text-decoration: none; }
+.medialib__actions button[disabled] { opacity: .5; cursor: not-allowed; }
+.medialib__actions .medialib__delete { color: var(--color-primary, #f81424); border-color: var(--color-primary, #f81424); }
+.medialib__status { color: var(--color-text-secondary, #64748b); }
+.medialib__err { color: var(--color-primary, #f81424); }
