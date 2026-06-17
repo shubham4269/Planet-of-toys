@@ -8,6 +8,7 @@ const apiMock = vi.hoisted(() => ({ get: vi.fn(), put: vi.fn() }));
 vi.mock("@planet-of-toys/shared-web/apiClient", () => ({
   default: apiMock,
   ApiError: class ApiError extends Error {},
+  API_BASE_URL: "http://localhost:4000",
 }));
 
 function makeJwt(claims) {
@@ -60,6 +61,36 @@ describe("admin content routing + nav", () => {
     );
     expect(
       await screen.findByRole("link", { name: /promotional banner/i })
+    ).toBeInTheDocument();
+  });
+
+  it("renders the Media Library page at /admin/content/media-library", async () => {
+    vi.stubGlobal("fetch", vi.fn(async () => ({
+      ok: true, status: 200,
+      json: async () => ({
+        items: [],
+        summary: { totalFiles: 0, totalBytes: 0, totalLabel: "0 B", imageCount: 0, videoCount: 0, unusedFiles: 0, unusedBytes: 0, unusedLabel: "0 B" },
+      }),
+    })));
+    render(
+      <MemoryRouter initialEntries={["/admin/content/media-library"]}>
+        <AppRoutes />
+      </MemoryRouter>
+    );
+    expect(
+      await screen.findByRole("heading", { name: /media library/i })
+    ).toBeInTheDocument();
+    vi.unstubAllGlobals();
+  });
+
+  it("shows a Media Library sub-link in the Content group", async () => {
+    render(
+      <MemoryRouter initialEntries={["/admin/content/promo-banner"]}>
+        <AppRoutes />
+      </MemoryRouter>
+    );
+    expect(
+      await screen.findByRole("link", { name: /media library/i })
     ).toBeInTheDocument();
   });
 });

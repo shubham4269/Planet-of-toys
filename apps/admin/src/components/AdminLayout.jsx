@@ -113,6 +113,7 @@ const NAV_ITEMS = [
       { to: "/admin/content/hero-banner", label: "Hero Banner" },
       { to: "/admin/content/footer", label: "Footer Content" },
       { to: "/admin/content/navigation", label: "Navigation" },
+      { to: "/admin/content/media-library", label: "Media Library" },
     ],
   },
   {

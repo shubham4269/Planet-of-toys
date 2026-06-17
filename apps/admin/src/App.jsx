@@ -11,6 +11,7 @@ import PromoBannerPage from "./pages/admin/content/PromoBannerPage.jsx";
 import HeroBannerPage from "./pages/admin/content/HeroBannerPage.jsx";
 import FooterPage from "./pages/admin/content/FooterPage.jsx";
 import NavigationPage from "./pages/admin/content/NavigationPage.jsx";
+import MediaLibraryPage from "./pages/admin/content/MediaLibraryPage.jsx";
 import SubscribersPage from "./pages/admin/marketing/SubscribersPage.jsx";
 import CategoriesPage from "./pages/admin/catalog/CategoriesPage.jsx";
 import CollectionsPage from "./pages/admin/catalog/CollectionsPage.jsx";
@@ -66,6 +67,7 @@ export function AppRoutes() {
             <Route path="hero-banner" element={<HeroBannerPage />} />
             <Route path="footer" element={<FooterPage />} />
             <Route path="navigation" element={<NavigationPage />} />
+            <Route path="media-library" element={<MediaLibraryPage />} />
           </Route>
           <Route path="marketing">
             <Route index element={<Navigate to="subscribers" replace />} />
