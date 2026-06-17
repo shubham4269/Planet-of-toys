@@ -62,6 +62,17 @@ describe("apiClient", () => {
     });
   });
 
+  it("extracts the message from the { error: { message, status } } server shape", async () => {
+    fetch.mockResolvedValueOnce(
+      jsonResponse({ error: { message: "Unsupported media type.", status: 415 } }, { status: 415 })
+    );
+    await expect(request("/api/admin/media")).rejects.toMatchObject({
+      name: "ApiError",
+      status: 415,
+      message: "Unsupported media type.",
+    });
+  });
+
   it("falls back to a generic message when the error body has none", async () => {
     fetch.mockResolvedValueOnce(jsonResponse({}, { status: 500 }));
     await expect(request("/api/x")).rejects.toMatchObject({

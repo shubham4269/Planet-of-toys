@@ -85,12 +85,34 @@ export async function request(
 
   if (!response.ok) {
     const message =
-      (data && typeof data === "object" && (data.error || data.message)) ||
-      "Something went wrong. Please try again.";
+      extractErrorMessage(data) || "Something went wrong. Please try again.";
     throw new ApiError(message, { status: response.status, data });
   }
 
   return data;
+}
+
+/**
+ * Pull a human-readable message out of a parsed error body, tolerating both
+ * shapes the API uses: a plain string (`{ error: "msg" }` / `{ message: "msg" }`)
+ * and the central handler's object shape (`{ error: { message, status } }`).
+ * Returns null when nothing usable is present so the caller can fall back to a
+ * generic message — this avoids surfacing "[object Object]" to users.
+ *
+ * @param {*} data parsed response body
+ * @returns {string|null}
+ */
+function extractErrorMessage(data) {
+  if (typeof data === "string" && data.trim() !== "") return data;
+  if (!data || typeof data !== "object") return null;
+  const candidates = [data.error, data.message];
+  for (const candidate of candidates) {
+    if (typeof candidate === "string" && candidate.trim() !== "") return candidate;
+    if (candidate && typeof candidate === "object" && typeof candidate.message === "string" && candidate.message.trim() !== "") {
+      return candidate.message;
+    }
+  }
+  return null;
 }
 
 /** Parse a response body as JSON when present; tolerate empty/non-JSON bodies. */
