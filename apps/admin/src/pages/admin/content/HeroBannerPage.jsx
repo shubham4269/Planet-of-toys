@@ -20,36 +20,43 @@ const empty = {
   status: "draft", priority: 0, startDate: "", endDate: "", active: true,
 };
 
+// Recommended export dimensions per device, surfaced to content editors so the
+// hero always fills its fixed-aspect box (16:6 desktop, 4:5 mobile) with no bars.
+const DESKTOP_SPEC = "1920×720 (16:6)";
+const MOBILE_SPEC = "1080×1350 (4:5)";
+
 // Which media slots each displayMode exposes. `kind` (image|video) drives the
-// file accept filter + the thumbnail preview. collection_grid pulls its imagery
-// from the linked collection's products, so it needs no per-slide media.
+// file accept filter + the thumbnail preview; `hint` is the recommended upload
+// size shown under the slot. collection_grid pulls its imagery from the linked
+// collection's products, so it needs no per-slide media.
 const MEDIA_SLOTS = {
   full_banner: [
-    { field: "desktopMedia", label: "Desktop image", kind: "image" },
-    { field: "mobileMedia", label: "Mobile image", kind: "image" },
+    { field: "desktopMedia", label: "Desktop image", kind: "image", hint: DESKTOP_SPEC },
+    { field: "mobileMedia", label: "Mobile image", kind: "image", hint: MOBILE_SPEC },
   ],
   split: [
-    { field: "desktopMedia", label: "Desktop image", kind: "image" },
-    { field: "mobileMedia", label: "Mobile image", kind: "image" },
+    { field: "desktopMedia", label: "Desktop image", kind: "image", hint: DESKTOP_SPEC },
+    { field: "mobileMedia", label: "Mobile image", kind: "image", hint: MOBILE_SPEC },
   ],
   event: [
-    { field: "desktopMedia", label: "Desktop image", kind: "image" },
-    { field: "mobileMedia", label: "Mobile image", kind: "image" },
+    { field: "desktopMedia", label: "Desktop image", kind: "image", hint: DESKTOP_SPEC },
+    { field: "mobileMedia", label: "Mobile image", kind: "image", hint: MOBILE_SPEC },
   ],
   video: [
-    { field: "video", label: "Video", kind: "video" },
-    { field: "posterImage", label: "Poster image", kind: "image" },
-    { field: "desktopMedia", label: "Desktop image (fallback)", kind: "image" },
-    { field: "mobileMedia", label: "Mobile image (fallback)", kind: "image" },
+    { field: "video", label: "Video", kind: "video", hint: `MP4 · ${DESKTOP_SPEC} · ≤50MB` },
+    { field: "posterImage", label: "Poster image", kind: "image", hint: DESKTOP_SPEC },
+    { field: "desktopMedia", label: "Desktop image (fallback)", kind: "image", hint: DESKTOP_SPEC },
+    { field: "mobileMedia", label: "Mobile image (fallback)", kind: "image", hint: MOBILE_SPEC },
   ],
   collection_grid: [],
 };
 
 /** A single media slot: current asset thumbnail + Upload/Replace + Remove. */
-function MediaField({ label, kind, value, resolveUrl, onUpload, onRemove }) {
+function MediaField({ label, kind, hint, value, resolveUrl, onUpload, onRemove }) {
   return (
     <div className="hero-media">
       <span className="hero-media__label">{label}</span>
+      {hint && <span className="hero-media__hint">Recommended: {hint}</span>}
       <div className="hero-media__preview">
         {value
           ? (kind === "video"
@@ -229,13 +236,22 @@ export default function HeroBannerPage() {
           {(MEDIA_SLOTS[form.displayMode] || []).length === 0 ? (
             <p className="hero-media__note">Grid images come from the linked collection’s products — no slide image needed.</p>
           ) : (
-            <div className="hero-media-grid">
-              {(MEDIA_SLOTS[form.displayMode] || []).map((slot) => (
-                <MediaField key={slot.field} label={slot.label} kind={slot.kind} value={form[slot.field]}
-                  resolveUrl={(f) => mediaUrl(f)} onUpload={(file) => upload(slot.field, file)}
-                  onRemove={() => set({ [slot.field]: null })} />
-              ))}
-            </div>
+            <>
+              <div className="hero-media-guidelines" role="note">
+                <strong>Upload guidelines</strong>
+                <span><b>Desktop Hero:</b> {DESKTOP_SPEC}</span>
+                <span><b>Mobile Hero:</b> {MOBILE_SPEC}</span>
+                <span><b>Supported:</b> WebP, JPG, PNG, MP4</span>
+                <span className="hero-media-guidelines__tip">Hero fills the full width with no cropping bars — export at these exact sizes for the sharpest result.</span>
+              </div>
+              <div className="hero-media-grid">
+                {(MEDIA_SLOTS[form.displayMode] || []).map((slot) => (
+                  <MediaField key={slot.field} label={slot.label} kind={slot.kind} hint={slot.hint} value={form[slot.field]}
+                    resolveUrl={(f) => mediaUrl(f)} onUpload={(file) => upload(slot.field, file)}
+                    onRemove={() => set({ [slot.field]: null })} />
+                ))}
+              </div>
+            </>
           )}
           <label className="catalog-page__check"><input type="checkbox" checked={form.active} onChange={(e) => set({ active: e.target.checked })} /> Active</label>
           <button type="button" onClick={save}>{editingId ? "Save slide" : "Add slide"}</button>

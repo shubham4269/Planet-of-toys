@@ -2,12 +2,17 @@
    Flagship hero — full-bleed, brand-token colours (primary CTA, secondary arrows,
    accent indicators). Colours resolve from the consuming app's design tokens. */
 .pot-hero { position: relative; width: 100%; overflow: hidden; background: #f1f5fb; }
-.pot-hero__media, .pot-hero__img, .pot-hero__video { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center; }
-.pot-hero--full, .pot-hero--video, .pot-hero--event { min-height: 520px; }
+/* Media fills the fixed-aspect hero box edge to edge — always full width, no bars.
+   `cover` crops any overflow; the focal point is adjustable via --hero-focal
+   (defaults to centre) so the important part of the art stays in view. */
+.pot-hero__media, .pot-hero__img, .pot-hero__video { display: block; width: 100%; height: 100%; object-fit: cover; object-position: var(--hero-focal, center); }
+/* Fixed aspect ratios instead of fixed heights. Desktop = 16:6 (upload 1920×720). */
+.pot-hero--full, .pot-hero--video, .pot-hero--event { aspect-ratio: 16 / 6; }
 .pot-hero--full .pot-hero__img, .pot-hero--video .pot-hero__video { position: absolute; inset: 0; }
 
-/* Left-anchored scrim so overlay text reads cleanly over any image (intentional crop). */
-.pot-hero__overlay { position: relative; z-index: 1; min-height: 520px; display: grid; gap: 16px; align-content: center;
+/* Left-anchored scrim so overlay text reads cleanly over the image. The overlay
+   fills the fixed-aspect box and vertically centres its content. */
+.pot-hero__overlay { position: absolute; inset: 0; z-index: 1; display: grid; gap: 16px; align-content: center;
   padding: 48px clamp(24px, 6vw, 96px); max-width: 760px; color: #fff;
   background: linear-gradient(90deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,.32) 45%, rgba(0,0,0,0) 80%); }
 .pot-hero__title { margin: 0; font-family: var(--font-heading, inherit); font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; line-height: 1.05; text-shadow: 0 2px 18px rgba(0,0,0,.35); }
@@ -49,10 +54,11 @@
 .pot-hero-carousel__dot--active { width: 28px; background: var(--color-accent, #ffe600); }
 
 @media (max-width: 768px) {
-  .pot-hero-split { grid-template-columns: 1fr; }
-  .pot-hero--full, .pot-hero--video, .pot-hero--event, .pot-hero-split { min-height: 340px; }
-  .pot-hero__overlay { min-height: 340px; padding: 28px 22px; max-width: none;
-    background: linear-gradient(180deg, rgba(0,0,0,.12) 0%, rgba(0,0,0,.6) 100%); }
+  .pot-hero-split { grid-template-columns: 1fr; min-height: 340px; }
+  /* Mobile hero = 4:5 portrait (upload 1080×1350). */
+  .pot-hero--full, .pot-hero--video, .pot-hero--event { aspect-ratio: 4 / 5; }
+  .pot-hero__overlay { align-content: end; padding: 28px 22px; max-width: none;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,.65) 100%); }
   .pot-hero__title { font-size: 1.6rem; }
   .pot-hero-carousel__arrow { width: 40px; height: 40px; font-size: 1.2rem; }
 }
