@@ -118,6 +118,12 @@ describe("Property 25: status transitions dispatch the correct WhatsApp template
             { method: "COD" },
             {}
           );
+          // SHIPPED notifications require an AWB; seed one so the SHIPPED case
+          // still dispatches its templates (this test asserts template mapping,
+          // not the AWB gate which is covered in order.service.tracking.test.js).
+          order.shipping.awb = "AWB123456";
+          order.shipping.courier = "Delhivery";
+          await order.save();
           whatsappService.sendNotification.mockClear();
 
           await service.applyStatusChange(order, status);

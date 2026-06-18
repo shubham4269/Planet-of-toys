@@ -70,6 +70,25 @@ export const STATUS_NOTIFICATION_TEMPLATES = Object.freeze({
 });
 
 /**
+ * Base URL for Shiprocket's branded customer tracking page. The integration
+ * captures only the AWB (and courier) from Shiprocket — no provider tracking URL
+ * is returned — so the customer-facing link is built from the AWB.
+ */
+export const SHIPROCKET_TRACKING_BASE = "https://shiprocket.co/tracking";
+
+/**
+ * Build the customer tracking URL for a shipment from its AWB. Returns `null`
+ * when there is no AWB, so callers can refuse to send a blank tracking link.
+ *
+ * @param {string|null|undefined} awb
+ * @returns {string|null}
+ */
+export function buildTrackingUrl(awb) {
+  const value = typeof awb === "string" ? awb.trim() : "";
+  return value ? `${SHIPROCKET_TRACKING_BASE}/${value}` : null;
+}
+
+/**
  * Normalize a captured attribution record into the persisted `utm` shape.
  *
  * Accepts either the canonical keys (`source`, `medium`, `campaign`, `term`,
@@ -530,10 +549,36 @@ export function createOrderService({
    */
   async function dispatchStatusNotifications(order, status) {
     const templates = STATUS_NOTIFICATION_TEMPLATES[status] ?? [];
-    for (const template of templates) {
-      await whatsappService.sendNotification(order.customer.phone, template, {
+    if (templates.length === 0) return;
+
+    // SHIPPED notifications must carry real shipment details. Build the params
+    // with the AWB, courier, and tracking URL; if the AWB has not been assigned
+    // yet (Shiprocket fulfilment still pending/failed) skip sending entirely so
+    // the customer never receives a blank tracking number (Req: only send when
+    // order.shipping.awb exists and a tracking URL can be generated).
+    let params = { orderId: order.orderId };
+    if (status === "SHIPPED") {
+      const awb = order.shipping?.awb ?? null;
+      const trackingUrl = buildTrackingUrl(awb);
+      if (!awb || !trackingUrl) {
+        logger.warn?.(
+          "Skipping SHIPPED WhatsApp notification: AWB/tracking URL not available yet.",
+          { orderId: order.orderId }
+        );
+        return;
+      }
+      // courier defaults to "" (not null) so it keeps its positional slot in the
+      // template body params (the WhatsApp service drops null/undefined values).
+      params = {
         orderId: order.orderId,
-      });
+        awb,
+        courier: order.shipping?.courier ?? "",
+        trackingUrl,
+      };
+    }
+
+    for (const template of templates) {
+      await whatsappService.sendNotification(order.customer.phone, template, params);
     }
   }
 
@@ -561,6 +606,16 @@ export function createOrderService({
       throw new AppError(`Unknown order status: ${status}.`, 400, {
         clientMessage: "That order status is not recognised.",
       });
+    }
+
+    // Idempotency guard (Property 19, Req 13): when the order is already in the
+    // target status, do nothing — no history entry, no WhatsApp dispatch. This
+    // prevents duplicate notifications from Shiprocket webhooks where several
+    // courier statuses (PICKED UP / SHIPPED / IN TRANSIT) all map to SHIPPED,
+    // from webhook redeliveries, and from an admin cancel followed by a
+    // Shiprocket CANCELLED webhook.
+    if (order.orderStatus === status) {
+      return order;
     }
 
     const timestamp = new Date();
