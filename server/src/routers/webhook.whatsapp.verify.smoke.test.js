@@ -34,7 +34,7 @@ describe("WhatsApp webhook verification through the full middleware stack", () =
       allowedOrigins: [],
       routers: {
         webhooks: createWebhookRouter({
-          resolveWhatsAppVerifyToken: () => "Shubham12246942@",
+          resolveWhatsAppVerifyToken: () => "test-verify-token",
         }),
       },
     });
@@ -43,7 +43,7 @@ describe("WhatsApp webhook verification through the full middleware stack", () =
     try {
       const res = await get(
         port,
-        "/api/webhooks/whatsapp?hub.mode=subscribe&hub.verify_token=Shubham12246942%40&hub.challenge=42"
+        "/api/webhooks/whatsapp?hub.mode=subscribe&hub.verify_token=test-verify-token&hub.challenge=42"
       );
       expect(res.status).toBe(200);
       expect(res.body).toBe("42");
@@ -57,7 +57,7 @@ describe("WhatsApp webhook verification through the full middleware stack", () =
       allowedOrigins: [],
       routers: {
         webhooks: createWebhookRouter({
-          resolveWhatsAppVerifyToken: () => "Shubham12246942@",
+          resolveWhatsAppVerifyToken: () => "test-verify-token",
         }),
       },
     });
