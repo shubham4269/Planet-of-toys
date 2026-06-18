@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll, afterAll, afterEach, vi } from "vitest
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { nextOrderId, randomOrderCode } from "./counter.service.js";
-import { Counter } from "../models/index.js";
+import Counter from "./counter.model.js";
 
 /**
  * Order ids are short branded codes (`POT-XXXXX`) drawn from an unambiguous

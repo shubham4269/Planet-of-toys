@@ -11,7 +11,7 @@ import fc from "fast-check";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { createSettingsService, maskValue } from "./settings.service.js";
-import { SystemSettings } from "../models/index.js";
+import { SystemSettings } from "../../models/index.js";
 
 // Feature: planet-of-toys-ecommerce, Property 46: Stored credentials are displayed masked
 //

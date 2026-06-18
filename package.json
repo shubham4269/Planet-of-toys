@@ -2,21 +2,30 @@
   "name": "planet-of-toys",
   "version": "0.1.0",
   "private": true,
-  "description": "Planet of Toys - high-conversion ecommerce platform (monorepo: client + server)",
+  "description": "Planet of Toys - high-conversion ecommerce platform (monorepo: apps/client + apps/admin + server)",
   "workspaces": [
-    "client",
+    "apps/*",
+    "packages/*",
     "server"
   ],
   "scripts": {
-    "dev": "npm run dev --workspace=server & npm run dev --workspace=client",
+    "dev": "npm run dev --workspace=server & npm run dev --workspace=@planet-of-toys/client",
     "dev:server": "npm run dev --workspace=server",
-    "dev:client": "npm run dev --workspace=client",
-    "build": "npm run build --workspace=client",
+    "dev:client": "npm run dev --workspace=@planet-of-toys/client",
+    "dev:admin": "npm run dev --workspace=@planet-of-toys/admin",
+    "build": "npm run build --workspaces --if-present",
+    "build:client": "npm run build --workspace=@planet-of-toys/client",
+    "build:admin": "npm run build --workspace=@planet-of-toys/admin",
     "test": "npm run test --workspaces --if-present",
     "test:server": "npm run test --workspace=server",
-    "test:client": "npm run test --workspace=client"
+    "test:client": "npm run test --workspace=@planet-of-toys/client",
+    "test:admin": "npm run test --workspace=@planet-of-toys/admin",
+    "test:shared": "npm run test --workspace=@planet-of-toys/shared-web"
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "planet-of-toys": "file:"
   }
 }

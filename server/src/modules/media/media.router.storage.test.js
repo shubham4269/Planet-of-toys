@@ -4,8 +4,8 @@ import path from "node:path";
 import fs from "node:fs/promises";
 import sharp from "sharp";
 import { createMediaRouters } from "./media.router.js";
-import { DEFAULT_MEDIA_DIR, createMediaService } from "../services/media.service.js";
-import { errorHandler } from "../middleware/errorHandler.js";
+import { DEFAULT_MEDIA_DIR, createMediaService } from "./media.service.js";
+import { errorHandler } from "../../shared/middleware/errorHandler.js";
 
 /**
  * Integration test for Task 7.5 — media storage and serving.

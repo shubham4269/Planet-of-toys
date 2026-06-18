@@ -1,10 +1,10 @@
 import { Router } from "express";
 import crypto from "node:crypto";
 
-import { webhookService as defaultWebhookService } from "../services/webhook.service.js";
-import { UnmatchedWebhookEvent } from "../models/index.js";
-import { getCredential } from "../services/credential.service.js";
-import { logger as defaultLogger } from "../config/logger.js";
+import { webhookService as defaultWebhookService } from "./webhook.service.js";
+import { UnmatchedWebhookEvent } from "../../models/index.js";
+import { getCredential } from "../settings/credential.service.js";
+import { logger as defaultLogger } from "../../shared/config/logger.js";
 
 /**
  * Webhook Router — Shiprocket status webhooks (Req 12, 24) and the WhatsApp

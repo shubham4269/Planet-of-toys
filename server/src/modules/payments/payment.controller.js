@@ -1,7 +1,7 @@
 import {
   createRazorpayOrder,
   PaymentValidationError,
-} from "../services/payment.service.js";
+} from "../../integrations/razorpay/payment.service.js";
 
 /**
  * Payment controller (Req 5.1, 5.5).

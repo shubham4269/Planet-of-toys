@@ -16,7 +16,7 @@ import {
   maskValue,
 } from "./settings.service.js";
 import { decrypt } from "./credential.service.js";
-import { SystemSettings } from "../models/index.js";
+import { SystemSettings } from "../../models/index.js";
 
 // getMaskedSettings/updateSection persist to SystemSettings, so an in-memory
 // MongoDB is started. The encrypt function uses an env-sourced key, and the

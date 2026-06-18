@@ -1,21 +1,21 @@
 import { Router } from "express";
 import mongoose from "mongoose";
 
-import { loginLimiter as defaultLoginLimiter } from "../middleware/rateLimiters.js";
-import { createLoginBruteForce } from "../middleware/loginBruteForce.js";
-import { createLoginHandler } from "../controllers/auth.controller.js";
-import { requireAuth as defaultRequireAuth } from "../middleware/requireAuth.js";
-import { AppError } from "../middleware/errorHandler.js";
+import { loginLimiter as defaultLoginLimiter } from "../../shared/middleware/rateLimiters.js";
+import { createLoginBruteForce } from "../../shared/middleware/loginBruteForce.js";
+import { createLoginHandler } from "./auth.controller.js";
+import { requireAuth as defaultRequireAuth } from "../../shared/middleware/requireAuth.js";
+import { AppError } from "../../shared/middleware/errorHandler.js";
 import {
   getDashboardStats as defaultGetDashboardStats,
   listOrders as defaultListOrders,
   getOrderDetail as defaultGetOrderDetail,
   cancelOrder as defaultCancelOrder,
-} from "../services/order.service.js";
-import { createShipment as defaultCreateShipment } from "../services/shipping.service.js";
-import { directAuditRecorder, AUDIT_ACTIONS } from "../services/audit.service.js";
-import { Order } from "../models/index.js";
-import * as productController from "../controllers/product.controller.js";
+} from "../orders/order.service.js";
+import { createShipment as defaultCreateShipment } from "../../integrations/shiprocket/shipping.service.js";
+import { directAuditRecorder, AUDIT_ACTIONS } from "./audit.service.js";
+import { Order } from "../../models/index.js";
+import * as productController from "../products/product.controller.js";
 
 /**
  * Admin router (Req 11.8, 14, 15, 16, 17, 25, 26).

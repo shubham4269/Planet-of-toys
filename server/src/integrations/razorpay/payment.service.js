@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 import Razorpay from "razorpay";
-import { getCredential } from "./credential.service.js";
+import { getCredential } from "../../modules/settings/credential.service.js";
 
 /**
  * Payment Service — Razorpay integration (Req 5).

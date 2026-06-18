@@ -10,7 +10,7 @@ import {
   AUDIT_ACTIONS,
   AuditError,
 } from "./audit.service.js";
-import { AuditLog } from "../models/index.js";
+import { AuditLog } from "../../models/index.js";
 
 describe("audit service (Req 26.1-26.5, 30.12)", () => {
   let mongod;

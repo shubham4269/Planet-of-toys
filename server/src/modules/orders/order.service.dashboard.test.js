@@ -10,7 +10,7 @@ import {
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { createOrderService } from "./order.service.js";
-import { Order, Counter, ORDER_STATUSES } from "../models/index.js";
+import { Order, Counter, ORDER_STATUSES } from "../../models/index.js";
 
 /**
  * Tests for the admin dashboard statistics aggregation (task 12.11, Req 15.1,

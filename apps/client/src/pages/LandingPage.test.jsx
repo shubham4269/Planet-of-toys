@@ -4,8 +4,8 @@ import { MemoryRouter, Routes, Route } from "react-router-dom";
 
 // Mock the API client so the landing page resolves products from test fixtures
 // instead of hitting the network.
-vi.mock("../lib/apiClient.js", async () => {
-  const actual = await vi.importActual("../lib/apiClient.js");
+vi.mock("@planet-of-toys/shared-web/apiClient", async () => {
+  const actual = await vi.importActual("@planet-of-toys/shared-web/apiClient");
   return {
     ...actual,
     default: { get: vi.fn() },
@@ -32,7 +32,7 @@ vi.mock("../lib/utm.js", () => {
   return { captureUtm, default: { captureUtm } };
 });
 
-import apiClient, { ApiError } from "../lib/apiClient.js";
+import apiClient, { ApiError } from "@planet-of-toys/shared-web/apiClient";
 import pixel from "../lib/pixel.js";
 import { captureUtm } from "../lib/utm.js";
 import LandingPage from "./LandingPage.jsx";

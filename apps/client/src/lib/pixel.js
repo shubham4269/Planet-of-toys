@@ -16,7 +16,7 @@
  *   - purchase(value)     -> standard `Purchase` with value (Req 3.3)
  */
 
-import apiClient from "./apiClient.js";
+import apiClient from "@planet-of-toys/shared-web/apiClient";
 
 // Pixel identifier resolved at build time from the Vite environment (Req 3.4).
 // Used by init() and as the fallback when the runtime config has no id.

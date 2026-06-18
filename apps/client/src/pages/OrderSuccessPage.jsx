@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import pixel from "../lib/pixel.js";
-import { formatINR } from "../lib/format.js";
+import { formatINR } from "@planet-of-toys/shared-web/format";
 import "./OrderSuccessPage.css";
 
 /**

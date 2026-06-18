@@ -9,8 +9,8 @@ import {
 
 // Mock the API client so the settings page resolves from test fixtures
 // instead of hitting the network.
-vi.mock("../../lib/apiClient.js", async () => {
-  const actual = await vi.importActual("../../lib/apiClient.js");
+vi.mock("@planet-of-toys/shared-web/apiClient", async () => {
+  const actual = await vi.importActual("@planet-of-toys/shared-web/apiClient");
   return {
     ...actual,
     default: { get: vi.fn(), put: vi.fn(), post: vi.fn() },
@@ -28,7 +28,7 @@ vi.mock("../../lib/adminAuth.js", () => {
   };
 });
 
-import apiClient, { ApiError } from "../../lib/apiClient.js";
+import apiClient, { ApiError } from "@planet-of-toys/shared-web/apiClient";
 import { getToken, notifyUnauthorized } from "../../lib/adminAuth.js";
 import SettingsPage from "./SettingsPage.jsx";
 

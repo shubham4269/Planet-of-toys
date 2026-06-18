@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createRazorpayOrderHandler } from "../controllers/payment.controller.js";
+import { createRazorpayOrderHandler } from "./payment.controller.js";
 
 /**
  * Payment router (Req 5.1).

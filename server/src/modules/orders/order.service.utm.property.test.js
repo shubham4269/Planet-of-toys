@@ -4,7 +4,7 @@ import fc from "fast-check";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { createOrderService, normalizeUtm } from "./order.service.js";
-import { Order, Counter } from "../models/index.js";
+import { Order, Counter } from "../../models/index.js";
 
 /**
  * Property 5: UTM capture and persistence round-trip.

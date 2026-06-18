@@ -30,8 +30,14 @@ import sharp from "sharp";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-/** Default media storage directory: `<repo>/server/media` (Req 18.1). */
-export const DEFAULT_MEDIA_DIR = path.resolve(__dirname, "..", "..", "media");
+/**
+ * Default media storage directory: `<repo>/server/media` (Req 18.1).
+ *
+ * This module lives at `server/src/modules/media`, so it climbs three levels to
+ * reach `server/`. The directory location is part of the deployment contract
+ * (nginx serves it and existing uploads live there) and must not change.
+ */
+export const DEFAULT_MEDIA_DIR = path.resolve(__dirname, "..", "..", "..", "media");
 
 /**
  * File extensions that denote executable or otherwise script-bearing content.

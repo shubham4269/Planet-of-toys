@@ -1,6 +1,6 @@
-import { getCredential } from "./credential.service.js";
-import { logger as defaultLogger } from "../config/logger.js";
-import Order from "../models/order.model.js";
+import { getCredential } from "../../modules/settings/credential.service.js";
+import { logger as defaultLogger } from "../../shared/config/logger.js";
+import Order from "../../modules/orders/order.model.js";
 
 /**
  * Shipping Service — Shiprocket integration (Req 4.3, 10, 11, 17.4).

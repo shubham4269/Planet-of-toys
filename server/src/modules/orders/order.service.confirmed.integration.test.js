@@ -11,8 +11,8 @@ import {
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { createOrderService } from "./order.service.js";
-import { createWhatsAppService } from "./whatsapp.service.js";
-import { Order, Counter } from "../models/index.js";
+import { createWhatsAppService } from "../../integrations/whatsapp/whatsapp.service.js";
+import { Order, Counter } from "../../models/index.js";
 
 /**
  * Integration test: the order-confirmed WhatsApp notification is dispatched on

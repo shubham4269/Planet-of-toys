@@ -1,8 +1,8 @@
 import { Router } from "express";
 
-import { requestOtp as defaultRequestOtp } from "../services/otp.service.js";
-import { sendOtp as defaultSendOtp } from "../services/whatsapp.service.js";
-import { AppError } from "../middleware/errorHandler.js";
+import { requestOtp as defaultRequestOtp } from "./otp.service.js";
+import { sendOtp as defaultSendOtp } from "../../integrations/whatsapp/whatsapp.service.js";
+import { AppError } from "../../shared/middleware/errorHandler.js";
 
 /**
  * OTP Router — Cash-on-Delivery phone verification (Req 6.1, 7.4, 28.2).

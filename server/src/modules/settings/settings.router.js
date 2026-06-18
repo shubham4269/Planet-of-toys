@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { createSettingsService } from "../services/settings.service.js";
-import { createSettingsController } from "../controllers/settings.controller.js";
+import { createSettingsService } from "./settings.service.js";
+import { createSettingsController } from "./settings.controller.js";
 
 /**
  * System Settings router (Req 30).

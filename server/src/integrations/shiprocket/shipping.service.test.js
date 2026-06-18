@@ -15,7 +15,7 @@ import {
   ShippingConfigError,
   ShippingAuthError,
 } from "./shipping.service.js";
-import Order from "../models/order.model.js";
+import Order from "../../modules/orders/order.model.js";
 
 // getCredential consults System_Settings before falling back to environment
 // variables, so an in-memory MongoDB is started. No settings document is

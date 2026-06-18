@@ -15,7 +15,7 @@ import {
   getCredential,
   CredentialCryptoError,
 } from "./credential.service.js";
-import { SystemSettings } from "../models/index.js";
+import { SystemSettings } from "../../models/index.js";
 
 const TEST_KEY = "unit-test-encryption-key-please-rotate";
 

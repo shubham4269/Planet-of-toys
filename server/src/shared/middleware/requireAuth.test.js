@@ -4,7 +4,7 @@ import {
   extractBearerToken,
 } from "./requireAuth.js";
 import { AppError } from "./errorHandler.js";
-import { TokenError } from "../services/auth.service.js";
+import { TokenError } from "../../modules/auth/auth.service.js";
 
 /** Build a minimal Express-like request with the given Authorization header. */
 function reqWith(authorization) {

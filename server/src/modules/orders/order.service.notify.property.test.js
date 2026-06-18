@@ -15,7 +15,7 @@ import {
   createOrderService,
   STATUS_NOTIFICATION_TEMPLATES,
 } from "./order.service.js";
-import { Order, Counter, ORDER_STATUSES } from "../models/index.js";
+import { Order, Counter, ORDER_STATUSES } from "../../models/index.js";
 
 /**
  * Property 25: Status transitions dispatch the correct WhatsApp templates.

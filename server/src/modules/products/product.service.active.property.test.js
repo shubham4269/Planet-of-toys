@@ -4,7 +4,7 @@ import fc from "fast-check";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { createProduct, setProductState, getActiveProductBySlug } from "./product.service.js";
-import { Product } from "../models/index.js";
+import { Product } from "../../models/index.js";
 
 /**
  * Property 4: Only active products resolve.

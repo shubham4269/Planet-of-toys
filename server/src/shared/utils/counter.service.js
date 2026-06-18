@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
 
-import { Counter } from "../models/index.js";
+import Counter from "./counter.model.js";
 
 /**
  * Order-ID Service (Req 8).

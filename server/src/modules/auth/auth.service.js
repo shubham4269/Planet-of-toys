@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { buildConfig } from "../config/env.js";
+import { buildConfig } from "../../shared/config/env.js";
 
 /**
  * Auth Service — password hashing/verification and JWT issuance/validation

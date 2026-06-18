@@ -1,0 +1,120 @@
+/**
+ * Planet of Toys — global design tokens.
+ *
+ * Single source of truth for the customer-facing visual language and the
+ * admin-panel theme (see design.md "UI/UX Design System"). All tokens are
+ * exposed as CSS custom properties so components consume them rather than
+ * hard-coding values. Customer surface is light/conversion-first; the admin
+ * surface opts into a dark theme via :root[data-theme="admin"].
+ *
+ * Requirements: 20.2 (shared design tokens consumed across customer + admin).
+ */
+
+/* Brand typefaces: Baloo 2 (headings 600/700/800), Nunito (body 400/600/700).
+   Rounded, friendly faces for a premium-playful toy-brand feel. */
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap");
+
+:root {
+  /* ---- Color: Brand ---- */
+  --color-primary:        #F81424; /* Brand Red  — primary CTAs, key actions, discount badges */
+  --color-secondary:      #2E3192; /* Brand Blue — headers, icons, navigation, section titles */
+  --color-accent:         #FFE600; /* Brand Yellow — hover states, highlights, trust elements */
+
+  /* ---- Color: Surface & supporting ---- */
+  --color-white:          #FFFFFF;
+  --color-background:      #F8FAFC;
+  --color-text-primary:   #111827;
+  --color-text-secondary: #6B7280;
+  --color-border:         #E5E7EB;
+
+  /* ---- Color: Semantic ---- */
+  --color-success:        #22C55E;
+  --color-error:          #EF4444;
+
+  /* ---- Color: Derived interaction state (primary CTA hover = darken 8%) ---- */
+  --color-primary-hover:  #E20E1E;
+
+  /* ---- Typography ---- */
+  --font-heading: "Baloo 2", system-ui, sans-serif; /* 600 / 700 / 800 */
+  --font-body:    "Nunito", system-ui, sans-serif;   /* 400 / 600 / 700 */
+
+  /* ---- Spacing scale (4px base) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* ---- Radii ---- */
+  --radius-button: 12px;
+  --radius-card:   16px;
+  --radius-input:  10px;
+
+  /* ---- Elevation & motion ---- */
+  --shadow-card:       0 1px 3px rgba(17, 24, 39, 0.08), 0 1px 2px rgba(17, 24, 39, 0.06);
+  --shadow-card-hover: 0 6px 16px rgba(17, 24, 39, 0.12);
+  --transition-hover:  all 150ms ease-in-out;
+}
+
+/* ---- Admin Panel theme (White / Blue / Yellow) ----
+   Applied by AdminLayout via document.documentElement[data-theme="admin"].
+   A clean white surface with brand-blue navigation/accents and brand-yellow
+   highlights (e.g. settings tabs), echoing the customer brand palette while
+   keeping the admin surface light and professional. */
+:root[data-theme="admin"] {
+  --admin-bg:          #FFFFFF; /* app background — clean white */
+  --admin-surface:     #F4F7FE; /* sidebar, cards — very light blue */
+  --admin-elevated:    #D9E2F2; /* borders, dividers — light blue-gray */
+  --admin-text:        #1E293B; /* primary text — slate */
+  --admin-text-muted:  #64748B; /* secondary/muted text */
+  --admin-hover:       #EAF1FF; /* hover state — light blue */
+  --admin-active:      #2E3192; /* active nav item bg — brand blue */
+  --admin-active-text: #FFFFFF; /* active nav item text */
+
+  /* Accent tokens for buttons, tabs, and highlights. */
+  --admin-accent:        #2E3192; /* brand blue */
+  --admin-accent-hover:  #24277A; /* brand blue, darkened */
+  --admin-accent-yellow: #FFE600; /* brand yellow */
+  --admin-accent-yellow-hover: #F2D900;
+  --admin-accent-yellow-text:  #1E293B; /* readable text on yellow */
+}
+
+/* ---- Base resets ---- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  background: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+/* Admin surface base styling (customer brand palette excluded by design). */
+:root[data-theme="admin"] body {
+  background: var(--admin-bg);
+  color: var(--admin-text);
+}

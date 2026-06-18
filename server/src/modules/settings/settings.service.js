@@ -1,6 +1,6 @@
 import { encrypt as defaultEncrypt, getCredential } from "./credential.service.js";
-import { SystemSettings } from "../models/index.js";
-import { logger as defaultLogger } from "../config/logger.js";
+import { SystemSettings } from "../../models/index.js";
+import { logger as defaultLogger } from "../../shared/config/logger.js";
 
 /**
  * System Settings Service (Req 30).

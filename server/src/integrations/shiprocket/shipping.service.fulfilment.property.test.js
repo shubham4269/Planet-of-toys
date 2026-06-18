@@ -12,7 +12,7 @@ import fc from "fast-check";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { createShippingService } from "./shipping.service.js";
-import Order from "../models/order.model.js";
+import Order from "../../modules/orders/order.model.js";
 
 // Feature: planet-of-toys-ecommerce, Property 21: Successful Shiprocket
 // fulfilment transitions to CREATED — for any successful courier-assignment and

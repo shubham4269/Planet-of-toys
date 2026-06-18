@@ -1,14 +1,14 @@
 import mongoose from "mongoose";
-import { Order, Product, ORDER_STATUSES } from "../models/index.js";
-import { nextOrderId as defaultNextOrderId } from "./counter.service.js";
+import { Order, Product, ORDER_STATUSES } from "../../models/index.js";
+import { nextOrderId as defaultNextOrderId } from "../../shared/utils/counter.service.js";
 import {
   verifySignature as defaultVerifySignature,
   refundPayment as defaultRefundPayment,
-} from "./payment.service.js";
-import { whatsappService as defaultWhatsappService } from "./whatsapp.service.js";
-import { shippingService as defaultShippingService } from "./shipping.service.js";
-import { logger as defaultLogger } from "../config/logger.js";
-import { AppError } from "../middleware/errorHandler.js";
+} from "../../integrations/razorpay/payment.service.js";
+import { whatsappService as defaultWhatsappService } from "../../integrations/whatsapp/whatsapp.service.js";
+import { shippingService as defaultShippingService } from "../../integrations/shiprocket/shipping.service.js";
+import { logger as defaultLogger } from "../../shared/config/logger.js";
+import { AppError } from "../../shared/middleware/errorHandler.js";
 
 /**
  * Order Service — order creation and decoupled fulfilment (Req 2.2, 5.3, 5.4,

@@ -1,6 +1,6 @@
 import crypto from "node:crypto";
-import { buildConfig } from "../config/env.js";
-import { SystemSettings } from "../models/index.js";
+import { buildConfig } from "../../shared/config/env.js";
+import { SystemSettings } from "../../models/index.js";
 
 /**
  * Credential encryption and resolution service (Req 29.2, 30.7, 30.10, 30.11).

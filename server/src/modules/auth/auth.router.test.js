@@ -12,12 +12,12 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 
 import { createAuthRouter } from "./auth.router.js";
-import { createLoginBruteForce } from "../middleware/loginBruteForce.js";
-import { createLimiter } from "../middleware/rateLimiters.js";
-import { GENERIC_AUTH_FAILURE_MESSAGE } from "../controllers/auth.controller.js";
-import { hashPassword, verifyToken } from "../services/auth.service.js";
-import { errorHandler } from "../middleware/errorHandler.js";
-import { Admin } from "../models/index.js";
+import { createLoginBruteForce } from "../../shared/middleware/loginBruteForce.js";
+import { createLimiter } from "../../shared/middleware/rateLimiters.js";
+import { GENERIC_AUTH_FAILURE_MESSAGE } from "./auth.controller.js";
+import { hashPassword, verifyToken } from "./auth.service.js";
+import { errorHandler } from "../../shared/middleware/errorHandler.js";
+import { Admin } from "../../models/index.js";
 
 // The router runs against the real (in-memory) MongoDB, the real Admin model,
 // and the real bcrypt/JWT auth service. Only the source key for brute-force

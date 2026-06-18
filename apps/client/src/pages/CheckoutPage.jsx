@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLocation, useNavigate, useParams, Link } from "react-router-dom";
 
-import apiClient, { ApiError } from "../lib/apiClient.js";
+import apiClient, { ApiError } from "@planet-of-toys/shared-web/apiClient";
 import pixel from "../lib/pixel.js";
 import { getUtm } from "../lib/utm.js";
-import { formatINR, mediaUrl } from "../lib/format.js";
+import { formatINR, mediaUrl } from "@planet-of-toys/shared-web/format";
 import logoSrc from "../assets/logo.webp";
 import "./CheckoutPage.css";
 

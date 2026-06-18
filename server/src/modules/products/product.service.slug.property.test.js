@@ -4,7 +4,7 @@ import fc from "fast-check";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { generateSlug, createProduct } from "./product.service.js";
-import { Product } from "../models/index.js";
+import { Product } from "../../models/index.js";
 
 /**
  * Property 30: Generated slugs are URL-safe and unique.

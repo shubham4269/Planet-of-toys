@@ -1,5 +1,5 @@
-import { AuditLog as DefaultAuditLog } from "../models/index.js";
-import { logger as defaultLogger } from "../config/logger.js";
+import { AuditLog as DefaultAuditLog } from "../../models/index.js";
+import { logger as defaultLogger } from "../../shared/config/logger.js";
 
 /**
  * Audit Log Service (Req 26.1–26.5, 30.12).

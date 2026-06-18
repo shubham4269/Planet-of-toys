@@ -1,4 +1,4 @@
-import { SettingsValidationError } from "../services/settings.service.js";
+import { SettingsValidationError } from "./settings.service.js";
 
 /**
  * System Settings controller (Req 30).

@@ -4,7 +4,7 @@ import fc from "fast-check";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { nextOrderId } from "./counter.service.js";
-import { Counter } from "../models/index.js";
+import Counter from "./counter.model.js";
 
 /**
  * Property 16: Order identifiers are unique.

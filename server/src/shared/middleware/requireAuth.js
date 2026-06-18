@@ -1,4 +1,4 @@
-import { verifyToken as defaultVerifyToken, TokenError } from "../services/auth.service.js";
+import { verifyToken as defaultVerifyToken, TokenError } from "../../modules/auth/auth.service.js";
 import { AppError } from "./errorHandler.js";
 
 /**

@@ -1,9 +1,9 @@
-import { Admin as DefaultAdmin } from "../models/index.js";
+import { Admin as DefaultAdmin } from "../../models/index.js";
 import {
   verifyPassword as defaultVerifyPassword,
   issueToken as defaultIssueToken,
-} from "../services/auth.service.js";
-import { AppError } from "../middleware/errorHandler.js";
+} from "./auth.service.js";
+import { AppError } from "../../shared/middleware/errorHandler.js";
 
 /**
  * Auth controller (Req 14.2, 25.3, 25.4).

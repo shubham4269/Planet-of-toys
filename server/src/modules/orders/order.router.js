@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { createOrder as defaultCreateOrder } from "../services/order.service.js";
-import { getActiveProductBySlug as defaultGetProduct } from "../services/product.service.js";
-import { verifyOtp as defaultVerifyOtp } from "../services/otp.service.js";
-import { AppError } from "../middleware/errorHandler.js";
+import { createOrder as defaultCreateOrder } from "./order.service.js";
+import { getActiveProductBySlug as defaultGetProduct } from "../products/product.service.js";
+import { verifyOtp as defaultVerifyOtp } from "./otp.service.js";
+import { AppError } from "../../shared/middleware/errorHandler.js";
 
 /**
  * Orders Router — public order endpoints (Req 5.3, 5.4, 6.2, 6.5, 9.1, 11.4).

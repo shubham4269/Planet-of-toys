@@ -6,7 +6,7 @@ import {
   deleteProduct,
   associateMedia,
 } from "./product.service.js";
-import { Product } from "../models/index.js";
+import { Product } from "../../models/index.js";
 
 /**
  * Unit tests for product deletion (Req 16.5) and media-to-product

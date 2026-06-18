@@ -1,5 +1,12 @@
 import express from "express";
-import { applySecurityMiddleware } from "./middleware/security.js";
+import { applySecurityMiddleware } from "./shared/middleware/security.js";
+import { ROUTER_MOUNTS } from "./shared/constants/routerMounts.js";
+
+// Re-exported for backward compatibility: callers and tests historically import
+// ROUTER_MOUNTS from the app factory. The canonical definition now lives in
+// shared/constants so modules can reference their mount path without importing
+// the whole application factory.
+export { ROUTER_MOUNTS };
 
 /**
  * Express application factory.
@@ -32,23 +39,6 @@ import { applySecurityMiddleware } from "./middleware/security.js";
  *   CORS allow-list, typically `config.cors.allowedOrigins`.
  * @returns {import("express").Express} The configured Express application.
  */
-
-/**
- * Canonical base paths for each feature router. Keeping these in one place lets
- * later tasks attach routers consistently and lets tests assert the contract.
- */
-export const ROUTER_MOUNTS = Object.freeze({
-  products: "/api/products",
-  orders: "/api/orders",
-  payment: "/api/payment",
-  shipping: "/api/shipping",
-  otp: "/api/otp",
-  admin: "/api/admin",
-  settings: "/api/admin/settings",
-  webhooks: "/api/webhooks",
-  media: "/api/media",
-  config: "/api/config",
-});
 
 /**
  * @param {object} [options]

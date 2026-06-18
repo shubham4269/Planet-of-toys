@@ -31,8 +31,8 @@ import { describe, it, expect } from "vitest";
 import fc from "fast-check";
 import jwt from "jsonwebtoken";
 import { issueToken, verifyToken } from "./auth.service.js";
-import { createRequireAuth } from "../middleware/requireAuth.js";
-import { AppError } from "../middleware/errorHandler.js";
+import { createRequireAuth } from "../../shared/middleware/requireAuth.js";
+import { AppError } from "../../shared/middleware/errorHandler.js";
 
 /** Minimal env satisfying the bootstrap secrets needed for JWT work. */
 const TEST_ENV = {

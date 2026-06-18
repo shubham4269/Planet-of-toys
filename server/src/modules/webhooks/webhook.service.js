@@ -1,6 +1,6 @@
-import { Order, UnmatchedWebhookEvent, ORDER_STATUSES } from "../models/index.js";
-import { applyStatusChange as defaultApplyStatusChange } from "./order.service.js";
-import { logger as defaultLogger } from "../config/logger.js";
+import { Order, UnmatchedWebhookEvent, ORDER_STATUSES } from "../../models/index.js";
+import { applyStatusChange as defaultApplyStatusChange } from "../orders/order.service.js";
+import { logger as defaultLogger } from "../../shared/config/logger.js";
 
 /**
  * Webhook_Handler service — Shiprocket status webhooks (Req 12, 24).

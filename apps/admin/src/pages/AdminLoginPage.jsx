@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import apiClient, { ApiError } from "../lib/apiClient.js";
+import apiClient, { ApiError } from "@planet-of-toys/shared-web/apiClient";
 import { isAuthenticated, setToken } from "../lib/adminAuth.js";
 
 /**

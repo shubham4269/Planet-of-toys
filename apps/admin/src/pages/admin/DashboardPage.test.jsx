@@ -3,8 +3,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 
 // Mock the API client so the dashboard resolves stats from test fixtures
 // instead of hitting the network.
-vi.mock("../../lib/apiClient.js", async () => {
-  const actual = await vi.importActual("../../lib/apiClient.js");
+vi.mock("@planet-of-toys/shared-web/apiClient", async () => {
+  const actual = await vi.importActual("@planet-of-toys/shared-web/apiClient");
   return {
     ...actual,
     default: { get: vi.fn() },
@@ -18,7 +18,7 @@ vi.mock("../../lib/adminAuth.js", () => {
   return { getToken, notifyUnauthorized, default: { getToken, notifyUnauthorized } };
 });
 
-import apiClient, { ApiError } from "../../lib/apiClient.js";
+import apiClient, { ApiError } from "@planet-of-toys/shared-web/apiClient";
 import { getToken, notifyUnauthorized } from "../../lib/adminAuth.js";
 import DashboardPage from "./DashboardPage.jsx";
 

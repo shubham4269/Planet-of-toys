@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { checkServiceability } from "../services/shipping.service.js";
+import { checkServiceability } from "../../integrations/shiprocket/shipping.service.js";
 
 /**
  * Shipping Router — public shipping endpoints (Req 4.3).

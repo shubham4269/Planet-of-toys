@@ -12,9 +12,9 @@ import express from "express";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { createSettingsRouter } from "./settings.router.js";
-import { createSettingsService } from "../services/settings.service.js";
-import { errorHandler } from "../middleware/errorHandler.js";
-import { SystemSettings } from "../models/index.js";
+import { createSettingsService } from "./settings.service.js";
+import { errorHandler } from "../../shared/middleware/errorHandler.js";
+import { SystemSettings } from "../../models/index.js";
 
 // The router persists through the real (in-memory) MongoDB and the real
 // encrypt function; only the live verifiers are mocked so no network call is

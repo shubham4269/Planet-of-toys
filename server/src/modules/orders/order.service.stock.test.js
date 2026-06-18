@@ -10,7 +10,7 @@ import {
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { createOrderService } from "./order.service.js";
-import { Order, Counter, Product } from "../models/index.js";
+import { Order, Counter, Product } from "../../models/index.js";
 
 /**
  * Unit tests for inventory decrement on order creation.

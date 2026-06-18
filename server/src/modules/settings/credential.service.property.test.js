@@ -3,7 +3,7 @@ import fc from "fast-check";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { encrypt, getCredential } from "./credential.service.js";
-import { SystemSettings } from "../models/index.js";
+import { SystemSettings } from "../../models/index.js";
 
 // Feature: planet-of-toys-ecommerce, Property 43: Integration credential resolution follows precedence
 //

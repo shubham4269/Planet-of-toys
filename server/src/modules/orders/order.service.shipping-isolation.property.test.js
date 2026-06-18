@@ -12,7 +12,7 @@ import fc from "fast-check";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { createOrderService } from "./order.service.js";
-import { Order, Counter } from "../models/index.js";
+import { Order, Counter } from "../../models/index.js";
 
 /**
  * Property 22: Shipping-provider failure never blocks or leaks to the customer

@@ -1,7 +1,7 @@
-import * as productService from "../services/product.service.js";
-import { toPublicProjection } from "../services/product.service.js";
-import { AppError } from "../middleware/errorHandler.js";
-import { AUDIT_ACTIONS } from "../services/audit.service.js";
+import * as productService from "./product.service.js";
+import { toPublicProjection } from "./product.service.js";
+import { AppError } from "../../shared/middleware/errorHandler.js";
+import { AUDIT_ACTIONS } from "../auth/audit.service.js";
 
 /**
  * Product controllers (Req 1, 16, 26.2).

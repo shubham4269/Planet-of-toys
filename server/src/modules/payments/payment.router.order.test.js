@@ -12,7 +12,7 @@ import express from "express";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import { createPaymentRouter } from "./payment.router.js";
-import { errorHandler } from "../middleware/errorHandler.js";
+import { errorHandler } from "../../shared/middleware/errorHandler.js";
 
 /**
  * Integration test for Razorpay order creation (Req 5.1, 5.5).

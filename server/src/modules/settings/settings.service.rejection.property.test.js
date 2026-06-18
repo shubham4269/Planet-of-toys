@@ -12,7 +12,7 @@ import fc from "fast-check";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { createSettingsService, SettingsValidationError } from "./settings.service.js";
-import { SystemSettings } from "../models/index.js";
+import { SystemSettings } from "../../models/index.js";
 
 /**
  * Property 47: Invalid credential formats are rejected without persistence.

@@ -3,8 +3,8 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 
 import { createAdminProductHandlers } from "./product.controller.js";
-import { directAuditRecorder } from "../services/audit.service.js";
-import { Product, AuditLog } from "../models/index.js";
+import { directAuditRecorder } from "../auth/audit.service.js";
+import { Product, AuditLog } from "../../models/index.js";
 
 /**
  * Verifies the admin product write handlers record an Audit_Log entry for each

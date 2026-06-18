@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import apiClient, { ApiError } from "../../lib/apiClient.js";
+import apiClient, { ApiError } from "@planet-of-toys/shared-web/apiClient";
 import { getToken, notifyUnauthorized } from "../../lib/adminAuth.js";
-import { formatINR } from "../../lib/format.js";
+import { formatINR } from "@planet-of-toys/shared-web/format";
 import "./DashboardPage.css";
 
 /**

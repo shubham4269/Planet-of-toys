@@ -15,8 +15,8 @@ import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
 import { createOrderService, PaymentVerificationError } from "./order.service.js";
-import { verifySignature } from "./payment.service.js";
-import Order from "../models/order.model.js";
+import { verifySignature } from "../../integrations/razorpay/payment.service.js";
+import Order from "./order.model.js";
 
 /**
  * Property 10: Payment status follows signature verification result.

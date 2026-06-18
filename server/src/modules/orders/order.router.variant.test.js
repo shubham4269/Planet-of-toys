@@ -2,7 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import express from "express";
 
 import { createOrdersRouter } from "./order.router.js";
-import { errorHandler } from "../middleware/errorHandler.js";
+import { errorHandler } from "../../shared/middleware/errorHandler.js";
 
 /**
  * Color resolution at the order boundary: products with variants require a

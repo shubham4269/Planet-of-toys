@@ -4,8 +4,8 @@ import { MemoryRouter, Routes, Route } from "react-router-dom";
 
 // Mock the API client so checkout flows resolve from test fixtures rather than
 // hitting the network.
-vi.mock("../lib/apiClient.js", async () => {
-  const actual = await vi.importActual("../lib/apiClient.js");
+vi.mock("@planet-of-toys/shared-web/apiClient", async () => {
+  const actual = await vi.importActual("@planet-of-toys/shared-web/apiClient");
   return {
     ...actual,
     default: { get: vi.fn(), post: vi.fn() },
@@ -23,7 +23,7 @@ vi.mock("../lib/utm.js", () => {
   return { getUtm, default: { getUtm } };
 });
 
-import apiClient, { ApiError } from "../lib/apiClient.js";
+import apiClient, { ApiError } from "@planet-of-toys/shared-web/apiClient";
 import pixel from "../lib/pixel.js";
 import { getUtm } from "../lib/utm.js";
 import CheckoutPage from "./CheckoutPage.jsx";

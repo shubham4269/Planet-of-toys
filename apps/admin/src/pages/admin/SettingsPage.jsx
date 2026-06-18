@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import apiClient, { ApiError } from "../../lib/apiClient.js";
+import apiClient, { ApiError } from "@planet-of-toys/shared-web/apiClient";
 import { getToken, notifyUnauthorized } from "../../lib/adminAuth.js";
 import "./SettingsPage.css";
 

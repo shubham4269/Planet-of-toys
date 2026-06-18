@@ -1,5 +1,5 @@
-import { getCredential } from "./credential.service.js";
-import { logger as defaultLogger } from "../config/logger.js";
+import { getCredential } from "../../modules/settings/credential.service.js";
+import { logger as defaultLogger } from "../../shared/config/logger.js";
 
 /**
  * WhatsApp Service — Meta WhatsApp Business Cloud API integration (Req 6.1, 13).

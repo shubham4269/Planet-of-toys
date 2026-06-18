@@ -17,8 +17,8 @@ import { MemoryRouter } from "react-router-dom";
 
 // Mock the API client so the page exercises the admin order endpoints against
 // in-test fakes rather than the network. ApiError / API_BASE_URL stay real.
-vi.mock("../../lib/apiClient.js", async () => {
-  const actual = await vi.importActual("../../lib/apiClient.js");
+vi.mock("@planet-of-toys/shared-web/apiClient", async () => {
+  const actual = await vi.importActual("@planet-of-toys/shared-web/apiClient");
   return {
     ...actual,
     default: {
@@ -38,7 +38,7 @@ vi.mock("../../lib/adminAuth.js", () => ({
   notifyUnauthorized: vi.fn(),
 }));
 
-import apiClient, { ApiError } from "../../lib/apiClient.js";
+import apiClient, { ApiError } from "@planet-of-toys/shared-web/apiClient";
 import { getToken, notifyUnauthorized } from "../../lib/adminAuth.js";
 import OrdersPage from "./OrdersPage.jsx";
 

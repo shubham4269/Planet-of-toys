@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as productController from "../controllers/product.controller.js";
+import * as productController from "./product.controller.js";
 
 /**
  * Product routers (Req 1, 16).

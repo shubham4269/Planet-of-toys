@@ -19,7 +19,7 @@ import {
   DEFAULT_ORDER_PAGE_SIZE,
   MAX_ORDER_PAGE_SIZE,
 } from "./order.service.js";
-import { Order, Counter } from "../models/index.js";
+import { Order, Counter } from "../../models/index.js";
 
 /**
  * Tests for admin order listing and detail (task 12.9, Req 17.1, 17.2).

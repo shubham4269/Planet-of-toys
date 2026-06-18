@@ -23,7 +23,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import fc from "fast-check";
 import { createProduct, setProductState } from "./product.service.js";
-import { Product } from "../models/index.js";
+import { Product } from "../../models/index.js";
 
 /**
  * Every field the catalog persists and that the round-trip must preserve.

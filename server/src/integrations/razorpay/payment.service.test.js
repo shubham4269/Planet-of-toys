@@ -17,7 +17,7 @@ import {
   PaymentConfigError,
   PaymentValidationError,
 } from "./payment.service.js";
-import { SystemSettings } from "../models/index.js";
+import { SystemSettings } from "../../models/index.js";
 
 // The SystemSettings-backed precedence in getCredential is exercised in the
 // credential service tests; here we drive resolution purely from environment

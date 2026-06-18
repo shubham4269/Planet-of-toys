@@ -65,7 +65,7 @@ button.pot-cat-card { cursor: pointer; }
 .pot-nav__bar { list-style: none; margin: 0; padding: 0; display: flex; gap: 12px; flex-wrap: wrap; justify-content: flex-start; }
 .pot-nav__item { position: relative; }
 .pot-nav__top { display: inline-block; border: 1.5px solid #2e3192; border-radius: 999px; background: #fff;
-  font: inherit; font-weight: 600; color: #2e3192; padding: 9px 20px; cursor: pointer; text-decoration: none;
+  font: inherit; font-weight: 600; line-height: 1.1; color: #2e3192; padding: 7px 20px; cursor: pointer; text-decoration: none;
   transition: background 120ms ease, color 120ms ease; }
 .pot-nav__top:hover { background: #2e3192; color: #fff; }
 .pot-nav__panel { position: absolute; top: 100%; left: 0; z-index: 30; display: flex; gap: 24px;

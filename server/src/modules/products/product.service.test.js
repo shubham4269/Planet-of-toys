@@ -12,7 +12,7 @@ import {
   listProducts,
   getActiveProductBySlug,
 } from "./product.service.js";
-import { Product } from "../models/index.js";
+import { Product } from "../../models/index.js";
 
 describe("product service", () => {
   let mongod;

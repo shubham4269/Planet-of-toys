@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git commit *)",
+      "Bash(grep -iA3 \"error\\\\|cannot\\\\|failed\")",
+      "Bash(grep -iB1 -A4 \"×\\\\|→\\\\|AssertionError\\\\|Unable to find\\\\|TestingLibrary\")",
+      "Bash(grep -iB1 -A6 \"×\\\\|→\\\\|Error\")",
+      "Bash(node src/scripts/seed-catalog.js --prefix server)",
+      "Bash(node server/src/scripts/seed-catalog.js)",
+      "Bash(grep -iB1 -A8 \"×\\\\|FAIL \")",
+      "Bash(grep -iB1 -A7 \"×\\\\|FAIL \\\\|Unable to find\\\\|multiple\")",
+      "Bash(node server/src/scripts/seed-navigation.js)",
+      "Bash(grep -iB1 -A8 \"×\\\\|FAIL \\\\|Error:\")",
+      "Bash(grep -iB1 -A6 \"×\\\\|FAIL \\\\|Error:\")",
+      "Bash(grep -iA12 \"enforces unique\")",
+      "PowerShell($conn = Get-NetTCPConnection -LocalPort 4000 -State Listen -ErrorAction SilentlyContinue; if \\($conn\\) { $conn | Select-Object -First 1 OwningProcess | ForEach-Object { Get-Process -Id $_.OwningProcess | Select-Object Id, ProcessName, StartTime } } else { \"No process listening on port 4000\" })"
+    ]
+  }
+}

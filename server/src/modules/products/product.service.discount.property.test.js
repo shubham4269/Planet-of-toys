@@ -23,7 +23,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 import mongoose from "mongoose";
 import fc from "fast-check";
 import { createProduct } from "./product.service.js";
-import Product, { computeDiscountPercent } from "../models/product.model.js";
+import Product, { computeDiscountPercent } from "./product.model.js";
 
 const NUM_RUNS = 100;
 

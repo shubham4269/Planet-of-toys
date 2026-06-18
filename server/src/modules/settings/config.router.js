@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { getCredential } from "../services/credential.service.js";
+import { getCredential } from "./credential.service.js";
 
 /**
  * Public storefront configuration router.

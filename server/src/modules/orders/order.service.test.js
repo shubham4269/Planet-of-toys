@@ -16,7 +16,7 @@ import {
   PaymentVerificationError,
   STATUS_NOTIFICATION_TEMPLATES,
 } from "./order.service.js";
-import { Order, Counter, AuditLog } from "../models/index.js";
+import { Order, Counter, AuditLog } from "../../models/index.js";
 
 /**
  * Unit tests for the Order Service (task 12.1).

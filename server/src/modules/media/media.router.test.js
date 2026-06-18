@@ -5,7 +5,7 @@ import path from "node:path";
 import fs from "node:fs/promises";
 import sharp from "sharp";
 import { createMediaRouters } from "./media.router.js";
-import { errorHandler } from "../middleware/errorHandler.js";
+import { errorHandler } from "../../shared/middleware/errorHandler.js";
 
 const UPLOADS = {
   allowedMediaTypes: ["image/jpeg", "image/png", "image/webp", "video/mp4"],

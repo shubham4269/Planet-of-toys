@@ -6,7 +6,7 @@ import {
   sanitizeInput,
   applySecurityMiddleware,
 } from "./security.js";
-import { createApp } from "../app.js";
+import { createApp } from "../../app.js";
 
 describe("escapeHtml", () => {
   it("escapes HTML-significant characters", () => {

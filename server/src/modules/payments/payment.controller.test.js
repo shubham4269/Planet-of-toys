@@ -3,7 +3,7 @@ import { describe, it, expect, beforeEach, vi } from "vitest";
 // Mock the Payment service so the controller is tested in isolation, without
 // resolving credentials, touching MongoDB, or contacting Razorpay. vi.mock is
 // hoisted so the controller's named import binds to these mocks.
-vi.mock("../services/payment.service.js", async (importOriginal) => {
+vi.mock("../../integrations/razorpay/payment.service.js", async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...actual,
@@ -15,7 +15,7 @@ import { createRazorpayOrderHandler } from "./payment.controller.js";
 import {
   createRazorpayOrder,
   PaymentValidationError,
-} from "../services/payment.service.js";
+} from "../../integrations/razorpay/payment.service.js";
 
 /** Build a minimal Express-like res double that records status/json. */
 function mockRes() {
