@@ -60,6 +60,10 @@ export const ROUTER_MOUNTS = Object.freeze({
  * @param {Record<string, import("express").RequestHandler>} [options.routeLimiters]
  *   Per-mount rate limiters keyed by the same names as `ROUTER_MOUNTS`, applied
  *   immediately before the matching router (Req 28.2–28.4).
+ * @param {number|boolean|string} [options.trustProxy=false]
+ *   Express `trust proxy` setting. A hop count (e.g. 1 for a single nginx)
+ *   when running behind a reverse proxy so the real client IP is used for rate
+ *   limiting; `false` disables it for direct/local access.
  * @returns {import("express").Express}
  */
 export function createApp(options = {}) {
@@ -68,9 +72,20 @@ export function createApp(options = {}) {
     allowedOrigins = [],
     globalLimiter,
     routeLimiters = {},
+    trustProxy = false,
   } = options;
 
   const app = express();
+
+  // When running behind a reverse proxy (nginx on the VPS), Express must be
+  // told how many proxy hops to trust so it derives the real client IP from
+  // the `X-Forwarded-For` header. Without this, express-rate-limit refuses to
+  // use the forwarded header and throws ERR_ERL_UNEXPECTED_X_FORWARDED_FOR.
+  // The value is a hop count (e.g. 1 for a single nginx in front); `false`
+  // disables it for local/test use where there is no proxy.
+  if (trustProxy !== false && trustProxy !== undefined) {
+    app.set("trust proxy", trustProxy);
+  }
 
   // Parse JSON bodies first so the sanitizers below can clean req.body, then
   // apply HTTP security headers, CORS allow-listing, and input sanitization so

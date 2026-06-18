@@ -106,6 +106,17 @@ export function buildConfig(env = process.env) {
     server: Object.freeze({
       port: parseInteger(env.PORT, 4000),
       nodeEnv: isPresent(env.NODE_ENV) ? env.NODE_ENV : "development",
+      // Number of reverse-proxy hops to trust for the real client IP. Behind a
+      // single nginx (the VPS setup) this is 1; set higher only if another
+      // proxy (e.g. Cloudflare) sits in front. Defaults to 1 in production so
+      // rate limiting works correctly behind the proxy, and 0 (disabled) in
+      // development where requests hit the server directly.
+      trustProxy: parseInteger(
+        env.TRUST_PROXY,
+        (isPresent(env.NODE_ENV) ? env.NODE_ENV : "development") === "production"
+          ? 1
+          : 0
+      ),
     }),
 
     // Bootstrap secrets — environment-only (Req 29.1).

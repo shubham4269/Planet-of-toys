@@ -35,7 +35,11 @@ export function createSettingsController(settingsService, { recordAudit } = {}) 
         req.params.section,
         req.body ?? {},
         {
-          adminId: req.admin?.id ?? req.adminId,
+          // The JWT payload carries the admin id in the standard `sub` claim
+          // (see auth.service.issueToken), so read it from there. Without this
+          // the audit recorder receives no admin id and logs
+          // "recordAudit requires an acting administrator id."
+          adminId: req.admin?.id ?? req.admin?.sub ?? req.adminId,
           recordAudit: typeof recordAudit === "function" ? recordAudit(req) : undefined,
         }
       );

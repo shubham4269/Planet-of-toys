@@ -326,9 +326,15 @@ export function createWebhookRouter({
   // provided token matches our configured verify token (constant-time compare);
   // otherwise we fail closed with 403.
   router.get("/whatsapp", async (req, res) => {
-    const mode = req.query["hub.mode"];
-    const token = req.query["hub.verify_token"];
-    const challenge = req.query["hub.challenge"];
+    // Meta sends the handshake params as `hub.mode`, `hub.verify_token`, and
+    // `hub.challenge`. The security stack (mongo-sanitize + xss sanitizer)
+    // rewrites any query key containing a dot to an underscore to block
+    // operator injection, so by the time the request lands here the keys may be
+    // `hub_mode` / `hub_verify_token` / `hub_challenge`. Read both spellings so
+    // verification works whether or not sanitization renamed them.
+    const mode = req.query["hub.mode"] ?? req.query.hub_mode;
+    const token = req.query["hub.verify_token"] ?? req.query.hub_verify_token;
+    const challenge = req.query["hub.challenge"] ?? req.query.hub_challenge;
 
     let configured;
     try {

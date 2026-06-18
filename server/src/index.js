@@ -67,6 +67,9 @@ const { uploadRouter: mediaUploadRouter, serveRouter: mediaServeRouter } =
 
 const app = createApp({
   allowedOrigins: config.cors.allowedOrigins,
+  // Trust the configured number of reverse-proxy hops (nginx) so the real
+  // client IP is derived from X-Forwarded-For and rate limiting works (Req 28).
+  trustProxy: config.server.trustProxy,
   // Global limiter on every request; tighter limiters per sensitive mount.
   globalLimiter: limiters.globalLimiter,
   routeLimiters: {
