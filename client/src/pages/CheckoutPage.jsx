@@ -76,7 +76,7 @@ function CheckoutHeader() {
       <span className="checkout__logo">
         <img src={logoSrc} alt="Planet of Toys" className="checkout__logo-img" />
       </span>
-      <a className="checkout__whatsapp" href="https://wa.me/918368124434" target="_blank" rel="noreferrer">
+      <a className="checkout__whatsapp" href="https://wa.me/918448617222" target="_blank" rel="noreferrer">
         <svg viewBox="0 0 24 24" fill="currentColor" className="checkout__whatsapp-icon" aria-hidden="true">
           <path d="M12 2a10 10 0 00-8.6 15.1L2 22l5-1.3A10 10 0 1012 2zm0 18.2a8.2 8.2 0 01-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1112 20.2zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1-.2.3-.6.8-.8 1-.1.2-.3.2-.5.1a6.7 6.7 0 01-3.4-3c-.3-.4 0-.6.2-.8l.4-.5c.1-.2.1-.3.2-.5v-.5L9.5 8c-.2-.5-.4-.5-.6-.5h-.5c-.2 0-.5.1-.7.3-.3.3-1 .9-1 2.2s1 2.6 1.1 2.8c.1.2 2 3 4.8 4.2.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.6-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.6-.4z" />
         </svg>
@@ -613,7 +613,7 @@ export default function CheckoutPage() {
           <section className="checkout__notice">
             <h1 className="checkout__heading">Checkout</h1>
             <p>Your cart is empty. Please use the link from our ad or message us to order.</p>
-            <a className="checkout__link-cta" href="https://wa.me/918368124434" target="_blank" rel="noreferrer">Order on WhatsApp</a>
+            <a className="checkout__link-cta" href="https://wa.me/918448617222" target="_blank" rel="noreferrer">Order on WhatsApp</a>
           </section>
         </main>
         <CheckoutFooter />
@@ -644,7 +644,7 @@ export default function CheckoutPage() {
           <section className="checkout__notice">
             <h1 className="checkout__heading">Checkout</h1>
             <p>We couldn't load your order. The product is unavailable — please try the ad link again or message us.</p>
-            <a className="checkout__link-cta" href="https://wa.me/918368124434" target="_blank" rel="noreferrer">Chat on WhatsApp</a>
+            <a className="checkout__link-cta" href="https://wa.me/918448617222" target="_blank" rel="noreferrer">Chat on WhatsApp</a>
           </section>
         </main>
         <CheckoutFooter />

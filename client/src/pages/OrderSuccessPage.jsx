@@ -73,7 +73,7 @@ export default function OrderSuccessPage() {
             Thank you for your purchase. A confirmation has been sent to you on
             WhatsApp.
           </p>
-          <a className="success__home-cta" href="https://wa.me/918368124434" target="_blank" rel="noreferrer">
+          <a className="success__home-cta" href="https://wa.me/918448617222" target="_blank" rel="noreferrer">
             Need help? WhatsApp us
           </a>
         </section>
@@ -161,7 +161,7 @@ export default function OrderSuccessPage() {
           ) : null}
         </div>
 
-        <a className="success__home-cta" href="https://wa.me/918368124434" target="_blank" rel="noreferrer">
+        <a className="success__home-cta" href="https://wa.me/918448617222" target="_blank" rel="noreferrer">
           Need help? WhatsApp us
         </a>
       </section>

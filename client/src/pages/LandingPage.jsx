@@ -354,7 +354,7 @@ export default function LandingPage() {
         {/* Desktop nav (inline, right side) */}
         <nav className="landing__header-nav landing__header-nav--desktop">
           <Link to="/" className="landing__header-link">Contact Us</Link>
-          <a className="landing__whatsapp" href="https://wa.me/918368124434" target="_blank" rel="noreferrer">WhatsApp Us</a>
+          <a className="landing__whatsapp" href="https://wa.me/918448617222" target="_blank" rel="noreferrer">WhatsApp Us</a>
         </nav>
       </header>
 
@@ -382,7 +382,7 @@ export default function LandingPage() {
               <span>Contact Us</span>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7 5l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </Link>
-            <a className="landing__side-panel-link" href="https://wa.me/918368124434" target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)}>
+            <a className="landing__side-panel-link" href="https://wa.me/918448617222" target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)}>
               <span>WhatsApp Us</span>
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7 5l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
             </a>
