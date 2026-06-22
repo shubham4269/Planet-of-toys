@@ -279,7 +279,12 @@ export function createWebhookRouter({
     }
   });
 
-  router.post("/shiprocket", async (req, res, next) => {
+  // Shiprocket status webhook. NOTE: Shiprocket's dashboard rejects any webhook
+  // URL containing the keywords "shiprocket", "kartrocket", "sr", or "kr"
+  // ("Address is not allowed"), so this handler is also exposed on the neutral
+  // "/courier" path — point the Shiprocket dashboard at /api/webhooks/courier.
+  // The original "/shiprocket" path is retained for backward compatibility.
+  router.post(["/shiprocket", "/courier"], async (req, res, next) => {
     try {
       // 1) Verify authenticity FIRST (Req 24.1). Only authentic webhooks are
       //    processed (Req 24.4).
