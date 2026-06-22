@@ -317,15 +317,18 @@ export function createWebhookRouter({
         return res.status(200).json({ status: "ok" });
       }
       if (result.status === "unmatched") {
-        // Token was VALID, but the payload references no existing order. This
-        // is exactly what Shiprocket's "Test Webhook" button produces (a dummy
-        // payload), so call it out explicitly to distinguish it from a token
-        // failure when reading logs. Reject + recorded by the service (Req 12.4).
+        // Token was VALID, but the payload references no existing order — this
+        // is what Shiprocket's dashboard Save/Test validation produces (a
+        // sample payload with a dummy order id). The event is still RECORDED by
+        // the service (Req 12.4) and NO order is mutated; we acknowledge with
+        // 200 instead of 404 so Shiprocket accepts the endpoint on save. A
+        // genuinely unmatched Shiprocket status event never becomes matched
+        // later, so a 404-driven retry would be pointless noise.
         logger.warn(
-          "Shiprocket webhook authenticated but no matching order — likely a test payload or an order we don't have.",
+          "Shiprocket webhook authenticated but no matching order — recorded, acknowledged with 200 (test/sample payload or an order we don't have).",
           { path: req.originalUrl ?? req.url }
         );
-        return res.status(404).json({ status: "unmatched" });
+        return res.status(200).json({ status: "unmatched" });
       }
       if (result.status === "ignored") {
         // Matched order but unrecognized status — acknowledged, no mutation.
