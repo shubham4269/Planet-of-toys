@@ -210,7 +210,19 @@ export function createShippingService({
       });
       const addresses = res?.data?.data?.shipping_address;
       if (res.status >= 200 && res.status < 300 && Array.isArray(addresses) && addresses.length > 0) {
-        const primary = addresses.find((a) => a && a.is_primary_location) ?? addresses[0];
+        // Prefer an ACTIVE pickup location: Shiprocket will not return couriers
+        // (or accept shipments) for a deactivated pickup, so a primary address
+        // that is toggled off must not be auto-selected. `status` is treated as
+        // active when truthy; when Shiprocket omits the field we assume active
+        // so behaviour is never worse than before. Selection order: active
+        // primary → any active → primary → first.
+        const isActive = (a) =>
+          a && (a.status === undefined || a.status === null ? true : Boolean(a.status));
+        const primary =
+          addresses.find((a) => isActive(a) && a.is_primary_location) ??
+          addresses.find((a) => isActive(a)) ??
+          addresses.find((a) => a && a.is_primary_location) ??
+          addresses[0];
         pickupCache.location =
           typeof primary.pickup_location === "string"
             ? primary.pickup_location.trim() || null
@@ -335,10 +347,20 @@ export function createShippingService({
 
     const delivery = normalizePincode(pincode);
     if (!delivery) {
+      logger.warn("Serviceability check: invalid delivery pincode.", {
+        pincode: String(pincode),
+      });
       return { serviceable: false };
     }
     const pickup = await resolvePickup();
     if (!pickup) {
+      // Could not determine an origin pincode (no SHIPROCKET_PICKUP_PINCODE and
+      // no detectable account pickup address). Every pincode will read as
+      // non-serviceable until this is configured.
+      logger.warn(
+        "Serviceability check: no pickup pincode resolved — set SHIPROCKET_PICKUP_PINCODE or activate a pickup address in Shiprocket.",
+        { delivery }
+      );
       return { serviceable: false };
     }
 
@@ -359,6 +381,23 @@ export function createShippingService({
       response.status < 300 &&
       Array.isArray(couriers) &&
       couriers.length > 0;
+
+    if (!serviceable) {
+      // Log enough to diagnose WITHOUT leaking credentials/tokens: the
+      // resolved pickup/delivery pincodes, the HTTP status, and Shiprocket's
+      // own message (e.g. "Pickup postcode not serviceable / not an active
+      // pickup location").
+      logger.warn("Serviceability check returned non-serviceable.", {
+        pickup,
+        delivery,
+        status: response.status,
+        courierCount: Array.isArray(couriers) ? couriers.length : null,
+        providerMessage:
+          response?.data?.message ??
+          response?.data?.status_code ??
+          null,
+      });
+    }
 
     return { serviceable };
   }

@@ -285,10 +285,13 @@ export function createWebhookRouter({
       //    processed (Req 24.4).
       if (!(await verifyAuthenticity(req))) {
         // Record the failed verification attempt server-side (Req 24.3) and
-        // reject without mutating any order (Property 37).
-        logger.warn("Rejected webhook: authenticity verification failed.", {
-          path: req.originalUrl ?? req.url,
-        });
+        // reject without mutating any order (Property 37). Name the route and
+        // the likely cause so a Shiprocket "Test Webhook" 401 is unmistakable
+        // in the logs (the x-api-key header did not match the configured token).
+        logger.warn(
+          "Rejected Shiprocket webhook (401): x-api-key did not match the configured webhook token.",
+          { path: req.originalUrl ?? req.url }
+        );
         try {
           await unmatchedModel.create({
             payload: req.body ?? {},
@@ -303,12 +306,33 @@ export function createWebhookRouter({
       // 2) Process the authentic event (Req 12).
       const result = await webhookService.processShiprocketEvent(req.body ?? {});
 
+      if (result.status === "test") {
+        // Authenticated request that carries no order reference — a provider
+        // connectivity / "Test Webhook" ping. Acknowledge with 200 so the
+        // Shiprocket dashboard test succeeds; nothing is mutated or recorded.
+        logger.info?.(
+          "Shiprocket webhook ping acknowledged (authenticated, no order reference — likely the dashboard Test Webhook).",
+          { path: req.originalUrl ?? req.url }
+        );
+        return res.status(200).json({ status: "ok" });
+      }
       if (result.status === "unmatched") {
-        // Reject + recorded by the service (Req 12.4).
+        // Token was VALID, but the payload references no existing order. This
+        // is exactly what Shiprocket's "Test Webhook" button produces (a dummy
+        // payload), so call it out explicitly to distinguish it from a token
+        // failure when reading logs. Reject + recorded by the service (Req 12.4).
+        logger.warn(
+          "Shiprocket webhook authenticated but no matching order — likely a test payload or an order we don't have.",
+          { path: req.originalUrl ?? req.url }
+        );
         return res.status(404).json({ status: "unmatched" });
       }
       if (result.status === "ignored") {
         // Matched order but unrecognized status — acknowledged, no mutation.
+        logger.warn(
+          "Shiprocket webhook matched an order but the status was unrecognized — acknowledged without changes.",
+          { path: req.originalUrl ?? req.url }
+        );
         return res.status(202).json({ status: "ignored" });
       }
       return res.status(200).json({

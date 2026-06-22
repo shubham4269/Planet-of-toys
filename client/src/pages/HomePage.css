@@ -1,0 +1,153 @@
+/* Public "Coming Soon" homepage (root route). Self-contained, accessible,
+   and high-contrast so payment/ad-platform verification crawlers and humans
+   can reach a real page at the domain root. */
+
+.home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  padding: 48px 20px;
+  background: linear-gradient(160deg, #fff7ed 0%, #f0f9ff 100%);
+  color: #1f2937;
+  text-align: center;
+}
+
+.home__card {
+  width: 100%;
+  max-width: 560px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 40px 28px;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+}
+
+.home__logo {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+  margin: 0 auto 20px;
+  display: block;
+}
+
+.home__eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #ea580c;
+}
+
+.home__title {
+  margin: 0 0 14px;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: #0f172a;
+}
+
+.home__lead {
+  margin: 0 auto 28px;
+  max-width: 44ch;
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: #475569;
+}
+
+.home__contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+
+.home__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: 1.5px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.05s ease;
+}
+
+.home__btn:hover {
+  background: #f1f5f9;
+}
+
+.home__btn:active {
+  transform: translateY(1px);
+}
+
+.home__btn--primary {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #ffffff;
+}
+
+.home__btn--primary:hover {
+  background: #15803d;
+}
+
+.home__btn:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.home__address {
+  margin: 0;
+  font-style: normal;
+  font-size: 0.95rem;
+  color: #64748b;
+}
+
+.home__address a,
+.home__footer-link {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.home__address a:hover,
+.home__footer-link:hover {
+  text-decoration: underline;
+}
+
+.home__footer {
+  width: 100%;
+  max-width: 560px;
+}
+
+.home__footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 20px;
+  margin-bottom: 12px;
+}
+
+.home__footer-link {
+  font-size: 0.92rem;
+}
+
+.home__footer-link:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.home__copy {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}

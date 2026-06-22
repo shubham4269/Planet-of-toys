@@ -153,6 +153,16 @@ export function createWebhookService({
   async function processShiprocketEvent(payload) {
     const { awb, orderId, status } = extractWebhookFields(payload);
 
+    // A reference-less payload (no AWB AND no order id) cannot identify any
+    // order, so it is not a genuine "missed order" event under Req 12.4 — it is
+    // what a provider connectivity check / "Test Webhook" ping looks like.
+    // Acknowledge it as a successful ping (no mutation, nothing recorded) so the
+    // Shiprocket Test Webhook can succeed, WITHOUT weakening the reject+record
+    // guarantee for real, order-referencing webhooks below.
+    if (!awb && !orderId) {
+      return { status: "test" };
+    }
+
     const order = await findOrder({ awb, orderId });
     if (!order) {
       // No matching order: reject + record, mutate nothing (Req 12.4, Property 24).

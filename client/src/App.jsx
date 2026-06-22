@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CustomerLayout from "./components/CustomerLayout.jsx";
 import AdminLayout from "./components/AdminLayout.jsx";
 import RequireAdminAuth from "./components/RequireAdminAuth.jsx";
+import HomePage from "./pages/HomePage.jsx";
 import CheckoutPage from "./pages/CheckoutPage.jsx";
 import AdminLoginPage from "./pages/AdminLoginPage.jsx";
 import DashboardPage from "./pages/admin/DashboardPage.jsx";
@@ -58,12 +59,13 @@ function Forbidden() {
 export function AppRoutes() {
   return (
     <Routes>
-      {/* Customer storefront — restricted to the paid-ads funnel. Only the
-          direct-to-checkout routes, order success, and the policy pages are
-          reachable; everything else (including / and the old /p/:slug landing
-          pages) renders the 403 view. */}
+      {/* Customer storefront. The root renders a public "coming soon" home so
+          the domain root is live and reachable for payment-gateway (Razorpay)
+          and ad-platform website verification. The rest of the storefront is
+          the paid-ads funnel: direct-to-checkout, order success, and policy
+          pages; any other path renders the 403 view. */}
       <Route element={<CustomerLayout />}>
-        <Route index element={<Forbidden />} />
+        <Route index element={<HomePage />} />
         {/* Checkout — order summary, customer form, serviceability, payment (Req 4,5,6). */}
         <Route path="checkout" element={<CheckoutPage />} />
         {/* Direct-to-checkout — Facebook Ad traffic lands here with product in the URL. */}

@@ -26,11 +26,13 @@ describe("SPA shell and routing", () => {
     localStorage.clear();
   });
 
-  it("blocks the root URL with a 403 view (paid-ads funnel only)", () => {
+  it("serves a public coming-soon homepage at the root URL", () => {
     render(<App />);
     expect(
-      screen.getByRole("heading", { name: /403 forbidden/i })
+      screen.getByRole("heading", { name: /coming soon/i })
     ).toBeInTheDocument();
+    // Customer surface must not opt into the admin dark theme.
+    expect(document.documentElement.getAttribute("data-theme")).toBeNull();
   });
 
   it("blocks the old landing pages with a 403 view", () => {
