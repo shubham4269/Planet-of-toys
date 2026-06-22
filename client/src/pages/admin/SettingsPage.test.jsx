@@ -136,7 +136,7 @@ describe("SettingsPage", () => {
     const section = await openTab("shiprocket");
     const url = within(section).getByTestId("webhook-url-shiprocket");
     // Absolute URL pointing at the inbound webhook path; read-only.
-    expect(url).toHaveValue(`${window.location.origin}/api/webhooks/shiprocket`);
+    expect(url).toHaveValue(`${window.location.origin}/api/webhooks/courier`);
     expect(url).toHaveAttribute("readonly");
 
     // Razorpay surfaces its own webhook block (payment event deliveries).

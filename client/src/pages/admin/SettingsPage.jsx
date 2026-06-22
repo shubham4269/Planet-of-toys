@@ -136,7 +136,11 @@ export const SETTINGS_SECTIONS = [
     // Inbound status webhooks are delivered to this path. The admin pastes the
     // full URL into the Shiprocket dashboard; authenticity is verified against
     // the server-side SHIPROCKET_WEBHOOK_TOKEN (sent as the x-api-key header).
-    webhookPath: "/api/webhooks/shiprocket",
+    // NOTE: the path deliberately avoids the words "shiprocket"/"sr"/"kr" — the
+    // Shiprocket dashboard rejects webhook URLs containing those keywords with
+    // "Address is not allowed". The backend also still accepts the legacy
+    // /api/webhooks/shiprocket path for compatibility.
+    webhookPath: "/api/webhooks/courier",
     webhookAriaLabel: "Shiprocket webhook URL",
     webhookDescription: (
       <>
